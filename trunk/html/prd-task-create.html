@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="all">
+	<meta name="author" content="sonichuang@tencent.com">
+	<meta name="Copyright" content="Tencent">
+	<meta name="Description" content="Tgideas - 需求管理系统">
+	<meta name="Keywords" content="需求管理系统">
+	<title>Tgideas - 需求管理系统</title>
+	<link href="../css/comm.css" rel="stylesheet" />
+</head>
+<body>
+<!-- page -->
+<div class="page">
+	<div class="header">
+		<h1 class="mtitle">需求管理系统 v1.0</h1>
+		<div class="navigation" role="navigation">
+			<ul class="nav-ul">
+				<li><a href="#">系统首页</a></li>
+				<li><a href="#">需求管理</a></li>
+				<li><a href="#">数据导出</a></li>
+				<li><a href="#">系统设置</a></li>
+			</ul>
+		</div>
+		<div class="user-info">
+			<div class="user-info-avatar"><img src="#" width="36" height="36" alt="sonichuang" /></div>
+			<div class="user-info-txt">
+				<p>sonichuang [<a href="#">退出</a>]</p>
+				<p>重构角色</p>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		
+		<!-- [c-box:产品需求列表] -->
+		<div class="c-box">
+			<div class="c-box-hd task-list">
+				<div class="c-box-hd-title">
+					<h3>新建需求</h3>
+
+				</div>
+				<div class="c-box-hd-extra">
+					<a href="#" class="m-btn btn-skin-1">返回需求列表</a>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<table class="m-table-data task-create-table">
+					<colgroup>
+						<col class="c1"></col>
+						<col class="c2"></col>
+						<col class="c3"></col>
+						<col class="c4"></col>
+						<col class="c5"></col>
+						<col class="c6"></col>
+						<col class="c7"></col>
+						<col class="c8"></col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th>项目</th>
+							<th>需求标题</th>
+							<th>优先级</th>
+							<th class="tcenter">重点需求</th>
+							<th>网站人员</th>
+							<th>期望重构开始时间</th>
+							<th>期望重构完成时间</th>
+							<th>上线时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<select id="taskTitle" name="taskTitle">
+									<option value="" selected="selected">选择项目</option>
+									<option value="">TGP</option>
+									<option value="">TGA</option>
+								</select>
+							</td>
+							<td><input type="text" class="inp-txt" placeholder="需求标题这里"></td>
+							<td>
+								<select id="priorityLv" name="priorityLv">
+									<option value="" selected="selected">P0</option>
+									<option value="">P1</option>
+									<option value="">P2</option>
+									<option value="">P3</option>
+								</select>
+							</td>
+							<td>
+								<select id="isFocus" name="isFocus">
+									<option value="" selected="selected">否</option>
+									<option value="">是</option>
+								</select>
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+
+			</div>
+		</div><!--/ [c-box] -->
+
+
+
+	</div>
+</div><!--/ page -->
+
+<!-- footer -->
+<div class="footer">
+	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
+</div><!--/ footer -->
+<!-- javascript sync -->
+<script src="../js/comm.js"></script>
+</body>
+</html>
