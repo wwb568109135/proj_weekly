@@ -61,10 +61,10 @@ var defaults = {
 	// locale
 	isRTL: false,
 	firstDay: 0,
-	monthNames: ['1月','February','March','April','May','June','July','August','September','October','November','December'],
+	monthNames: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
 	monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-	dayNames: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-	dayNamesShort: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+	dayNames: ['周日','周一','周二','周三','周四','周五','周六'],
+	dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
 	buttonText: {
 		prev: "<span class='fc-text-arrow'>&lsaquo;</span>",
 		next: "<span class='fc-text-arrow'>&rsaquo;</span>",
