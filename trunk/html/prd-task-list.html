@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="all">
+	<meta name="author" content="sonichuang@tencent.com">
+	<meta name="Copyright" content="Tencent">
+	<meta name="Description" content="Tgideas - 需求管理系统">
+	<meta name="Keywords" content="需求管理系统">
+	<title>Tgideas - 需求管理系统</title>
+	<link href="../css/comm.css" rel="stylesheet" />
+	
+	<!-- jq -->
+	<script src="../js/jquery/jquery-1.7.2.min.js"></script>
+	<!-- fullcalendar -->
+	<link href='../js/fullcalendar/fullcalendar.css' rel='stylesheet' />
+	<link href='../js/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+	<script src='../js/jquery/jquery-ui-1.10.2.custom.min.js'></script>
+	<script src='../js/fullcalendar/fullcalendar.js'></script>
+	<script>
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				// right: 'month,basicWeek,basicDay'
+				right: 'basicWeek,month'
+			},
+			editable: true,
+			events: [
+				{
+					title: '【TGP】xx官网改版xx页面制作',
+					start: '2013-7-1',
+					end: '2013-7-4'
+				},
+				{
+					title: 'Long Event',
+					start: new Date(y, m, d-5),
+					end: new Date(y, m, d-2)
+				},
+				{
+					title: 'Lunch',
+					start: new Date(y, m, d, 12, 0),
+					end: new Date(y, m, d, 14, 0),
+					allDay: false
+				},
+				{
+					title: 'Birthday Party',
+					start: new Date(y, m, d+1, 19, 0),
+					end: new Date(y, m, d+1, 22, 30),
+					allDay: false
+				},
+				{
+					title: 'Click for Google',
+					start: new Date(y, m, 28),
+					end: new Date(y, m, 29),
+					url: 'http://google.com/'
+				}
+			]
+		});
+		
+	});
+
+</script>
+</head>
+<body>
+<!-- page -->
+<div class="page">
+	<div class="header">
+		<h1 class="mtitle">需求管理系统 v1.0</h1>
+		<div class="navigation" role="navigation">
+			<ul class="nav-ul">
+				<li><a href="#">系统首页</a></li>
+				<li><a href="#">需求管理</a></li>
+				<li><a href="#">数据导出</a></li>
+				<li><a href="#">系统设置</a></li>
+			</ul>
+		</div>
+		<div class="user-info">
+			<div class="user-info-avatar"><img src="#" width="36" height="36" alt="sonichuang" /></div>
+			<div class="user-info-txt">
+				<p>sonichuang [<a href="#">退出</a>]</p>
+				<p>重构角色</p>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<!-- [c-box:产品需求日历] -->
+		<div class="c-box">
+			<div class="c-box-hd task-calendar">
+				<div class="c-box-hd-title">
+					<h3>本周需求</h3>
+					<form action="" class="search-form">
+						<input type="text" class="inp-txt" placeholder="需求ID/名称" />
+						<input type="submit" value="搜索" class="btn-submit" />
+					</form>
+				</div>
+				<div class="c-box-hd-extra">
+					<a href="#" class="m-btn btn-new-task">新建需求</a>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<div id='calendar'></div>
+
+			</div>
+		</div><!--/ [c-box] -->
+		
+		<!-- [c-box:产品需求列表] -->
+		<div class="c-box">
+			<div class="c-box-hd task-list">
+				<div class="c-box-hd-title">
+					<h3>全部需求</h3>
+					<form action="" class="search-form">
+						<label for="currentStatus">筛选</label>
+						<select id="currentStatus" name="currentStatus">
+							<option value="" selected="selected">当前状态</option>
+							<option value="">排期中</option>
+							<option value="">重构中</option>
+							<option value="">调教中</option>
+							<option value="">已上线</option>
+						</select>
+						<select id="taskPriority" name="taskPriority">
+							<option value="" selected="selected">优先级别</option>
+							<option value="">高</option>
+							<option value="">中</option>
+							<option value="">低</option>
+						</select>
+					</form>
+				</div>
+				<div class="c-box-hd-extra">
+					<span class="tips">Tip: 如果需求细节修改，请点击需求名称进入编辑</span>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<table class="m-table-data prd-task-table">
+					<colgroup>
+						<col class="c1"></col>
+						<col class="c2"></col>
+						<col class="c3"></col>
+						<col class="c4"></col>
+						<col class="c5"></col>
+						<col class="c6"></col>
+					</colgroup>
+					<thead>
+						<tr>
+							<th>需求ID</th>
+							<th>需求名称</th>
+							<th class="tcenter">当前状态</th>
+							<th class="tcenter">总进度</th>
+							<th class="tcenter">上线时间</th>
+							<th>网站人员</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+						<tr>
+							<td>20130613001</td>
+							<td><a href="#">【TGP】产品需求名称写在这里</a></td>
+							<td class="tcenter">已上线</td>
+							<td class="tcenter">100%</td>
+							<td class="tcenter">2013-07-27</td>
+							<td>andyliu, hurryli, sonichuang, sosohu</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div><!--/ [c-box] -->
+
+
+
+	</div>
+</div><!--/ page -->
+
+<!-- footer -->
+<div class="footer">
+	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
+</div><!--/ footer -->
+<!-- javascript sync -->
+<script src="../js/comm.js"></script>
+</body>
+</html>
