@@ -141,10 +141,10 @@ body > .contnet{height: auto; min-height: 100%;}
 	.m-table-data th,.m-table-data td{padding:4px 8px;line-height: 28px;border-right:1px solid #dcdcde;border-bottom:1px solid #dcdcde;}
 	.m-table-data th{background-color: #eee;}
 	.tcenter td{text-align: center;}
-
+	
 /*-- m-btn --*/
 .m-btn{display: inline-block;*display: inline; *zoom:1;background-color: #999;color: #fff;font-weight: bold;font-size:1.2em;line-height: 2em;height:2em;text-align: center;padding:0 1.5em;
-	        border-radius:4px;
+	        border:none;border-radius:4px;cursor:pointer;
 }
 .m-btn:link,.m-btn:visited,.m-btn:hover{color: #fff;text-decoration: none;}
 .m-btn:hover{ opacity:0.8;filter:alpha(opacity=80);}
@@ -161,6 +161,22 @@ body > .contnet{height: auto; min-height: 100%;}
 	-webkit-box-shadow:0px 1px 1px #6080bf;
 	   -moz-box-shadow:0px 1px 1px #6080bf;
 	        box-shadow:0px 1px 1px #6080bf;
+}
+.btn-skin-2{
+ 	background-color: #ffaa00;
+		/* css3 box-shadow */
+	-webkit-box-shadow:0px 1px 1px #da8c09;
+	   -moz-box-shadow:0px 1px 1px #da8c09;
+	        box-shadow:0px 1px 1px #da8c09;
+}
+
+/*-- m-input --*/
+.m-input{line-height: 16px;height: 16px;padding:4px;border:1px solid #ccc;width: 95%;
+	border-radius:4px;
+	/* css3 box-shadow */
+	-webkit-box-shadow:inset -1px 1px #eee;
+	   -moz-box-shadow:inset -1px 1px #eee;
+	        box-shadow:inset -1px 1px #eee;	
 }
 
 /*-- m-page --*/
@@ -204,7 +220,16 @@ body > .contnet{height: auto; min-height: 100%;}
 
 /* task-create-table
 ---------------------------------------------------------------------------------------*/
-.
-
-
-
+.task-create-table{}
+	.task-create-table .c1{width:8%;}
+	.task-create-table .c2{width:22%;}
+	.task-create-table .c3{width:5%;}
+	.task-create-table .c4{width:6%;}
+	.task-create-table .c5{width:30%;}
+	.task-create-table .c6{width:10%;}
+	.task-create-table .c7{width:10%;}
+	.task-create-table .c8{width:10%;}
+.task-create-status{margin-bottom:2em;}
+	.task-create-status .tips{display: inline-block;*display: inline;*zoom:1;}
+.task-create-btn{margin:1em 0 1em 0;padding:2em 0 1em 0;border-top: 1px solid #dcdcde;}
+	.task-create-btn{text-align: center;}
