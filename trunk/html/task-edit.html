@@ -32,10 +32,124 @@
 		</div>
 	</div>
 	<div class="content">
+		<!-- [c-box:重构需求编辑] -->
+		<div class="c-box">
+			<div class="c-box-hd">
+				<div class="c-box-hd-title"><h3>需求编辑</h3></div>
+				<div class="c-box-hd-extra">
+					<a href="#" class="m-btn btn-skin-1 btn-task-list">返回需求列表</a>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<form action="#">
+					<ul class="task-edit-form">
+						<li>
+							<div class="task-edit-part">
+								<label class="lab">需求ID：</label>
+								<span>20130615001</span>
+							</div>
+							<div class="task-edit-part">
+								<label class="lab">创建者：</label>
+								<span>andylau</span>
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-excerpt">
+								<label for="taskTitle" class="lab">标题： </label>
+								<input id="taskTitle" name="taskTitle" type="text" class="m-input inp-txt" />
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-part">
+								<label for="taskType" class="lab">需求类型： </label>
+								<select id="taskType" name="taskType">
+									<option value="" selected="selected">XX官网</option>
+									<option value="">XX官网</option>
+									<option value="">XX官网</option>
+								</select>
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-excerpt">
+								<label class="lab">是否重点需求： </label>
+								<label for="taskImportantYes" class="inline"><input id="taskImportantYes" name="taskImportant" type="radio" />是</label>
+								<label for="taskImportantNo" class="inline"><input id="taskImportantNo" name="taskImportant" type="radio" checked="checked" />否</label>
+								<a href="#">什么是重点需求？</a>
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-excerpt">
+								<label for="taskDescription" class="lab">需求描述： </label>
+								<textarea name="taskDescription" id="taskDescription" cols="80" rows="10" class="m-input inp-textarea"></textarea>
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-excerpt">
+								<label for="taskAttachment" class="lab">附件： </label>
+								<ul class="task-attachment-form">
+									<li>
+										<input type="file" class="inp-file" />
+										<label class="inline">附件说明：</label>
+										<input type="text" class="m-input inp-txt">
+										<a href="#">删除</a>
+									</li>
+									<li>
+										<input type="file" class="inp-file" />
+										<label class="inline">附件说明：</label>
+										<input type="text" class="m-input inp-txt">
+										<a href="#">删除</a>
+									</li>
+									<li class="add"><a href="#">添加</a></li>
+								</ul>
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-part">
+								<label class="lab" for="hopeOnlineDate">期望上线时间：</label>
+								<input id="hopeOnlineDate" name="hopeOnlineDate" type="text" class="m-input inp-txt">
+							</div>
+							<div class="task-edit-part">
+								<label class="lab" for="pageQuantity">页面数：</label>
+								<input id="pageQuantity" name="pageQuantity" type="text" class="m-input inp-txt">
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-part">
+								<label class="lab" for="rbStarDate">重构开始时间：</label>
+								<input id="rbStarDate" name="rbStarDate" type="text" class="m-input inp-txt">
+							</div>
+							<div class="task-edit-part">
+								<label class="lab" for="rbFinishDate">重构完成时间：</label>
+								<input id="rbFinishDate" name="rbFinishDate" type="text" class="m-input inp-txt">
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-part">
+								<label class="lab" for="taskPartner">网站负责人：</label>
+								<input id="taskPartner" name="taskPartner" type="text" class="m-input inp-txt">
+							</div>
+							<div class="task-edit-part">
+								<label class="lab" for="taskCreator">需求接口人：</label>
+								<input id="taskCreator" name="taskCreator" type="text" class="m-input inp-txt">
+							</div>
+						</li>
+						<li>
+							<div class="task-edit-excerpt">
+								<label class="lab" for="rbStarDate">当前状态：</label>
+								<label for="taskStatus-1" class="inline"><input id="taskStatus-1" name="taskStatus" type="radio" checked="checked" /> 排期中</label>
+								<label for="taskStatus-1" class="inline"><input id="taskStatus-1" name="taskStatus" type="radio" /> 重构中</label>
+								<label for="taskStatus-1" class="inline"><input id="taskStatus-1" name="taskStatus" type="radio" /> 联调中</label>
+								<label for="taskStatus-1" class="inline"><input id="taskStatus-1" name="taskStatus" type="radio" /> 已上线</label>
+							</div>
+						</li>
+						<li class="btn">
+							<input type="submit" value="确认修改" class="m-btn btn-skin-1" />
+						</li>
+					</ul>
+				</form>
+			</div>
+		</div><!--/ [c-box:重构需求编辑] -->
 		
-		
-
-
 	</div>
 </div><!--/ page -->
 

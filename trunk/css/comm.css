@@ -210,6 +210,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	   -moz-box-shadow:inset -1px 1px #eee;
 	        box-shadow:inset -1px 1px #eee;	
 }
+.inp-textarea{height:auto;}
 
 /*-- m-page --*/
 .m-page{clear:both;font-family:Tahoma;text-align:center;padding:2em 0;}
@@ -346,3 +347,26 @@ body > .contnet{height: auto; min-height: 100%;}
 		.tdo-static-group label{padding:0 4px 0 0;}
 		.tdo-static-group label input{margin:0 2px 0 0;}
 		.tdo-list .inp-textarea{width: 65%;height:128px;border: 1px solid #ccc;}
+
+
+/* task-edit
+---------------------------------------------------------------------------------------*/
+.task-edit-form{margin:1em 0;}
+	.task-edit-form .btn{padding:1em 0;border-top: 1px solid #eee;padding-left:150px;}
+	.task-edit-form li{overflow: hidden;*zoom:1;margin:0 0 1.2em;line-height: 2em;}
+	.task-edit-part{float:left;width:400px;}
+	.task-edit-excerpt{width: 800px;}
+	.task-edit-form .lab{float:left;font-size:1.2em;line-height:1.6em;width: 144px;padding-right:6px;text-align: right;}
+	.task-edit-form .inline{display: inline;margin:0 1em 0 0;}
+	.task-edit-form .inline input{margin:0 3px 0 0;}
+	.task-edit-part .inp-txt{width: 230px;}
+	.task-edit-excerpt .inp-txt{width:630px;}
+	.task-edit-excerpt .inp-textarea{width: 630px;}
+
+	.task-attachment-form{overflow: hidden;*zoom:1;width:610px;border: 1px solid #b2c8f3;background-color: #f4f8ff;padding:1em 1em 0 1em;border-radius:4px;}
+		.task-attachment-form li{}
+		.task-attachment-form .inp-file{width: 240px;}
+		.task-attachment-form .inp-txt{width: 220px;margin:0 0.5em 0 0;}
+		
+		
+
