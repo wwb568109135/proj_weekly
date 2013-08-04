@@ -368,5 +368,48 @@ body > .contnet{height: auto; min-height: 100%;}
 		.task-attachment-form .inp-file{width: 240px;}
 		.task-attachment-form .inp-txt{width: 220px;margin:0 0.5em 0 0;}
 		
-		
+
+/* export-data
+---------------------------------------------------------------------------------------*/		
+/*-- export-data-box --*/
+.export-data-box{min-width:600px;}
+	.export-data-box .m-remind-box-hd{margin: 0 0 1em;}
+	.export-data-box .m-remind-box-hd h3{font-size: 1.2em; font-weight: bold;}
+	.export-data-form{}
+		.export-data-form p{margin: 0 0 1em;}
+		.export-data-form label{}
+		.export-data-form .inp-txt{width: 90px;}
+		.export-data-form span{padding:0 4px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

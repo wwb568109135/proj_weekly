@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="all">
+	<meta name="author" content="sonichuang@tencent.com">
+	<meta name="Copyright" content="Tencent">
+	<meta name="Description" content="Tgideas - 需求管理系统">
+	<meta name="Keywords" content="需求管理系统">
+	<title>Tgideas - 需求管理系统</title>
+	<link href="../js/glDatePicker-2.0/styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
+	<link href="../css/comm.css" rel="stylesheet" />
+</head>
+<body>
+<!-- page -->
+<div class="page">
+	<div class="header">
+		<h1 class="mtitle">需求管理系统 v1.0</h1>
+		<div class="navigation" role="navigation">
+			<ul class="nav-ul">
+				<li><a href="#">系统首页</a></li>
+				<li><a href="#">需求管理</a></li>
+				<li class="current"><a href="#">数据导出</a></li>
+				<li><a href="#">系统设置</a></li>
+			</ul>
+		</div>
+		<div class="user-info">
+			<div class="user-info-avatar"><img src="#" width="36" height="36" alt="sonichuang" /></div>
+			<div class="user-info-txt">
+				<p>sonichuang [<a href="#">退出</a>]</p>
+				<p>重构角色</p>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="c-box">
+			<div class="c-box-hd">
+				<div class="c-box-hd-title">
+					<h3>数据导出</h3>
+				</div>
+				<div class="c-box-hd-extra">
+					<a href="#" class="m-btn btn-skin-1">返回周报列表</a>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<!-- .m-remind-box:到处周报 -->
+				<div class="m-remind-box export-data-box">
+					<div class="m-remind-box-hd">
+						<h3>导出周报</h3>
+					</div>
+					<div class="m-remind-box-bd">
+						<form action="" class="export-data-form">
+							<p>
+								<label for="weeklyStarDate">请选择时间段：</label>
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<span>至</span>
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+							</p>
+							<p>
+								<input type="submit" value="导出本人" class="m-btn btn-skin-1" />
+								<input type="submit" value="导出全组" class="m-btn btn-skin-1" />
+							</p>
+						</form>
+					</div>
+				</div>
+
+				<!-- .m-remind-box:到处周报 -->
+				<div class="m-remind-box export-data-box">
+					<div class="m-remind-box-hd">
+						<h3>导出重点项目</h3>
+					</div>
+					<div class="m-remind-box-bd">
+						<form action="" class="export-data-form">
+							<p>
+								<label for="weeklyStarDate">请选择时间段：</label>
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<span>至</span>
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+							</p>
+							<p>
+								<input type="submit" value="导出本人" class="m-btn btn-skin-1" />
+								<input type="submit" value="导出全组" class="m-btn btn-skin-1" />
+							</p>
+						</form>
+					</div>
+				</div>
+
+		</div>
+
+
+	</div>
+</div><!--/ page -->
+
+<!-- footer -->
+<div class="footer">
+	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
+</div><!--/ footer -->
+
+<!-- jq -->
+<script src="../js/jquery/jquery-1.7.2.min.js"></script>
+<!-- glDtaePicker -->
+
+
+<!-- javascript sync -->
+<script src="../js/comm.js"></script>
+</body>
+</html>
