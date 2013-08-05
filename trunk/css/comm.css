@@ -375,10 +375,11 @@ body > .contnet{height: auto; min-height: 100%;}
 .export-data-box{min-width:600px;}
 	.export-data-box .m-remind-box-hd{margin: 0 0 1em;}
 	.export-data-box .m-remind-box-hd h3{font-size: 1.2em; font-weight: bold;}
+	.export-data-box .m-remind-box-bd{/*position: relative;*/}
 	.export-data-form{}
 		.export-data-form p{margin: 0 0 1em;}
 		.export-data-form label{}
-		.export-data-form .inp-txt{width: 90px;}
+		.export-data-form .inp-txt{width: 190px;}
 		.export-data-form span{padding:0 4px;}
 
 

@@ -8,7 +8,6 @@
 	<meta name="Description" content="Tgideas - 需求管理系统">
 	<meta name="Keywords" content="需求管理系统">
 	<title>Tgideas - 需求管理系统</title>
-	<link href="../js/glDatePicker-2.0/styles/glDatePicker.default.css" rel="stylesheet" type="text/css">
 	<link href="../css/comm.css" rel="stylesheet" />
 </head>
 <body>
@@ -52,14 +51,14 @@
 						<form action="" class="export-data-form">
 							<p>
 								<label for="weeklyStarDate">请选择时间段：</label>
-								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt date-picker" placeholder="YYYY-MM-DD" />
 								<span>至</span>
-								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt date-picker" placeholder="YYYY-MM-DD" />
 							</p>
 							<p>
 								<input type="submit" value="导出本人" class="m-btn btn-skin-1" />
 								<input type="submit" value="导出全组" class="m-btn btn-skin-1" />
-							</p>
+							</p>								
 						</form>
 					</div>
 				</div>
@@ -73,9 +72,9 @@
 						<form action="" class="export-data-form">
 							<p>
 								<label for="weeklyStarDate">请选择时间段：</label>
-								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt date-picker" placeholder="YYYY-MM-DD" />
 								<span>至</span>
-								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt" placeholder="YYYY-MM-DD" />
+								<input id="weeklyStarDate" name="weeklyStarDate" type="text" class="m-input inp-txt date-picker" placeholder="YYYY-MM-DD" />
 							</p>
 							<p>
 								<input type="submit" value="导出本人" class="m-btn btn-skin-1" />
@@ -96,12 +95,22 @@
 	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
 </div><!--/ footer -->
 
+<link href="../js/Zebra_Datepicker-master/public/css/default.css" rel="stylesheet" type="text/css">
 <!-- jq -->
 <script src="../js/jquery/jquery-1.7.2.min.js"></script>
-<!-- glDtaePicker -->
+<!-- DtaePicker -->
+<script type="text/javascript" src="../js/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
+<script>
+$(document).ready(function() {
+    $('input.date-picker').Zebra_DatePicker({
+    	 offset: [2, 5]
+    });
+});
+	
+</script>
 
 
 <!-- javascript sync -->
-<script src="../js/comm.js"></script>
+<!-- <script src="../js/comm.js"></script> -->
 </body>
 </html>
