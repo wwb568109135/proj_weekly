@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="robots" content="all">
+	<meta name="author" content="sonichuang@tencent.com">
+	<meta name="Copyright" content="Tencent">
+	<meta name="Description" content="Tgideas - 需求管理系统">
+	<meta name="Keywords" content="需求管理系统">
+	<title>Tgideas - 需求管理系统</title>
+	<link href="../css/comm.css" rel="stylesheet" />
+</head>
+<body>
+<!-- page -->
+<div class="page">
+	<div class="header">
+		<h1 class="mtitle">需求管理系统 v1.0</h1>
+		<div class="navigation" role="navigation">
+			<ul class="nav-ul">
+				<li><a href="#">系统首页</a></li>
+				<li><a href="#">需求管理</a></li>
+				<li><a href="#">数据导出</a></li>
+				<li class="current"><a href="#">系统设置</a></li>
+			</ul>
+		</div>
+		<div class="user-info">
+			<div class="user-info-avatar"><img src="#" width="36" height="36" alt="sonichuang" /></div>
+			<div class="user-info-txt">
+				<p>sonichuang [<a href="#">退出</a>]</p>
+				<p>重构角色</p>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<!-- c-box:系统设置 -->
+		<div class="c-box">
+			<!--= task-detail-title -->
+			<div class="c-box-hd">
+				<div class="c-box-hd-title"><h3>系统设置</h3></div>
+				<div class="c-box-hd-extra">
+					<a href="#" class="m-btn btn-skin-1">返回需求列表</a>
+				</div>
+			</div>
+			<div class="c-box-bd">
+				<div class="m-tabs">
+					<div class="m-tabs-nav">
+						<ul class="m-tabs-nav-ul">
+							<li class="current"><a href="system-permissions.html">权限开通</a></li>
+							<li><a href="system-staff.html">人员管理</a></li>
+							<li><a href="system-project.html">项目管理</a></li>
+						</ul>
+					</div>
+					<div class="m-tabs-content">
+						<!-- .system-settings-box -->
+						<div class="system-settings-box">
+							<form action="#">
+								<ul class="role-settings-form">
+									<li>
+										<label for="enName">英文名：</label>
+										<input id="enName" name="enName" type="text" class="m-input inp-txt" />
+									</li>
+									<li>
+										<label for="roleSet">角色：</label>
+										<select id="roleSet" name="roleSet">
+											<option value="" selected="selected">产品角色</option>
+											<option value="">管理角色</option>
+											<option value="">重构角色</option>
+										</select>
+										<select id="roleSet" name="roleSet">
+											<option value="" selected="selected">XX项目</option>
+											<option value="">XX项目</option>
+											<option value="">XX项目</option>
+										</select>
+									</li>
+									<li>
+										<label for="roleRemarks">备注：</label>
+										<textarea id="roleRemarks" name="roleRemarks" rows="4" cols="20" class="m-input inp-textarea"></textarea>
+									</li>
+									<li class="btn">
+										<input type="submit" value="确认开通" class="m-btn btn-skin-1" />
+									</li>
+								</ul>
+							</form>
+						</div><!--/ .system-settings-box -->
+					</div>
+				</div>
+			</div>
+		</div><!--/ c-box:系统设置 -->
+
+
+
+	</div>
+</div><!--/ page -->
+
+<!-- footer -->
+<div class="footer">
+	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
+</div><!--/ footer -->
+<!-- javascript sync -->
+<script src="../js/comm.js"></script>
+</body>
+</html>
