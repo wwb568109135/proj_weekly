@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<div class="c-box-bd">
-				<table class="m-table-data task-create-table">
+				<table id="taskCreateTable" class="m-table-data task-create-table">
 					<colgroup>
 						<col class="c1"></col>
 						<col class="c2"></col>
@@ -71,7 +71,7 @@
 					<tbody>
 						<tr>
 							<td>
-								<select id="taskTitle" name="taskTitle">
+								<select id="taskTitle-1" name="taskTitle">
 									<option value="" selected="selected">选择项目</option>
 									<option value="">TGP</option>
 									<option value="">TGA</option>
@@ -79,7 +79,7 @@
 							</td>
 							<td><input type="text" class="m-input inp-txt" placeholder="需求标题这里"></td>
 							<td>
-								<select id="priorityLv" name="priorityLv">
+								<select id="priorityLv-1" name="priorityLv">
 									<option value="" selected="selected">P0</option>
 									<option value="">P1</option>
 									<option value="">P2</option>
@@ -87,19 +87,16 @@
 								</select>
 							</td>
 							<td class="tcenter">
-								<select id="isFocus" name="isFocus">
-									<option value="" selected="selected">否</option>
-									<option value="">是</option>
-								</select>
+								<input type="checkbox" id="isFocus-1" name="isFocus-1" />
 							</td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
+							<td><input type="text" class="m-input inp-txt" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
 						</tr>
 						<tr>
 							<td>
-								<select id="taskTitle" name="taskTitle">
+								<select id="taskTitle-2" name="taskTitle">
 									<option value="" selected="selected">选择项目</option>
 									<option value="">TGP</option>
 									<option value="">TGA</option>
@@ -107,7 +104,7 @@
 							</td>
 							<td><input type="text" class="m-input inp-txt" placeholder="需求标题这里"></td>
 							<td>
-								<select id="priorityLv" name="priorityLv">
+								<select id="priorityLv-2" name="priorityLv">
 									<option value="" selected="selected">P0</option>
 									<option value="">P1</option>
 									<option value="">P2</option>
@@ -115,19 +112,16 @@
 								</select>
 							</td>
 							<td class="tcenter">
-								<select id="isFocus" name="isFocus">
-									<option value="" selected="selected">否</option>
-									<option value="">是</option>
-								</select>
+								<input type="checkbox" id="isFocus-2" name="isFocus-2" />
 							</td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
+							<td><input type="text" class="m-input inp-txt" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
 						</tr>
 						<tr>
 							<td>
-								<select id="taskTitle" name="taskTitle">
+								<select id="taskTitle-3" name="taskTitle">
 									<option value="" selected="selected">选择项目</option>
 									<option value="">TGP</option>
 									<option value="">TGA</option>
@@ -135,7 +129,7 @@
 							</td>
 							<td><input type="text" class="m-input inp-txt" placeholder="需求标题这里"></td>
 							<td>
-								<select id="priorityLv" name="priorityLv">
+								<select id="priorityLv-3" name="priorityLv">
 									<option value="" selected="selected">P0</option>
 									<option value="">P1</option>
 									<option value="">P2</option>
@@ -143,20 +137,17 @@
 								</select>
 							</td>
 							<td class="tcenter">
-								<select id="isFocus" name="isFocus">
-									<option value="" selected="selected">否</option>
-									<option value="">是</option>
-								</select>
+								<input type="checkbox" id="isFocus-3" name="isFocus-3" />
 							</td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
-							<td><input type="text" class="m-input inp-txt" placeholder=""></td>
+							<td><input type="text" class="m-input inp-txt" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
+							<td><input type="text" class="m-input inp-txt date-picker" placeholder="" /></td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="task-create-status">
-					<a href="#" class="m-btn btn-skin-0 btn-append-task">(+)增加1行需求</a>
+					<a href="javascript:;" id="btnAppendTask" class="m-btn btn-append-task">(+)增加1行需求</a>
 					<p class="red tips">Tip:如果需求细节修改，请在完成发布后进入“<a href="#">需求详情页</a>”进行编辑</p>
 				</div>
 				<div class="task-create-btn">
@@ -176,6 +167,20 @@
 <div class="footer">
 	<p class="copyright">Copyright &copy; 1998-2013 TENCENT.ALL RIGHT RESERVED. <span>Power by: <a href="#">Tgideas.qq.com</a> {架构二组}</span></p>
 </div><!--/ footer -->
+
+<!-- DtaePicker Css -->
+<link href="../js/Zebra_Datepicker-master/public/css/default.css" rel="stylesheet" type="text/css">
+<!-- jq -->
+<script src="../js/jquery/jquery-1.7.2.min.js"></script>
+<!-- DtaePicker Js -->
+<script type="text/javascript" src="../js/Zebra_Datepicker-master/public/javascript/zebra_datepicker.js"></script>
+<script>
+$(document).ready(function() {
+    $('input.date-picker').Zebra_DatePicker({
+    	 offset: [2, 5]
+    });
+});
+</script>
 <!-- javascript sync -->
 <script src="../js/comm.js"></script>
 </body>
