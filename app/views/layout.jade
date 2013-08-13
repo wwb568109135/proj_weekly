@@ -1,0 +1,46 @@
+doctype 5
+html(lang="zh-CN")
+  head
+    meta(charset="utf-8")
+    title Tgideas - 需求管理系统
+    meta(name="author",content="sonichuang@tencent.com")
+    meta(name="Copyright",content="Tencent Tgideas")
+    meta(name="Description",content="Tgideas - 需求管理系统")
+    link(rel='stylesheet', href='/css/comm.css')
+  body
+    div.page
+      .header
+          h1.mtitle 需求管理系统 v1.0
+          .navigation(role='navigation')
+            ul.nav-ul
+              li.current
+                a(href='/') 系统首页
+              li
+                a(href='/task') 需求管理
+              li
+                a(href='/export') 数据导出
+              li
+                a(href='/setting') 系统设置
+          .user-info
+            .user-info-avatar
+              img(src='http://ossweb-img.qq.com/images/igame/web2012/cntimg/head40.jpg', width='36', height='36', alt='sonichuang')
+            .user-info-txt
+              p
+                | sonichuang [
+                a(href='#') 退出
+                | ]
+              p 重构角色
+      div.content
+        block content
+
+    .footer
+      p.copyright
+        | Copyright © 1998-2013 TENCENT.ALL RIGHT RESERVED.
+        span
+          | Power by:
+          a(href='#') Tgideas.qq.com
+          | {架构二组}
+
+    script(src="/js/jquery/jquery-1.7.2.min.js")
+    script(src="/js/comm.js")
+    block pageScript

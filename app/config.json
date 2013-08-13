@@ -1,0 +1,9 @@
+{
+  "db":{
+    "host": "localhost",
+    "dbname": "weekly_dev",
+    "port": 27017,
+    "user": "",
+    "pwd": ""
+  }
+}
