@@ -30,11 +30,11 @@ block content
           tbody
             for weekly in docs
               tr
-                td #{i++}
+                td= weekly._id
                 td: a(href="/task/#{weekly.id}") #{weekly.title}
-                td.tcenter= weekly.status
-                td.tcenter= weekly.progress
-                td.tcenter= weekly.online_date
+                td.tcenter= weekly.status ? weekly.status : 'N/A'
+                td.tcenter= weekly.progress ? weekly.progress : 'N/A'
+                td.tcenter= weekly.online_date.toISOString()
                 td= weekly.pp
       else
         //- .empty-data -->

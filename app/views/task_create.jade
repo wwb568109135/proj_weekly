@@ -33,30 +33,31 @@ block content
           tbody
             tr
               td
-                select#taskTitle-1(name='[task]type')
+                select#taskTitle-1(name='task[type]')
                   option(value='', selected='selected') 选择项目
                   option(value='TGP') TGP
                   option(value='TGA') TGA
                   option(value='lol') 英雄联盟
                   option(value='speed') QQ飞车
               td
-                input.m-input.inp-txt(type='text',name='[task]title', placeholder='需求标题这里')
+                input.m-input.inp-txt(type='text',name='task[title]', placeholder='需求标题这里')
               td
-                select#priorityLv-2(name='[task]priority')
+                select#priorityLv-2(name='task[priority]')
                   option(value='0', selected='selected') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
+                  option(value='4') P4
               td.tcenter
-                input#isFocus-1(type='checkbox', name='[task]focus')
+                input#isFocus-1(type='checkbox', name='task[focus]')
               td
-                input.m-input.inp-txt(type='text', name='[task]pp', placeholder='rtx英文名，多个请用逗号隔开')
+                input.m-input.inp-txt(type='text', name='task[pp]', placeholder='rtx英文名，多个请用逗号隔开')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='[task]rb_star_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker(type='text', name='task[rb_star_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='[task]rb_star_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker(type='text', name='task[rb_end_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='[task]online_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker(type='text', name='task[online_date]', placeholder='0000-00-00')
         .task-create-status
           a#btnAppendTask.m-btn.btn-append-task(href='javascript:;') (+)增加1行需求
           p.red.tips

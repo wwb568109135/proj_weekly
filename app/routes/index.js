@@ -21,6 +21,8 @@ exports.task_create = function(req, res) {
 
 exports.task_created = function(req, res){
   var task = new Weekly(req.body.task);
+  console.log(task);
+  // res.send(404, function(){console.log(task);});
   task.save(function(err){
     if(!err) {
       // req.session.flash = new Flash("success", "Task Created.");

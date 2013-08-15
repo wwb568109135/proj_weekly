@@ -2,13 +2,7 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var WeeklySchema = new Schema({
-	// title: {type:String, required: true},
-	// pages:{type:Number, defaults: 1},
-	// pdm: String,
-	// finished: {type:Boolean, defaults: false},
-	// endTime: {type:Date}
-
-	author: {type: String, requierd: true},			//需求创建者
+	author: {type: String, requierd: false},		//需求创建者
 	type: {type: String, requierd: true},			//所属项目
 	priority: {type:Number, defaults: 0},			//优先级
 	create_date: {type:Date},						//需求创建时间
@@ -21,9 +15,9 @@ var WeeklySchema = new Schema({
 	rb_star_date: {type:Date},						//重构开始时间
 	rb_end_date: {type:Date},						//重构完成时间
 	pp: {type: String, requierd: true},				//需求负责人员
-	pm: {type: String, requierd: true},				//需求接口人
+	pm: {type: String, requierd: false},			//需求接口人
 	status: {type: Number, defaults: 0},			//需求当前状态
-	progress: {type: String, requierd: false},		//需求总进度
+	progress: {type: String, requierd: false}		//需求总进度
 });
 
 var opened = false;
