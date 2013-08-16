@@ -11,8 +11,11 @@ exports.index = function(req, res){
 
 exports.task = function(req, res){
   Weekly.find({}, function(err, docs){
-    res.render('task', {docs:docs});
+    res.render('task', {docs:docs.sort({_id : -1})});  //结果倒叙排列
+    // res.render('task', {docs:docs});
   });
+  // var docss = Weekly.find().sort({"_id" : -1});
+  // res.render('task', {docs:docss});
 };
 
 exports.task_create = function(req, res) {
@@ -34,8 +37,28 @@ exports.task_created = function(req, res){
       res.redirect('/task/create');
     }
   });
+};
 
-}
+exports.task_del = function(req, res) {
+  var id = req.params.id;
+  var error = false;
+  var msg = '';
+  if(!id) {
+    error = "warning";
+    msg = '必须指定要删除的任务。';
+  } else {
+    Weekly.remove({_id:id},function(err){
+      if (err) {
+        error = "error";
+        res.send(404, err.message);
+      } else {
+        res.redirect('/task');
+      }
+    });
+  }
+  // req.session.flash = new Flash(error, msg);
+};
+
 
 /*
 exports.index = function(req, res){

@@ -1,6 +1,19 @@
 extends layout
 
 block content
+  //- [c-box:产品需求日历]
+  .c-box
+    .c-box-hd.task-calendar
+      .c-box-hd-title
+        h3 本周需求
+        form.search-form(action='')
+          input.inp-txt(type='text', placeholder='需求ID/名称')
+          input.btn-search(type='submit', value='搜索')
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1.btn-new-task(href='/task/create') 新建需求
+    .c-box-bd
+      #calendar
+
   //-[c-box:产品需求列表]
   .c-box
     .c-box-hd.task-list
@@ -30,11 +43,14 @@ block content
           tbody
             for weekly in docs
               tr
-                td= weekly._id
+                td
+                  = weekly._id
+                  a.m-btn(href='/task/del/#{weekly.id}') 删
                 td: a(href="/task/#{weekly.id}") #{weekly.title}
                 td.tcenter= weekly.status ? weekly.status : 'N/A'
                 td.tcenter= weekly.progress ? weekly.progress : 'N/A'
-                td.tcenter= weekly.online_date.toISOString()
+                //- td.tcenter= weekly.online_date.toISOString()
+                td.tcenter= weekly.online_date
                 td= weekly.pp
       else
         //- .empty-data -->

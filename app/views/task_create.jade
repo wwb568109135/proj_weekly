@@ -50,6 +50,8 @@ block content
                   option(value='4') P4
               td.tcenter
                 input#isFocus-1(type='checkbox', name='task[focus]')
+                //- var today = new Date();
+                input(type='hidden', name="task[create_date]", value='#{new Date()} ')
               td
                 input.m-input.inp-txt(type='text', name='task[pp]', placeholder='rtx英文名，多个请用逗号隔开')
               td
