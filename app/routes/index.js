@@ -39,6 +39,21 @@ exports.task_created = function(req, res){
   });
 };
 
+exports.task_detail = function(req, res) {
+  var id = req.params.id;
+  var error = false;
+  var msg = '';
+  if(!id) {
+    error = "warning";
+    msg = '必须指定要删除的任务。';
+  } else {
+      Weekly.findById({}, function(err, docs){
+        res.render('task_detail', {docs:docs});
+      });
+  }
+  // req.session.flash = new Flash(error, msg);
+};
+
 exports.task_del = function(req, res) {
   var id = req.params.id;
   var error = false;

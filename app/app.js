@@ -52,6 +52,7 @@ app.get('/', routes.index);
 app.get('/task', routes.task);
 app.get('/task/create', routes.task_create);
 app.post('/task/created', routes.task_created);
+app.get('/task/:id', routes.task_detail);
 app.get('/task/del/:id', routes.task_del);
 app.get('/users', user.list);
 app.use(function(req, res){
