@@ -11,7 +11,7 @@ exports.index = function(req, res){
 
 exports.task = function(req, res){
   Weekly.find({}, function(err, docs){
-    res.render('task', {docs:docs.sort({_id : -1})});  //结果倒叙排列
+    res.render('task', {docs:docs.sort({create_date : 1})});  //结果倒叙排列
     // res.render('task', {docs:docs});
   });
   // var docss = Weekly.find().sort({"_id" : -1});
@@ -19,7 +19,7 @@ exports.task = function(req, res){
 };
 
 exports.task_create = function(req, res) {
-  res.render('task_create');
+  res.render('task-create');
 };
 
 exports.task_created = function(req, res){
@@ -48,11 +48,58 @@ exports.task_detail = function(req, res) {
     msg = '必须指定要显示的任务ID。';
   } else {
       Weekly.findById(id, function(err, docs){
-        console.log(docs);
         res.render('task-detail', {docs:docs});
       });
   }
-  // req.session.flash = new Flash(error, msg);
+};
+
+exports.task_edit = function(req, res) {
+  var id = req.params.id;
+  var error = false;
+  var msg = '';
+  if(!id) {
+    error = "warning";
+    msg = '必须指定要编辑的任务ID。';
+  } else {
+      Weekly.findById(id, function(err, docs){
+        res.render('task-edit', {docs:docs});
+      });
+  }
+};
+
+exports.task_update = function(req, res) {
+  var id = req.params.id;
+  var task = new Weekly(req.body.task);
+  // var task = req.body.task;
+  console.log(task);
+  Weekly.findByIdAndUpdate(id, 
+    { 
+      $set: { 
+        title : task.title,
+        type : task.type,
+        priority : task.priority,
+        focus : task.focus,
+        content : task.content,
+        pages : task.pages,
+        online_date : task.online_date,
+        rb_star_date : task.rb_star_date,
+        rb_end_date : task.rb_end_date,
+        pp : task.pp,
+        pm : task.pm,
+        status : task.status,
+        progress : task.progress
+      }
+    }, 
+    { upsert : true },
+    function (err) {
+      if (err){
+        res.send(404, err.message);
+      }else {
+        res.redirect('/task/'+id);
+      }
+    }
+  );
+
 };
 
 exports.task_del = function(req, res) {
@@ -65,7 +112,6 @@ exports.task_del = function(req, res) {
   } else {
     Weekly.remove({_id:id},function(err){
       if (err) {
-        error = "error";
         res.send(404, err.message);
       } else {
         res.redirect('/task');

@@ -1,0 +1,123 @@
+extends layout
+
+block content
+  if docs
+    - var weekly = docs
+    //- task-edit
+    .c-box
+      .c-box-hd
+        .c-box-hd-title
+          h3 需求编辑
+        .c-box-hd-extra
+          a.m-btn.btn-skin-1.btn-task-list(href='/task') 返回需求列表
+      .c-box-bd
+        form(method="POST", action='/task/update/'+weekly.id)
+          ul.task-edit-form
+            li
+              .task-edit-part
+                label.lab 需求ID：
+                span= weekly.id
+              .task-edit-part
+                label.lab 创建者：
+                span= weekly.author
+            li
+              .task-edit-part
+                label.lab(for='taskType') 需求类型： 
+                select#taskType(name='task[type]')
+                  option(value='', selected='selected') XX官网
+                  option(value='') XX官网
+                  option(value='') XX官网
+              .task-edit-part
+                label.lab(for='taskPriority') 优先程度： 
+                select#taskType(name='task[priority]')
+                  - if (weekly.priority == 0)
+                     option(value='0', selected='selected') T0
+                  - else
+                    option(value='0',) T0
+                  - if (weekly.priority == 1)
+                     option(value='1', selected='selected') T1
+                  - else
+                    option(value='1',) T1
+                   - if (weekly.priority == 2)
+                     option(value='2', selected='selected') T2
+                  - else
+                    option(value='2',) T2
+                  - if (weekly.priority == 3)
+                     option(value='3', selected='selected') T3
+                  - else
+                    option(value='3',) T3
+            li
+              .task-edit-excerpt
+                label.lab(for='taskTitle') 标题： 
+                input#taskTitle.m-input.inp-txt(name='task[title]', type='text',value=weekly.title)
+            li
+              .task-edit-excerpt
+                label.lab(for='taskFocus') 是否重点需求： 
+                - if (weekly.focus)
+                  input#taskImportantYes(id='taskFocus', name='task[focus]', type='checkbox', checked="checked") 
+                - else
+                  input#taskImportantYes(id='taskFocus', name='task[focus]', type='checkbox') 
+                a(href='#') 什么是重点需求？
+            li
+              .task-edit-excerpt
+                label.lab(for='taskDescription') 需求描述： 
+                textarea#taskDescription.m-input.inp-textarea(name='task[content]', cols='80', rows='10')= weekly.content
+            li
+              .task-edit-excerpt
+                label.lab(for='taskAttachment') 附件： 
+                ul.task-attachment-form
+                  li
+                    input.inp-file(type='file')
+                    label.inline 附件说明：
+                    input.m-input.inp-txt(type='text')
+                    a(href='#') 删除
+                  li
+                    input.inp-file(type='file')
+                    label.inline 附件说明：
+                    input.m-input.inp-txt(type='text')
+                    a(href='#') 删除
+                  li.add
+                    a(href='#') 添加
+            li
+              .task-edit-part
+                label.lab(for='hopeOnlineDate') 期望上线时间：
+                input#hopeOnlineDate.m-input.inp-txt(name='task[online_date]', type='text', value=weekly.online_date)
+              .task-edit-part
+                label.lab(for='pageQuantity') 页面数：
+                input#pageQuantity.m-input.inp-txt(name='task[pages]', type='number', value=weekly.pages)
+            li
+              .task-edit-part
+                label.lab(for='rbStarDate') 重构开始时间：
+                input#rbStarDate.m-input.inp-txt(name='task[rb_star_date]', type='text', value=weekly.rb_star_date)
+              .task-edit-part
+                label.lab(for='rbFinishDate') 重构完成时间：
+                input#rbFinishDate.m-input.inp-txt(name='task[rb_end_date]', type='text', value=weekly.rb_end_date)
+            li
+              .task-edit-part
+                label.lab(for='taskPartner') 网站负责人：
+                input#taskPartner.m-input.inp-txt(name='task[pp]', type='text', value=weekly.pp)
+              .task-edit-part
+                label.lab(for='taskCreator') 需求接口人：
+                input#taskCreator.m-input.inp-txt(name='task[pm]', type='text', value=weekly.pm)
+            li
+              .task-edit-part
+                label.lab(for='taskProgress') 当前进度：
+                input#taskProgress.m-input.inp-txt(name='task[progress]', type='number', value=weekly.progress)
+            li
+              .task-edit-excerpt
+                label.lab(for='rbStarDate') 当前状态：
+                label.inline(for='taskStatus-1')
+                  input#taskStatus-1(name='taskStatus', type='radio', checked='checked')
+                  | 排期中
+                label.inline(for='taskStatus-1')
+                  input#taskStatus-1(name='taskStatus', type='radio')
+                  | 重构中
+                label.inline(for='taskStatus-1')
+                  input#taskStatus-1(name='taskStatus', type='radio')
+                  | 联调中
+                label.inline(for='taskStatus-1')
+                  input#taskStatus-1(name='taskStatus', type='radio')
+                  | 已上线
+                input(type='hidden', name='task[status]', value=weekly.status)
+            li.btn
+              input.m-btn.btn-skin-1(type='submit', value='确认修改')

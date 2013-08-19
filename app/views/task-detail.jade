@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  console.log(docs)
   if docs
     - var weekly = docs
     //- task-detail
@@ -11,18 +10,16 @@ block content
         h2= weekly.title
         ul.task-meta-btn
           li
-            a.m-btn.btn-skin-1(href='#') 返回需求列表
+            a.m-btn.btn-skin-1(href='/task') 返回需求列表
           li
-            a.m-btn.btn-skin-1(href='#') 编辑需求
+            a.m-btn.btn-skin-1(href='/task/edit/'+weekly.id) 编辑需求
           li
-            a.m-btn.btn-skin-1(href='#') 删除需求
+            a.m-btn.btn-skin-1(href='task/del/'+weekly.id) 删除需求
       .c-box-bd
         //- task-detail-main
         .task-detail-main
           .task-detail-content
-            p 需求文字说明这里
-            p 需求文字说明这里
-            p 需求文字说明这里
+            div= weekly.content
           .task-detail-extra
             .task-detail-attachment
               h4
@@ -39,7 +36,6 @@ block content
           .task-detail-side-hd
             h3 需求基本信息：
           .task-detail-side-bd
-            p= weekly.status
             ul.task-current-static
               - if (weekly.status =="0")
                 li.current 排期中
@@ -70,10 +66,13 @@ block content
                 em= weekly.author
               li
                 label 创建时间：
-                cite= weekly.create_date
+                cite= weekly.create_date ? weekly.create_date.toISOString() : N/A
               li
                 label 需求类型：
                 em= weekly.type
+              li
+                label 优先级别：
+                em #{'T'+ weekly.priority}
               li
                 label 网站负责人：
                 em= weekly.pp
@@ -85,13 +84,13 @@ block content
                 em= weekly.focus
               li
                 label 期望上线时间：
-                cite= weekly.online_date
+                cite= weekly.online_date.toISOString()
               li
                 label 重构开始时间：
-                cite= weekly.rb_star_date
+                cite= weekly.rb_star_date.toISOString()
               li
                 label 重构结束时间：
-                cite= weekly.rb_end_date
+                cite= weekly.rb_end_date.toISOString()
               li
                 label 页面数：
                 em= weekly.pages
