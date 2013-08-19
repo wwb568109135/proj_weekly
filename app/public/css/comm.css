@@ -374,7 +374,7 @@ body > .contnet{height: auto; min-height: 100%;}
 		.task-current-static .current{color: #ff6600;font-weight: bold;font-size:14px;}
 		.task-current-static .current:before{background-color: #ff6600;width:12px;height: 12px;margin-left:-6px;top:-1px;}
 		.task-base-information{}
-		.task-base-information li{position: relative;margin: 0 0 1em;padding-left:92px;}
+		.task-base-information li{position: relative;min-height:1.5em;_height:1.5em;margin: 0 0 1em;padding-left:92px;}
 		.task-base-information li label{position: absolute;left:0;top:0;width: 86px;text-align: right;}
 
 	/*- .task-detail-operate -*/

@@ -45,10 +45,11 @@ exports.task_detail = function(req, res) {
   var msg = '';
   if(!id) {
     error = "warning";
-    msg = '必须指定要删除的任务。';
+    msg = '必须指定要显示的任务ID。';
   } else {
-      Weekly.findById({}, function(err, docs){
-        res.render('task_detail', {docs:docs});
+      Weekly.findById(id, function(err, docs){
+        console.log(docs);
+        res.render('task-detail', {docs:docs});
       });
   }
   // req.session.flash = new Flash(error, msg);

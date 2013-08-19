@@ -1,0 +1,123 @@
+extends layout
+
+block content
+  console.log(docs)
+  if docs
+    - var weekly = docs
+    //- task-detail
+    .c-box.task-detail
+      //- task-detail-title
+      .c-box-hd.task-detail-title
+        h2= weekly.title
+        ul.task-meta-btn
+          li
+            a.m-btn.btn-skin-1(href='#') 返回需求列表
+          li
+            a.m-btn.btn-skin-1(href='#') 编辑需求
+          li
+            a.m-btn.btn-skin-1(href='#') 删除需求
+      .c-box-bd
+        //- task-detail-main
+        .task-detail-main
+          .task-detail-content
+            p 需求文字说明这里
+            p 需求文字说明这里
+            p 需求文字说明这里
+          .task-detail-extra
+            .task-detail-attachment
+              h4
+                | 附件（
+                em 1
+                | ）
+              ul.tda-list
+                li
+                  p
+                    a(href='#') proA.rar
+                  cite 2013-08-01
+        //- task-detail-side
+        .task-detail-side
+          .task-detail-side-hd
+            h3 需求基本信息：
+          .task-detail-side-bd
+            p= weekly.status
+            ul.task-current-static
+              - if (weekly.status =="0")
+                li.current 排期中
+              - else
+                li 排期中
+              
+              - if (weekly.status =="1")
+                li.current 重构中
+              - else
+                li 重构中
+
+              - if (weekly.status =="2")
+                li.current 联调中
+              - else
+                li 联调中
+              
+              - if (weekly.status =="3")
+                li.current 已上线
+              - else
+                li 已上线
+              //- li 排期中
+              //- li.current 重构中
+              //- li 联调中
+              //- li 已上线
+            ul.task-base-information
+              li
+                label 创建人：
+                em= weekly.author
+              li
+                label 创建时间：
+                cite= weekly.create_date
+              li
+                label 需求类型：
+                em= weekly.type
+              li
+                label 网站负责人：
+                em= weekly.pp
+              li
+                label 需求接口人：
+                em= weekly.pm
+              li
+                label 是否重点：
+                em= weekly.focus
+              li
+                label 期望上线时间：
+                cite= weekly.online_date
+              li
+                label 重构开始时间：
+                cite= weekly.rb_star_date
+              li
+                label 重构结束时间：
+                cite= weekly.rb_end_date
+              li
+                label 页面数：
+                em= weekly.pages
+        //- task-detail-operate
+        .task-detail-operate
+          fieldset
+            form(action='')
+              ul.tdo-list
+                li
+                  span.tdo-static-title 当前状态：
+                  .tdo-static-group
+                    label(for='tdoStatic-1')
+                      input#tdoStatic-1(type='radio', name='tdoStatic')
+                      | 排期中
+                    label(for='tdoStatic-2')
+                      input#tdoStatic-2(type='radio', name='tdoStatic')
+                      | 重构中
+                    label(for='tdoStatic-3')
+                      input#tdoStatic-3(type='radio', name='tdoStatic')
+                      | 联调中
+                    label(for='tdoStatic-4')
+                      input#tdoStatic-4(type='radio', name='tdoStatic')
+                      | 已上线
+                li
+                  textarea.m-input.inp-textarea(name='', cols='40', rows='6')
+                  li.btn
+                    input.m-btn.btn-skin-1(type='submit', value='确认修改')
+  else
+    p error,没有获取到数据
