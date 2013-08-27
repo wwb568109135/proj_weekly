@@ -51,7 +51,7 @@ block content
               td.tcenter
                 input#isFocus-1(type='checkbox', name='task[focus]')
                 //- var today = new Date();
-                input(type='hidden', name="task[create_date]", value='#{new Date()} ')
+                input(type='hidden', name="task[create_date]", value='#{Date()} ')
                 input(type='hidden', name="task[status]", value='0')
                 input(type='hidden', name="task[progress]", value='0')
               td

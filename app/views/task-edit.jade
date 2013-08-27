@@ -106,18 +106,40 @@ block content
             li
               .task-edit-excerpt
                 label.lab(for='rbStarDate') 当前状态：
-                label.inline(for='taskStatus-1')
-                  input#taskStatus-1(name='taskStatus', type='radio', checked='checked')
+                label.inline(for='taskStatus-0')
+                  input#taskStatus-0(name='taskStatus', type='radio', checked='checked')
                   | 排期中
                 label.inline(for='taskStatus-1')
                   input#taskStatus-1(name='taskStatus', type='radio')
                   | 重构中
-                label.inline(for='taskStatus-1')
-                  input#taskStatus-1(name='taskStatus', type='radio')
+                label.inline(for='taskStatus-2')
+                  input#taskStatus-2(name='taskStatus', type='radio')
                   | 联调中
-                label.inline(for='taskStatus-1')
-                  input#taskStatus-1(name='taskStatus', type='radio')
+                label.inline(for='taskStatus-3')
+                  input#taskStatus-3(name='taskStatus', type='radio')
                   | 已上线
-                input(type='hidden', name='task[status]', value=weekly.status)
+                input(id='taskStatus', type='hidden', name='task[status]', value='#{weekly.status}')
             li.btn
               input.m-btn.btn-skin-1(type='submit', value='确认修改')
+
+
+block pageScript
+  script.
+    (function(){
+      function onDomReady(){
+        //- alert("hello");
+        //- console.log(weekly.status)
+        var $taskStatus = $("#taskStatus")
+            $inputStatus = $('input[name="taskStatus"]')
+            statusVal = $("#taskStatus").val(),
+            statusRadioID = "#taskStatus-"+ statusVal;
+        $(statusRadioID).attr("checked","checked");
+
+        $inputStatus.click(function(){
+            var index = $inputStatus.index($(this))
+            console.log(index);
+            $taskStatus.val(index)
+        })
+      }
+      $(onDomReady);
+    })()

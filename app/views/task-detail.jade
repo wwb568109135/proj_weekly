@@ -66,7 +66,7 @@ block content
                 em= weekly.author
               li
                 label 创建时间：
-                cite= weekly.create_date ? weekly.create_date.toISOString() : N/A
+                cite= weekly.create_date ? weekly.create_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) + weekly.create_date.toLocaleTimeString() : N/A
               li
                 label 需求类型：
                 em= weekly.type
@@ -84,13 +84,13 @@ block content
                 em= weekly.focus
               li
                 label 期望上线时间：
-                cite= weekly.online_date.toISOString()
+                cite= weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11)
               li
                 label 重构开始时间：
-                cite= weekly.rb_star_date.toISOString()
+                cite= weekly.rb_star_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11)
               li
                 label 重构结束时间：
-                cite= weekly.rb_end_date.toISOString()
+                cite= weekly.rb_end_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11)
               li
                 label 页面数：
                 em= weekly.pages
@@ -102,21 +102,43 @@ block content
                 li
                   span.tdo-static-title 当前状态：
                   .tdo-static-group
-                    label(for='tdoStatic-1')
-                      input#tdoStatic-1(type='radio', name='tdoStatic')
-                      | 排期中
-                    label(for='tdoStatic-2')
-                      input#tdoStatic-2(type='radio', name='tdoStatic')
+                    label(for='taskStatus-0')
+                      input#taskStatus-0(type='radio', name='taskStatus')
+                      | 拍期中
+                    label(for='taskStatus-1')
+                      input#taskStatus-1(type='radio', name='taskStatus')
                       | 重构中
-                    label(for='tdoStatic-3')
-                      input#tdoStatic-3(type='radio', name='tdoStatic')
+                    label(for='taskStatus-2')
+                      input#taskStatus-2(type='radio', name='taskStatus')
                       | 联调中
-                    label(for='tdoStatic-4')
-                      input#tdoStatic-4(type='radio', name='tdoStatic')
+                    label(for='taskStatus-3')
+                      input#taskStatus-3(type='radio', name='taskStatus')
                       | 已上线
+                    input(id='taskStatus', name='task[status]', type='hidden', value='#{weekly.status}')
                 li
                   textarea.m-input.inp-textarea(name='', cols='40', rows='6')
-                  li.btn
+                li.btn
                     input.m-btn.btn-skin-1(type='submit', value='确认修改')
   else
     p error,没有获取到数据
+
+block pageScript
+  script.
+    (function(){
+      function onDomReady(){
+        //- alert("hello");
+        //- console.log(weekly.status)
+        var $taskStatus = $("#taskStatus")
+            $inputStatus = $('input[name="taskStatus"]')
+            statusVal = $("#taskStatus").val(),
+            statusRadioID = "#taskStatus-"+ statusVal;
+        $(statusRadioID).attr("checked","checked");
+
+        $inputStatus.click(function(){
+            var index = $inputStatus.index($(this))
+            console.log(index);
+            $taskStatus.val(index)
+        })
+      }
+      $(onDomReady);
+    })()
