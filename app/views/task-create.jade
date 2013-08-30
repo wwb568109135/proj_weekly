@@ -62,6 +62,39 @@ block content
                 input.m-input.inp-txt.date-picker(type='text', name='task[rb_end_date]', placeholder='0000-00-00')
               td
                 input.m-input.inp-txt.date-picker(type='text', name='task[online_date]', placeholder='0000-00-00')
+            tr#insertTr.hidden
+              td
+                select#taskTitle-nnn(name='task[type]')
+                  option(value='', selected='selected') 选择项目
+                  option(value='TGP') TGP
+                  option(value='TGA') TGA
+                  option(value='lol') 英雄联盟
+                  option(value='speed') QQ飞车
+              td
+                input.m-input.inp-txt(type='text',name='task[title]', placeholder='需求标题这里')
+              td
+                select#priorityLv-nnn(name='task[priority]')
+                  option(value='0', selected='selected') P0
+                  option(value='1') P1
+                  option(value='2') P2
+                  option(value='3') P3
+                  option(value='4') P4
+              td.tcenter
+                input#isFocus-nnn(type='checkbox', name='task[focus]')
+                //- var today = new Date();
+                input(type='hidden', name="task[create_date]", value='#{Date()} ')
+                input(type='hidden', name="task[status]", value='0')
+                input(type='hidden', name="task[progress]", value='0')
+              td
+                input.m-input.inp-txt(type='text', name='task[pp]', placeholder='rtx英文名，多个请用逗号隔开')
+              td
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task[rb_star_date]', placeholder='0000-00-00')
+              td
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task[rb_end_date]', placeholder='0000-00-00')
+              td
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task[online_date]', placeholder='0000-00-00')
+       
+
         .task-create-status
           a#btnAppendTask.m-btn.btn-append-task(href='javascript:;') (+)增加1行需求
           p.red.tips
@@ -72,3 +105,29 @@ block content
           input.m-btn.btn-skin-1.btn-submit(type='submit', value='确认发布')
           a.m-btn.btn-skin-2(href='#') 导入需求
           a(href='#') （下载excal模板）
+
+block pageScript
+  script.
+    (function(){
+      function onDomReady(){
+        //- datePicker init
+        $('<link rel="stylesheet" href="/css/jquery-ui.min.css">').appendTo($('head'));
+        $.getScript('/js/jquery/jquery-ui.min.js', function(){
+          $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
+        });
+
+        //- add one line form
+        $("#btnAppendTask").click(function(){
+          var $taskCreateTable = $("#taskCreateTable");
+          //- var appendHtml = $("#taskCreateTable tbody tr:last-child(callback)").html(),
+          var appendHtml = $("#insertTr").html(),
+              appendHtmlModi = appendHtml.replace(/date-picker-insert/g ,"date-picker-in" ),
+              appendHtmlPro = "<tr>"+ appendHtmlModi +"</tr>";
+          $("#taskCreateTable tbody").append(appendHtmlPro);
+          console.log("inset one line");
+          $('.date-picker-in').datepicker({ dateFormat: "yy-mm-dd" });
+        })
+
+      }
+      $(onDomReady);
+    })()

@@ -20,12 +20,13 @@ $(document).ready(function(){
 	/* btn-append-task
 	----------------------------------*/
 	if($("#btnAppendTask")){
+		/*
 		$("#btnAppendTask").click(function(){
 			var $taskCreateTable = $("#taskCreateTable");
 			var appendHtml = $("#taskCreateTable tbody tr:last-child(callback)").html(),
 				appendHtmlPro = "<tr>"+ appendHtml +"</tr>";
 			$("#taskCreateTable tbody").append(appendHtmlPro);
-		})
+		})*/
 
 
 	}
