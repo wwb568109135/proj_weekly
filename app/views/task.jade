@@ -50,7 +50,7 @@ block content
                 td.tcenter= weekly.status ? weekly.status : 'N/A'
                 td.tcenter= weekly.progress ? weekly.progress : 'N/A'
                 //- td.tcenter= weekly.online_date.toISOString()
-                td.tcenter= weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11)
+                td.tcenter= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
                 td= weekly.pp
       else
         //- .empty-data -->

@@ -8,13 +8,16 @@
 $(document).ready(function(){
 	/* table tr hover
 	----------------------------------*/
-	if($(".m-table-data")){
+	if($("table.m-table-data")){
+		/*
 		$(".m-table-data tr").hover(function(){
 			$(this).addClass("table-hover");
 		},function(){
 			$(this).removeClass("table-hover");
-		})
-
+		})*/
+		$( "table.m-table-data" ).delegate( "tr", "hover", function() {
+		  $( this ).toggleClass( "table-hover" );
+		});
 	}
 
 	/* btn-append-task

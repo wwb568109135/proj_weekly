@@ -23,20 +23,37 @@ exports.task_create = function(req, res) {
 };
 
 exports.task_created = function(req, res){
-  var task = new Weekly(req.body.task);
-  console.log(task);
-  // res.send(404, function(){console.log(task);});
-  task.save(function(err){
+  var outputJSON = req.body.outputTemp,
+      // eval()解析JSON格式字符串
+      outputJSON = eval("("+outputJSON+")");
+
+  console.log(typeof(outputJSON));
+  console.log(outputJSON);
+  
+  // create方法接受 object array, 可存1条或多条记录
+  Weekly.create(outputJSON, function (err) {
     if(!err) {
-      // req.session.flash = new Flash("success", "Task Created.");
       res.redirect('/task');
     } else {
-      // alert("写入失败! 原因："+err.message);
-      // req.session.flash = new Flash("error",err.message);
       res.send(404, '写入失败');
       res.redirect('/task/create');
     }
   });
+
+  /*
+  var task = new Weekly(req.body.task);
+  console.log(task);
+  // res.send(404, function(){console.log(task);});
+  
+  task.save(function(err){
+    if(!err) {
+      res.redirect('/task');
+    } else {
+      // req.session.flash = new Flash("error",err.message);
+      res.send(404, '写入失败');
+      res.redirect('/task/create');
+    }
+  });*/
 };
 
 exports.task_detail = function(req, res) {

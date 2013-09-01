@@ -10,6 +10,7 @@ block content
         a.m-btn.btn-skin-1(href='#') 返回需求列表
     .c-box-bd
       form#taskCreateForm(method="POST",action="/task/created")
+        input(type='hidden',id='recordNum', name="recordNum", value='1')
         table#taskCreateTable.m-table-data.task-create-table
           colgroup
             col.c1
@@ -31,71 +32,70 @@ block content
               th 期望重构完成时间
               th 上线时间
           tbody
-            tr.data-line
+            tr
               td
-                select#taskTitle-1(name='type')
+                select#taskTitle-1(name='task[type]')
                   option(value='', selected='selected') 选择项目
                   option(value='TGP') TGP
                   option(value='TGA') TGA
                   option(value='lol') 英雄联盟
                   option(value='speed') QQ飞车
               td
-                input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
+                input.m-input.inp-txt(type='text',name='task[title]', placeholder='需求标题这里')
               td
-                select#priorityLv-2(name='priority')
+                select#priorityLv-2(name='task[priority]')
                   option(value='0', selected='selected') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
                   option(value='4') P4
               td.tcenter
-                input(type='checkbox',name='focus',value='false')
-                //- input(type='hidden', name="focus", value='false')
+                input#isFocus-1(type='checkbox', name='task[focus]')
                 //- var today = new Date();
-                input(type='hidden', name="create_date", value='#{Date()} ')
-                input(type='hidden', name="status", value='0')
-                input(type='hidden', name="progress", value='0')
+                input(type='hidden', name="task[create_date]", value='#{Date()} ')
+                input(type='hidden', name="task[status]", value='0')
+                input(type='hidden', name="task[progress]", value='0')
               td
-                input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
+                input.m-input.inp-txt(type='text', name='task[pp]', placeholder='rtx英文名，多个请用逗号隔开')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker(type='text', name='task[rb_star_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker(type='text', name='task[rb_end_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='online_date', placeholder='0000-00-00')
-            //- 插入多一行数据的tr模板
+                input.m-input.inp-txt.date-picker(type='text', name='task[online_date]', placeholder='0000-00-00')
             tr#insertTr.hidden
               td
-                select#taskTitle-nnn(name='type')
+                select#taskTitle-nnn(name='task--[type]')
                   option(value='', selected='selected') 选择项目
                   option(value='TGP') TGP
                   option(value='TGA') TGA
                   option(value='lol') 英雄联盟
                   option(value='speed') QQ飞车
               td
-                input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
+                input.m-input.inp-txt(type='text',name='task--[title]', placeholder='需求标题这里')
               td
-                select#priorityLv-nnn(name='priority')
+                select#priorityLv-nnn(name='task--[priority]')
                   option(value='0', selected='selected') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
                   option(value='4') P4
               td.tcenter
-                input(type='checkbox', name='focus',value='false')
+                input#isFocus-nnn(type='checkbox', name='task--[focus]')
                 //- var today = new Date();
-                input(type='hidden', name="create_date", value='#{Date()} ')
-                input(type='hidden', name="status", value='0')
-                input(type='hidden', name="progress", value='0')
+                input(type='hidden', name="task--[create_date]", value='#{Date()} ')
+                input(type='hidden', name="task--[status]", value='0')
+                input(type='hidden', name="task--[progress]", value='0')
               td
-                input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
+                input.m-input.inp-txt(type='text', name='task--[pp]', placeholder='rtx英文名，多个请用逗号隔开')
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task--[rb_star_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task--[rb_end_date]', placeholder='0000-00-00')
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', placeholder='0000-00-00')
+                input.m-input.inp-txt.date-picker-insert(type='text', name='task--[online_date]', placeholder='0000-00-00')
        
+
         .task-create-status
           a#btnAppendTask.m-btn.btn-append-task(href='javascript:;') (+)增加1行需求
           p.red.tips
@@ -119,63 +119,41 @@ block pageScript
           $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
         });
 
-        //- Setting the value of checkbox to true or false
-        $( "#taskCreateForm" ).delegate( "input[name='focus']", "change", function() {
-          if($(this).attr('checked')){
-                  $(this).val('true');
-             }else{
-                  $(this).val('false');
-             }
-        });
-
-        //- add one line form ------------------------
+        //- add one line form
         $("#btnAppendTask").click(function(){
           var $taskCreateTable = $("#taskCreateTable");
           //- var appendHtml = $("#taskCreateTable tbody tr:last-child(callback)").html(),
           var appendHtml = $("#insertTr").html(),
               appendHtmlModi = appendHtml.replace(/task--/g ,"task" ),
               appendHtmlModi = appendHtmlModi.replace(/date-picker-insert/g ,"date-picker-in" ),
-              appendHtmlPro = "<tr class='data-line'>"+ appendHtmlModi +"</tr>";
+              appendHtmlPro = "<tr>"+ appendHtmlModi +"</tr>";
           $("#taskCreateTable tbody").append(appendHtmlPro);
           //- console.log("inset one line");
           $('.date-picker-in').datepicker({ dateFormat: "yy-mm-dd" });
 
           //- 插入条数记数
-          //- var $recordNum = $('#recordNum');
-          //- $recordNum.val(parseInt($recordNum.val())+1)
-          //- console.log($recordNum.val());
+          var $recordNum = $('#recordNum');
+          $recordNum.val(parseInt($recordNum.val())+1)
+          console.log($recordNum.val());
         })
 
-        //- Submit func ------------------------
+        //- Submit func
         $("#taskCreateForm").on('submit',function(e){
-          //- 提交前删除 tr模板代码;
-          $("#insertTr").remove();
+          var data = $(this).serializeArray();
+          //- var data2 = JSON.stringify(data);
+          
+          var data2 = {};
+          $.each(data,function(i, v) {
+              data2[v.name] = v.value;
+          });
+          var data2 = JSON.stringify(data2);
+          //- return data2;
 
-          //- 表单数据处理成 [{},{},{}……] 的格式
-          $(this).find(':checkbox:not(:checked)').attr('value', false);
-          var data = $(this).serializeArray(),
-              data2 = [],
-              trNum = $(this).find("tr.data-line").length,
-              //- 重要，慎改！设定1行tr有多少个表单值；
-              objectNum = 11;
-          for(var j = 1 ; j<=trNum; j++ ){
-            var dd = {},
-                star = (j-1)*objectNum;
-            for( var i = star; i<j*objectNum; i++ ){
-              dd[data[i].name] = data[i].value;
-            }
-            data2.push(dd);
-          }
-          //- console.dir(data)
-          console.dir(data2);
-
-          //- 数据json化(使用jquery.json插件)
-          data2 = $.toJSON( data2 )
-
-          //- 数据存入textarea里
-          $("#outputTemp").val(data2);
+          console.log(data2);
+          $("#outputTemp").val(data2)
           return false;
         });
+
       }
       $(onDomReady);
     })()
