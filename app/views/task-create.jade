@@ -49,7 +49,8 @@ block content
                   option(value='3') P3
                   option(value='4') P4
               td.tcenter
-                input(type='checkbox',name='focus',value='false')
+                //- input(type='checkbox',name='focus',value='false')
+                <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
                 //- input(type='hidden', name="focus", value='false')
                 //- var today = new Date();
                 input(type='hidden', name="create_date", value='#{Date()} ')
@@ -82,7 +83,7 @@ block content
                   option(value='3') P3
                   option(value='4') P4
               td.tcenter
-                input(type='checkbox', name='focus',value='false')
+                <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
                 //- var today = new Date();
                 input(type='hidden', name="create_date", value='#{Date()} ')
                 input(type='hidden', name="status", value='0')
@@ -152,7 +153,6 @@ block pageScript
           $("#insertTr").remove();
 
           //- 表单数据处理成 [{},{},{}……] 的格式
-          $(this).find(':checkbox:not(:checked)').attr('value', false);
           var data = $(this).serializeArray(),
               data2 = [],
               trNum = $(this).find("tr.data-line").length,
@@ -174,7 +174,7 @@ block pageScript
 
           //- 数据存入textarea里
           $("#outputTemp").val(data2);
-          return false;
+          return true;
         });
       }
       $(onDomReady);

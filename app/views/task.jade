@@ -43,18 +43,42 @@ block content
           tbody
             for weekly in docs
               tr
-                td
+                td.readonly
                   = weekly._id
                   a.m-btn(href='/task/del/#{weekly.id}') 删
-                td: a(href="/task/#{weekly.id}") #{weekly.title}
-                td.tcenter= weekly.status ? weekly.status : 'N/A'
-                td.tcenter= weekly.progress ? weekly.progress : 'N/A'
+                td: a(href="/task/#{weekly.id}",class="editable") #{weekly.title}
+                td.tcenter
+                  span.editable= weekly.status ? weekly.status : 'N/A'
+                td.tcenter
+                  span.editable= weekly.progress ? weekly.progress : 'N/A'
                 //- td.tcenter= weekly.online_date.toISOString()
-                td.tcenter= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
-                td= weekly.pp
+                td.tcenter
+                  span.editable= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
+                td
+                  span.editable= weekly.pp
       else
         //- .empty-data -->
         .empty-data
           p 您目前还未发起需求，可先 
             a(href='/task/create') 新建需求
 
+block pageScript
+  script.
+    (function(){
+      function onDomReady(){
+        //- Click to Edit ------------------------
+        $("table.prd-task-table td").not("td.readonly").on("dblclick",function(){
+          //- alert("hello");
+          var _self = $(this)
+          var editShow = _self.find(".editable"),
+              editShowHtml = editShow.html(),
+              editInput = '<input type="txt" class="m-input editinput" value="'+ editShowHtml +'" />';
+          editShow.hide();
+          _self.append(editInput);
+
+
+        })
+
+      }
+      $(onDomReady);
+    })()
