@@ -85,6 +85,12 @@ block pageScript
     (function(){
       //- 具体更新操作
       function checkAndUpdate(){
+        var tds = $("table.prd-task-table td.td-editing");
+        
+        console.log(tds.length);
+        if (tds.length>0){
+          //- tds.trigger('dblclick');
+        }
 
 
       }
@@ -112,33 +118,38 @@ block pageScript
 
       //- 取回暂存的.editinput的值，因为有可能是select,要做下数值处理
       function callEditInputVal(o){
-
+        if (!o) { return false }
+        if(o.attr("name") == "currentStatus"){
+          //- 需求状态的Select框时，设定数组，取回相对应的值；
+          var statusText = ["排期中", "重构中", "联调中", "已上线"],
+              returnVal = statusText[o.val()];
+        }else{
+          //- 正常input时，直接取回value值
+          var returnVal = o.val();
+        }
+        return returnVal;
       }
 
       //- 初始化
       function initDomReady(){
-
-
         //- Click to Edit ------------------------
         $("table.prd-task-table td").not("td.readonly").on("dblclick",function(){
           //- alert("hello");
           var _self = $(this),
               editShow = _self.find(".editable"),
               editInput = _self.find(".editinput");
-          if(_self.hasClass('td-editing')){
-            //- 打开编辑时
-            editShow.html(editInput.val()).show();
-            //输出修改
-            //- console.log(editShow.html());
+          
+          checkAndUpdate(); //- 检测是否存在其它编辑中的表单项
 
+          if(_self.hasClass('td-editing')){ //- 打开编辑时
+            var returnHtml = callEditInputVal(editInput);
+            editShow.html(returnHtml).show();
             editInput.remove();
             _self.removeClass("td-editing");
-          }else{
-            //- 未编辑时 
+          }else{                            //- 未编辑时
             var editShowHtml = editShow.html();
                 //- editInputHtml = '<input type="txt" class="m-input editinput" value="'+ editShowHtml +'" />';
             var editInputHtml = callEditInputHtml(editShow,editShowHtml);
-
             editShow.hide();
             _self.append(editInputHtml);
             _self.find(".editinput").focus();
