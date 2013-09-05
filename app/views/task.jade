@@ -79,19 +79,19 @@ block content
         .empty-data
           p 您目前还未发起需求，可先 
             a(href='/task/create') 新建需求
+      include include/paginate
+      
 
 block pageScript
   script.
     (function(){
-      //- 具体更新操作
+      //- 具体更新操作(未完成)
       function checkAndUpdate(){
         var tds = $("table.prd-task-table td.td-editing");
-        
-        console.log(tds.length);
+        //- console.log(tds.length);
         if (tds.length>0){
           //- tds.trigger('dblclick');
         }
-
 
       }
 
@@ -99,7 +99,7 @@ block pageScript
       function callEditInputHtml(o,s){
         var cbVal = s || "";
         if(o.attr("data-name") == "status-ui" ){
-          //- 设置需求状态时反馈回的HTML
+        //- 设置需求状态时反馈回的HTML
           var cbHtml = '';
               cbHtml += '<select class="editinput" name="currentStatus">';
               //- cbHtml += '<option value="' + cbVal +'">' + cbVal +'</option>';

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
+
 var WeeklySchema = new Schema({
 	author: {type: String, requierd: false},		//需求创建者
 	type: {type: String, requierd: true},			//所属项目
@@ -31,7 +32,6 @@ mongoose.connection.on('error', function(err) {
 });
 
 exports.Weekly = mongoose.model('Weekly', WeeklySchema);
-
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {
 		options = {
@@ -53,3 +53,38 @@ exports.close = function() {
 exports.isOpen = function() {
 	return opened;
 };
+
+
+
+/**
+ * @method paginate
+ * @param {Object} query Mongoose Query Object
+ * @param {Number} pageNumber 
+ * @param {Number} resultsPerPage
+ * Extend Mongoose Models to paginate queries
+ * https://github.com/edwardhotchkiss/mongoose-paginate
+ **/
+mongoose.Model.paginate = function(q, pageNumber, resultsPerPage, callback) { 
+  var model = this;
+  callback = callback || function(){};
+  var skipFrom = (pageNumber * resultsPerPage) - resultsPerPage;
+  var query = model.find(q).skip(skipFrom).limit(resultsPerPage);
+  query.exec(function(error, results) {
+    if (error) {
+      callback(error, null, null);
+    } else {
+      model.count(q, function(error, count) {
+        if (error) {
+          callback(error, null, null);
+        } else {
+          var pageCount = Math.ceil(count / resultsPerPage);
+          if (pageCount == 0) {
+            pageCount = 1;
+          };
+          callback(null, pageCount, results);
+        };
+      });
+    };
+  });
+};
+exports.paginate = mongoose.model.paginate;

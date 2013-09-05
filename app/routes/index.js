@@ -4,18 +4,46 @@
 
 "use strict";
 var Weekly = require('../lib/weekly').Weekly;
+/**
+ * basic example usage of `mongoose-pagination`
+ * querying for `all` {} items in `MyModel`
+ * paginating by second page, 10 items per page (10 results, page 2)
+ **/
+/*
+MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('Pages:', pageCount);
+    console.log(paginatedResults);
+  }
+}
+*/
 
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
 exports.task = function(req, res){
-  Weekly.find({}, function(err, docs){
-    res.render('task', {docs:docs.sort({create_date : 1})});  //结果倒叙排列
-    // res.render('task', {docs:docs});
+  var pageShowNum = 5,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1;
+      // console.log(pageCur);
+
+  Weekly.paginate({}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+    if (error) {
+      console.error(error);
+    } else {
+      // console.log('Pages:', pageCount);
+      // console.log(paginatedResults);
+      res.render('task', {docs:paginatedResults.sort({'create_date' : -1}), pages:pageCount, pageCur:pageCur});
+    }
   });
+  
+  /*
+  Weekly.find({}).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+    res.render('task', {docs:docs}); 
+  });*/
   // var docss = Weekly.find().sort({"_id" : -1});
-  // res.render('task', {docs:docss});
 };
 
 exports.task_create = function(req, res) {
