@@ -65,7 +65,7 @@ block content
                 td: a(href="/task/#{weekly.id}",class="editable") #{weekly.title}
                 td.tcenter
                   - var statusText = ["排期中", "重构中", "联调中", "已上线"];
-                  span.editable(data-name="status-ui")= weekly.status ? statusText[weekly.status] : 'N/A'
+                  span.editable(data-name="status-ui")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
                   input(data-name="status",type="hidden",value="#{weekly.status}")
                 td.tcenter
                   span.editable(data-name="progress")= weekly.progress ? weekly.progress+"%" : 'N/A'
@@ -101,7 +101,7 @@ block pageScript
         if(o.attr("data-name") == "status-ui" ){
         //- 设置需求状态时反馈回的HTML
           var cbHtml = '';
-              cbHtml += '<select class="editinput" name="currentStatus">';
+              cbHtml += '<select class="editinput" name="editStatus">';
               //- cbHtml += '<option value="' + cbVal +'">' + cbVal +'</option>';
               cbHtml += '<option value="0">排期中</option>';
               cbHtml += '<option value="1">重构中</option>';
@@ -119,7 +119,7 @@ block pageScript
       //- 取回暂存的.editinput的值，因为有可能是select,要做下数值处理
       function callEditInputVal(o){
         if (!o) { return false }
-        if(o.attr("name") == "currentStatus"){
+        if(o.attr("name") == "editStatus"){
           //- 需求状态的Select框时，设定数组，取回相对应的值；
           var statusText = ["排期中", "重构中", "联调中", "已上线"],
               returnVal = statusText[o.val()];

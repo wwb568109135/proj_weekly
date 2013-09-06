@@ -64,11 +64,13 @@ exports.isOpen = function() {
  * Extend Mongoose Models to paginate queries
  * https://github.com/edwardhotchkiss/mongoose-paginate
  **/
-mongoose.Model.paginate = function(q, pageNumber, resultsPerPage, callback) { 
+mongoose.Model.paginate = function(q, s, pageNumber, resultsPerPage, callback) { 
   var model = this;
   callback = callback || function(){};
   var skipFrom = (pageNumber * resultsPerPage) - resultsPerPage;
   var query = model.find(q).skip(skipFrom).limit(resultsPerPage);
+  if(s);
+  query = query.sort(s);
   query.exec(function(error, results) {
     if (error) {
       callback(error, null, null);

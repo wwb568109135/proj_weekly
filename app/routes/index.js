@@ -26,16 +26,18 @@ exports.index = function(req, res){
 
 exports.task = function(req, res){
   var pageShowNum = 5,  //当前一页显示多少个
-      pageCur = parseInt(req.query.page) || 1;
+      pageCur = parseInt(req.query.page) || 1,
+      status = parseInt(req.query.status) || {'$exists': true},
+      priority = parseInt(req.query.priority) || {'$exists': true};
       // console.log(pageCur);
 
-  Weekly.paginate({}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
       // console.log('Pages:', pageCount);
       // console.log(paginatedResults);
-      res.render('task', {docs:paginatedResults.sort({'create_date' : -1}), pages:pageCount, pageCur:pageCur});
+      res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
     }
   });
   
