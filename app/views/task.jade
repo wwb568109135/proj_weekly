@@ -21,18 +21,20 @@ block content
         h3 全部需求
         form.search-form(action='')
           label(for='currentStatus') 筛选
-          select#currentStatus(name='currentStatus')
-            option(value='', selected='selected') 当前状态
-            option(value='0') 排期中
-            option(value='1') 重构中
-            option(value='2') 联调中
-            option(value='3') 已上线
-          select#taskPriority(name='taskPriority')
-            option(value='', selected='selected') 优先级别
-            option(value='P0') P0
-            option(value='P1') P1
-            option(value='P2') P2
-            option(value='P3') P3
+          select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
+            option(value='', selected='selected') 当前状态筛选
+            option(value='') 全部状态
+            option(value='status=0') 排期中
+            option(value='status=1') 重构中
+            option(value='status=2') 联调中
+            option(value='status=3') 已上线
+          select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
+            option(value='', selected='selected') 优先级别筛选
+            option(value='') 全部级别
+            option(value='priority=0') P0
+            option(value='priority=1') P1
+            option(value='priority=2') P2
+            option(value='priority=3') P3
       .c-box-hd-extra
         span.tips Tip: 如果需求细节修改，请点击需求名称进入编辑
     .c-box-bd
@@ -62,13 +64,14 @@ block content
                   [
                   a(href='/task/del/#{weekly.id}') 删
                   ]
-                td: a(href="/task/#{weekly.id}",class="editable") #{weekly.title}
+                td: a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
                 td.tcenter
                   - var statusText = ["排期中", "重构中", "联调中", "已上线"];
-                  span.editable(data-name="status-ui")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
-                  input(data-name="status",type="hidden",value="#{weekly.status}")
+                  span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                  input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
                 td.tcenter
-                  span.editable(data-name="progress")= weekly.progress ? weekly.progress+"%" : 'N/A'
+                  span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
+                  span %
                 //- td.tcenter= weekly.online_date.toISOString()
                 td.tcenter
                   span.editable(data-name="online_date")= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
@@ -80,91 +83,7 @@ block content
           p 您目前还未发起需求，可先 
             a(href='/task/create') 新建需求
       include include/paginate
-      
+  div.callback-msg#ajaxCallbackMsg hello      
 
 block pageScript
-  script.
-    (function(){
-      //- 具体更新操作(未完成)
-      function checkAndUpdate(){
-        var tds = $("table.prd-task-table td.td-editing");
-        //- console.log(tds.length);
-        if (tds.length>0){
-          //- tds.trigger('dblclick');
-        }
-
-      }
-
-      //- 根据当前td,反馈回编辑代码，
-      function callEditInputHtml(o,s){
-        var cbVal = s || "";
-        if(o.attr("data-name") == "status-ui" ){
-        //- 设置需求状态时反馈回的HTML
-          var cbHtml = '';
-              cbHtml += '<select class="editinput" name="editStatus">';
-              //- cbHtml += '<option value="' + cbVal +'">' + cbVal +'</option>';
-              cbHtml += '<option value="0">排期中</option>';
-              cbHtml += '<option value="1">重构中</option>';
-              cbHtml += '<option value="2">联调中</option>';
-              cbHtml += '<option value="3">已上线</option>';
-              cbHtml += '</select>';
-        }else{
-        //- 设置其它表单项时反馈回的HTML
-          console.log("go callEditInputHtml");
-          var cbHtml = '<input type="txt" class="m-input editinput" value="'+ cbVal +'" />';
-        }
-        return cbHtml;
-      }
-
-      //- 取回暂存的.editinput的值，因为有可能是select,要做下数值处理
-      function callEditInputVal(o){
-        if (!o) { return false }
-        if(o.attr("name") == "editStatus"){
-          //- 需求状态的Select框时，设定数组，取回相对应的值；
-          var statusText = ["排期中", "重构中", "联调中", "已上线"],
-              returnVal = statusText[o.val()];
-        }else{
-          //- 正常input时，直接取回value值
-          var returnVal = o.val();
-        }
-        return returnVal;
-      }
-
-      //- 初始化
-      function initDomReady(){
-        //- Click to Edit ------------------------
-        $("table.prd-task-table td").not("td.readonly").on("dblclick",function(){
-          //- alert("hello");
-          var _self = $(this),
-              editShow = _self.find(".editable"),
-              editInput = _self.find(".editinput");
-          
-          checkAndUpdate(); //- 检测是否存在其它编辑中的表单项
-
-          if(_self.hasClass('td-editing')){ //- 打开编辑时
-            var returnHtml = callEditInputVal(editInput);
-            editShow.html(returnHtml).show();
-            editInput.remove();
-            _self.removeClass("td-editing");
-          }else{                            //- 未编辑时
-            var editShowHtml = editShow.html();
-                //- editInputHtml = '<input type="txt" class="m-input editinput" value="'+ editShowHtml +'" />';
-            var editInputHtml = callEditInputHtml(editShow,editShowHtml);
-            editShow.hide();
-            _self.append(editInputHtml);
-            _self.find(".editinput").focus();
-            _self.addClass("td-editing");
-          }
-        })
-
-        //- select.editinput 选择事件 -------------
-        $("table.prd-task-table").delegate("select.editinput","change",function(){
-          //- 让它所在的td执行一次双击事件
-          var _self = $(this);
-          _self.parent().find("input[type='hidden']").val(_self.val());
-          _self.parent().trigger('dblclick');
-        })
-
-      }
-      $(initDomReady);
-    })()
+  script(src="/js/task.js")

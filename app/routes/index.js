@@ -24,12 +24,19 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+/*
+ * product task list 
+ */
 exports.task = function(req, res){
   var pageShowNum = 5,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
-      status = parseInt(req.query.status) || {'$exists': true},
-      priority = parseInt(req.query.priority) || {'$exists': true};
-      // console.log(pageCur);
+      status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true};
+      // console.log(status);
+  /*
+  for (var param in req.query) {
+   console.log(param, req.query[param]);
+  }*/
 
   Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
@@ -37,6 +44,7 @@ exports.task = function(req, res){
     } else {
       // console.log('Pages:', pageCount);
       // console.log(paginatedResults);
+      res.locals.path = req.path;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
     }
   });
@@ -46,6 +54,25 @@ exports.task = function(req, res){
     res.render('task', {docs:docs}); 
   });*/
   // var docss = Weekly.find().sort({"_id" : -1});
+};
+
+/*
+ * webRebuild task list 
+ */
+exports.task_rb = function(req, res){
+  var pageShowNum = 5,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1,
+      status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true};
+
+  Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+    if (error) {
+      console.error(error);
+    } else {
+      res.locals.path = req.path;
+      res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+    }
+  });
 };
 
 exports.task_create = function(req, res) {
@@ -168,6 +195,33 @@ exports.task_del = function(req, res) {
   // req.session.flash = new Flash(error, msg);
 };
 
+exports.task_ajaxUpdate = function(req, res) {
+  var id = req.query.id,
+      fieldName = req.query.fieldName,
+      fieldValue = req.query.fieldValue;
+      var updateObj = {};
+      updateObj[fieldName] = fieldValue;
+      console.log(updateObj);
+  // var task = req.body.task;
+  console.log(id);console.log(fieldName);console.log(fieldValue);
+  
+  if( id && fieldName ){  
+    console.log('ajax saveing');
+    Weekly.findByIdAndUpdate(id, 
+      updateObj, 
+      {upsert : true},
+      function (err) {
+        if (err){
+          res.send(200, "格式错误，修改失败");
+        }else {
+          // res.redirect('/task/'+id);
+          res.send(200, "修改成功！");
+          // console.log("保存成功");
+        }
+      }
+    );
+  }
+};
 
 /*
 exports.index = function(req, res){
