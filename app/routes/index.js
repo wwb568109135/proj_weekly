@@ -46,6 +46,7 @@ exports.task = function(req, res){
       // console.log(paginatedResults);
       res.locals.path = req.path;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+      res.locals.ttdd = paginatedResults;
     }
   });
   
@@ -212,7 +213,7 @@ exports.task_ajaxUpdate = function(req, res) {
       {upsert : true},
       function (err) {
         if (err){
-          res.send(200, "格式错误，修改失败");
+          res.send(404, "格式错误，修改失败");
         }else {
           // res.redirect('/task/'+id);
           res.send(200, "修改成功！");

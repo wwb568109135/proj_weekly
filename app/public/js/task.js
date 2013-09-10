@@ -100,6 +100,14 @@
       _self.parent().find("input[type='hidden']").val(_self.val());
       _self.parent().trigger('dblclick');
     })
+
+    //- select.editinput 选择事件 -------------
+    $("table.m-table-data").delegate("input.editinput","keydown",function(e){
+      var key = e.which;
+      if (key == 13) {
+        $(this).trigger('dblclick');
+      }
+    })
     
     //- select.task-filter-select 选择事件 -------------
     $("select.task-filter-select").on("change", function(){
@@ -142,6 +150,10 @@
         }
       })
     }
+
+    console.log("test");
+    console.log(ttdd);
+
 
   }
   $(initDomReady);
