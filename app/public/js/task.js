@@ -65,6 +65,45 @@
 
   }
 
+  // - 日历插件初始化代码
+  function calendarInit(){
+    // 测试从service端拉回 json数据并处理
+    $.ajax({
+      type: "POST",
+      url: "/task/callJSON"
+    }).done(function( msg ) {
+      var ev = [];
+      // 把获得的JSON拼成 calendar 需要的数据格式
+      $.each(msg,function(i){
+        var o = {};
+        o.title = msg[i].title;
+        o.url = "/task/" + msg[i]._id;
+        
+        var oStart = msg[i].rb_star_date,
+            oEnd = msg[i].rb_end_date;
+        o.start = oStart ? oStart.replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : null;
+        o.end = oEnd ? oEnd.replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : null;
+
+        ev.push(o);
+      })
+      console.log(ev);
+
+      // 【重要】日期插件本身的加载配置代码 
+      $('#calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'basicWeek,month'
+        },
+        editable: true,
+        events: ev
+      });
+
+
+
+    })
+  }
+
   //- 初始化
   function initDomReady(){
     //- Click to Edit ------------------------
@@ -101,7 +140,7 @@
       _self.parent().trigger('dblclick');
     })
 
-    //- select.editinput 选择事件 -------------
+    //- select.editinput 回车事件 -------------
     $("table.m-table-data").delegate("input.editinput","keydown",function(e){
       var key = e.which;
       if (key == 13) {
@@ -139,7 +178,7 @@
     //- select.task-filter-select 当前选择位置处理 -------------
     var localSearch = $(location).attr('search');
     localSearch = localSearch.replace(/\?/,"");
-    console.log(localSearch);
+    // console.log(localSearch);
     if(localSearch){
       var $filterSelect = $("select.task-filter-select")
       $filterSelect.find("option").each(function(){
@@ -151,9 +190,8 @@
       })
     }
 
-    console.log("test");
-    console.log(ttdd);
-
+    // 日历插件启动
+    calendarInit();
 
   }
   $(initDomReady);

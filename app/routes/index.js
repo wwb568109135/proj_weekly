@@ -46,7 +46,6 @@ exports.task = function(req, res){
       // console.log(paginatedResults);
       res.locals.path = req.path;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-      res.locals.ttdd = paginatedResults;
     }
   });
   
@@ -72,6 +71,7 @@ exports.task_rb = function(req, res){
     } else {
       res.locals.path = req.path;
       res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+      res.locals.ttdd = paginatedResults;
     }
   });
 };
@@ -223,6 +223,15 @@ exports.task_ajaxUpdate = function(req, res) {
     );
   }
 };
+
+// 响应并响出索引结果json数据
+exports.task_callJSON = function(req, res){
+
+  Weekly.find({}).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+    res.json(docs)
+  });
+
+}
 
 /*
 exports.index = function(req, res){

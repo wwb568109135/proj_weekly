@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  - console.log(ttdd)
   //- [c-box:重构需求日历]
   .c-box
     .c-box-hd.task-calendar
@@ -101,4 +100,13 @@ block content
   div.callback-msg#ajaxCallbackMsg hello      
 
 block pageScript
+  script(src="/js/jquery/jquery.json-2.4.js")
+  
+  //- fullcalendar
+  link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.css')
+  //- link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.print.css')
+  script(src="/js/jquery/jquery-ui-1.10.2.custom.min.js")
+  script(src="/js/fullcalendar/fullcalendar.js")
+
+  //- page javascript
   script(src="/js/task.js")
