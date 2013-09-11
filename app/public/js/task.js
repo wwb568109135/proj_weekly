@@ -21,8 +21,11 @@
           cbHtml += '<option value="2">联调中</option>';
           cbHtml += '<option value="3">已上线</option>';
           cbHtml += '</select>';
+    }else if(o.attr("data-name") == "online_date" || o.attr("data-name") == "rb_star_date" || o.attr("data-name") == "rb_end_date"){
+      //- 设置日期input 反馈回的HTML
+      var cbHtml = '<input type="txt" class="m-input date-picker editinput" value="'+ cbVal +'" />';
     }else{
-    //- 设置其它表单项时反馈回的HTML
+      //- 设置其它表单项时反馈回的HTML
       var cbHtml = '<input type="txt" class="m-input editinput" value="'+ cbVal +'" />';
     }
     return cbHtml;
@@ -67,13 +70,13 @@
 
   // - 日历插件初始化代码
   function calendarInit(){
-    // 测试从service端拉回 json数据并处理
+    // AJAX的方式从service拉回 json数据并处理
     $.ajax({
       type: "POST",
       url: "/task/callJSON"
     }).done(function( msg ) {
-      var ev = [];
       // 把获得的JSON拼成 calendar 需要的数据格式
+      var ev = [];
       $.each(msg,function(i){
         var o = {};
         o.title = msg[i].title;
@@ -81,9 +84,8 @@
         
         var oStart = msg[i].rb_star_date,
             oEnd = msg[i].rb_end_date;
-        o.start = oStart ? oStart.replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : null;
-        o.end = oEnd ? oEnd.replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : null;
-
+        o.start = oStart ? oStart.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
+        o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
       console.log(ev);
@@ -98,8 +100,6 @@
         editable: true,
         events: ev
       });
-
-
 
     })
   }
@@ -123,10 +123,11 @@
         ajaxUpdate(_self);
       }else{                            //- 未编辑时
         var editShowHtml = editShow.html();
-            //- editInputHtml = '<input type="txt" class="m-input editinput" value="'+ editShowHtml +'" />';
         var editInputHtml = callEditInputHtml(editShow,editShowHtml);
         editShow.hide();
         _self.prepend(editInputHtml);
+        //- 对有.date-picker的input 进行calendar激活        
+        _self.find('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
         _self.find(".editinput").focus();
         _self.addClass("td-editing");
       }

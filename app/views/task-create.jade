@@ -115,18 +115,19 @@ block pageScript
     (function(){
       function onDomReady(){
         //- datePicker init
-        $('<link rel="stylesheet" href="/css/jquery-ui.min.css">').appendTo($('head'));
-        $.getScript('/js/jquery/jquery-ui.min.js', function(){
-          $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
-        });
+        //- $('<link rel="stylesheet" href="/css/jquery-ui.min.css">').appendTo($('head'));
+        //- $.getScript('/js/jquery/jquery-ui.min.js', function(){
+        //-   $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
+        //- });
+        $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
 
         //- Setting the value of checkbox to true or false
         $( "#taskCreateForm" ).delegate( "input[name='focus']", "change", function() {
           if($(this).attr('checked')){
-                  $(this).val('true');
-             }else{
-                  $(this).val('false');
-             }
+              $(this).val('true');
+           }else{
+              $(this).val('false');
+           }
         });
 
         //- add one line form ------------------------

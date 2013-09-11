@@ -74,7 +74,7 @@ block content
                   span %
                 //- td.tcenter= weekly.online_date.toISOString()
                 td.tcenter
-                  span.editable(data-name="online_date")= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
+                  span.editable(data-name="online_date")= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
                 td
                   span.editable(data-name="pp")= weekly.pp
       else
