@@ -226,10 +226,21 @@ exports.task_ajaxUpdate = function(req, res) {
 
 // 响应并响出索引结果json数据
 exports.task_callJSON = function(req, res){
+  var role = req.query.role;
+  // console.log(role);
+  var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
+  if (role == "rb"){
+    //重构角色 日历表返回数据
+    Weekly.find({}).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+      res.json(docs)
+    });
+    
+  } else if ( role == "pm" ){
+    //产品角色 日历表返回数据
 
-  Weekly.find({}).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-    res.json(docs)
-  });
+  }
+
+  
 
 }
 

@@ -70,10 +70,21 @@
 
   // - 日历插件初始化代码
   function calendarInit(){
+    // 来源/task-rb /task 判断，并输出不同的AJAX URL
+    var pathName = $(location).attr("pathname"),
+        ajaxUrl = "";
+
+    console.log(pathName);
+    if (pathName == "/task"){
+      ajaxUrl = "/task/callJSON?role=pm";
+    }else if(pathName == "/task-rb"){
+      ajaxUrl = "/task/callJSON?role=rb";
+    }
+
     // AJAX的方式从service拉回 json数据并处理
     $.ajax({
       type: "POST",
-      url: "/task/callJSON"
+      url: ajaxUrl
     }).done(function( msg ) {
       // 把获得的JSON拼成 calendar 需要的数据格式
       var ev = [];
@@ -103,6 +114,7 @@
 
     })
   }
+
 
   //- 初始化
   function initDomReady(){
@@ -140,13 +152,16 @@
       _self.parent().find("input[type='hidden']").val(_self.val());
       _self.parent().trigger('dblclick');
     })
-
     //- select.editinput 回车事件 -------------
     $("table.m-table-data").delegate("input.editinput","keydown",function(e){
       var key = e.which;
       if (key == 13) {
-        $(this).trigger('dblclick');
+        $(this).parent().trigger('dblclick');
       }
+    })
+     //- input.date-picker 日期重选后自动保存事件 -------------
+    $("table.m-table-data").delegate("input.date-picker","change",function(e){
+        $(this).parent().trigger('dblclick');
     })
     
     //- select.task-filter-select 选择事件 -------------
