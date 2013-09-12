@@ -9,6 +9,7 @@ block content
       .c-box-hd-extra
         a.m-btn.btn-skin-1(href='#') 返回需求列表
     .c-box-bd
+      //- - form#taskCreateForm(method="POST")
       form#taskCreateForm(method="POST",action="/task/created")
         table#taskCreateTable.m-table-data.task-create-table
           colgroup
@@ -111,6 +112,7 @@ block content
           textarea#outputTemp(name="outputTemp",rows="4",cols="160")
 
 block pageScript
+  script(src="/js/jquery/jquery.json-2.4.js")
   script.
     (function(){
       function onDomReady(){
