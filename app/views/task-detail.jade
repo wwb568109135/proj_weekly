@@ -126,6 +126,9 @@ block pageScript
   script.
     (function(){
       function onDomReady(){
+        //- current nav 
+        $(".nav-ul li").eq(1).addClass("current");
+
         //- alert("hello");
         //- console.log(weekly.status)
         var $taskStatus = $("#taskStatus")

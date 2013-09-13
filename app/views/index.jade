@@ -29,3 +29,8 @@ block content
         li
           a(href='#') 查看需求列表
           i.heightlight
+block pageScript
+  script.
+    (function(){
+      $(".nav-ul li").eq(0).addClass("current");
+    })()

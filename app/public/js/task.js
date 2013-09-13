@@ -45,6 +45,7 @@
     return returnVal;
   }
 
+  // AJAX更新表单内容
   function ajaxUpdate(e){
     if(e){
       var _id = e.parent("tr").find("span[data-name='_id']").html(),
@@ -74,13 +75,14 @@
     var pathName = $(location).attr("pathname"),
         ajaxUrl = "";
 
-    console.log(pathName);
+    // console.log(pathName);
     if (pathName == "/task"){
       ajaxUrl = "/task/callJSON?role=pm";
     }else if(pathName == "/task-rb"){
       ajaxUrl = "/task/callJSON?role=rb";
     }
 
+    var arrayOfEvents = [];
     // AJAX的方式从service拉回 json数据并处理
     $.ajax({
       type: "POST",
@@ -90,7 +92,7 @@
       var ev = [];
       $.each(msg,function(i){
         var o = {};
-        o.title = msg[i].title;
+        o.title = "【"+msg[i].type+"】"+msg[i].title;
         o.url = "/task/" + msg[i]._id;
         
         var oStart = msg[i].rb_star_date,
@@ -99,7 +101,7 @@
         o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
-      console.log(ev);
+      // console.log(ev);
 
       // 【重要】日期插件本身的加载配置代码 
       $('#calendar').fullCalendar({
@@ -110,6 +112,19 @@
         },
         editable: true,
         events: ev
+
+
+        /*drop: function(date) {
+          console.log(date);
+          // retrieve the dropped element's stored Event Object
+          var originalEventObject = $(this).data('eventObject');
+          // we need to copy it, so that multiple events don't have a reference to the same object
+          var copiedEventObject = $.extend({}, originalEventObject);
+          // Push the event into the array
+          arrayOfEvents.push(copiedEventObject);
+          console.log(arrayOfEvents);
+        }*/
+
       });
 
     })
@@ -118,6 +133,9 @@
 
   //- 初始化
   function initDomReady(){
+    // current nav
+   $(".nav-ul li").eq(1).addClass("current");
+
     //- Click to Edit ------------------------
     $("table.m-table-data td").not("td.readonly").on("dblclick",function(){
       //- alert("hello");
@@ -194,11 +212,11 @@
     //- select.task-filter-select 当前选择位置处理 -------------
     var localSearch = $(location).attr('search');
     localSearch = localSearch.replace(/\?/,"");
-    // console.log(localSearch);
+    console.log(localSearch);
     if(localSearch){
       var $filterSelect = $("select.task-filter-select")
       $filterSelect.find("option").each(function(){
-        //- console.log($(this).attr('value'));
+        console.log($(this).attr('value'));
         var v = $(this).attr('value');
         if ( v==localSearch ){
          $(this).attr('selected','selected')

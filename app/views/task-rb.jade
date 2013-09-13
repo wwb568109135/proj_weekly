@@ -71,7 +71,11 @@ block content
                   [
                   a(href='/task/del/#{weekly.id}') 删
                   ]
-                td: a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                td
+                  【
+                  = weekly.type
+                  】
+                  a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
                 td.tcenter
                   - var statusText = ["排期中", "重构中", "联调中", "已上线"];
                   span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
