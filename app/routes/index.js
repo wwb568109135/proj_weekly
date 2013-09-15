@@ -197,15 +197,16 @@ exports.task_del = function(req, res) {
   // req.session.flash = new Flash(error, msg);
 };
 
+// 需求列表修改AJAX保存
 exports.task_ajaxUpdate = function(req, res) {
   var id = req.query.id,
       fieldName = req.query.fieldName,
       fieldValue = req.query.fieldValue;
-      var updateObj = {};
+  var updateObj = {};
       updateObj[fieldName] = fieldValue;
-      console.log(updateObj);
+  console.log(updateObj);
   // var task = req.body.task;
-  console.log(id);console.log(fieldName);console.log(fieldValue);
+  // console.log(id);console.log(fieldName);console.log(fieldValue);
   
   if( id && fieldName ){  
     console.log('ajax saveing');
@@ -223,6 +224,33 @@ exports.task_ajaxUpdate = function(req, res) {
       }
     );
   }
+};
+
+// 日历中的需求拖动后修改保存
+exports.calendar_ajaxUpdate = function(req, res) {
+  // console.log(req.body.start);
+  var id = req.query.id,
+      start = req.query.start,
+      end = req.query.end;
+  var updateObj = {};
+      updateObj["rb_star_date"] = start;
+      updateObj["rb_end_date"] = end;
+  console.log(updateObj);
+
+  if( id && start && end ){
+    console.log("ajax saveing");
+      Weekly.findByIdAndUpdate(id, updateObj, 
+      {upsert : true},
+      function (err) {
+        if (err){
+          res.send(404, "格式错误，修改失败");
+        }else {
+          res.send(200, "修改成功！");
+        }
+      }
+    );
+  }
+
 };
 
 // 响应并响出索引结果json数据

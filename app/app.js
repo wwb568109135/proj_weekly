@@ -58,6 +58,7 @@ app.get('/task/del/:id', routes.task_del);
 app.get('/task/edit/:id', routes.task_edit);
 app.post('/task/update/:id', routes.task_update);
 app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
+app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
 app.post('/task/callJSON', routes.task_callJSON);
 app.get('/users', user.list);
 app.use(function(req, res){

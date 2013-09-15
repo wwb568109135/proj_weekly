@@ -45,6 +45,12 @@
     return returnVal;
   }
 
+  function showAjaxCallbackMsg( msg ){
+    var $ajaxCallbackMsg = $("#ajaxCallbackMsg");
+        $ajaxCallbackMsg.html(msg).addClass('msg-show');
+      setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
+  }
+
   // AJAX更新表单内容
   function ajaxUpdate(e){
     if(e){
@@ -60,16 +66,14 @@
       //- data: { fieldName: "John", location: "Boston" }
     }).done(function( msg ) {
       //- alert( "Data Saved: " + msg );
-      var $ajaxCallbackMsg = $("#ajaxCallbackMsg")
-      $ajaxCallbackMsg.html(msg).addClass('msg-show');
-      setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
+      showAjaxCallbackMsg(msg);
     }).fail(function(jqXHR, textStatus) {
       alert( "Request failed: " + textStatus );
     });
 
   }
 
-  // - 日历插件初始化代码
+  // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
   function calendarInit(){
     // 来源/task-rb /task 判断，并输出不同的AJAX URL
     var pathName = $(location).attr("pathname"),
@@ -92,6 +96,7 @@
       var ev = [];
       $.each(msg,function(i){
         var o = {};
+        o.id = msg[i]._id;
         o.title = "【"+msg[i].type+"】"+msg[i].title;
         o.url = "/task/" + msg[i]._id;
         
@@ -111,19 +116,29 @@
           right: 'basicWeek,month'
         },
         editable: true,
-        events: ev
-
-
-        /*drop: function(date) {
-          console.log(date);
-          // retrieve the dropped element's stored Event Object
-          var originalEventObject = $(this).data('eventObject');
-          // we need to copy it, so that multiple events don't have a reference to the same object
-          var copiedEventObject = $.extend({}, originalEventObject);
-          // Push the event into the array
-          arrayOfEvents.push(copiedEventObject);
-          console.log(arrayOfEvents);
-        }*/
+        events: ev,
+        // 日期块拖动后 ajax保存
+        eventDrop: function (event, dayDelta, minuteDelta) {
+          var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+          $.ajax({
+            type: "POST",
+            url : postAjaxUrl
+            // url: "/task/ajaxUpdateCalendar",
+            // data: { id: event.id, start: event.start, end:event.end }
+          }).done(function( msg ) {
+            showAjaxCallbackMsg(msg);
+          })
+        },
+        // 日期块修改结束时间长期后 ajax保存
+        eventResize:function(event, dayDelta, minuteDelta){
+          var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+          $.ajax({
+            type: "POST",
+            url : postAjaxUrl
+          }).done(function( msg ) {
+            showAjaxCallbackMsg(msg);
+          })
+        }
 
       });
 
