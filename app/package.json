@@ -8,7 +8,8 @@
   "dependencies": {
     "express": "3.3.4",
     "jade": "*",
-    "mongoose": "~3.6.15"
+    "mongoose": "~3.6.15",
+    "excel-export": "*"
   },
   "description": "A simple expressjs app for learning node.",
   "main": "app.js",
