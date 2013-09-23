@@ -9,7 +9,6 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , Weekly = require('./lib/weekly');
-
 var app = express();
 
 app.configure(function(){
@@ -60,6 +59,8 @@ app.post('/task/update/:id', routes.task_update);
 app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
 app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
 app.post('/task/callJSON', routes.task_callJSON);
+app.get('/export', routes.task_export);
+app.post('/excel', routes.excel);
 app.get('/users', user.list);
 app.use(function(req, res){
   res.send("Page Not Found.",404);

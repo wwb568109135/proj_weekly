@@ -1,0 +1,133 @@
+extends layout
+
+block content
+  .c-box
+    .c-box-hd
+      .c-box-hd-title
+        h3 数据导出
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1(href='/task-rb') 返回周报列表
+    .c-box-bd
+      // .m-remind-box:到处周报
+      .m-remind-box.export-data-box
+        .m-remind-box-hd
+          h3 导出周报
+        .m-remind-box-bd
+          form.export-data-form(method='get',action='/export')
+            p
+              label(for='weeklyStarDate') 请选择时间段：
+              input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='YYYY-MM-DD')
+              span 至
+              input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='YYYY-MM-DD')
+            p
+              input.m-btn.btn-skin-1(type='submit', value='导出本人')
+              //- input.m-btn.btn-skin-1(type='submit', value='导出全组')
+      
+      if docs && docs.length
+        form#taskExportForm(method="POST",action="/excel")
+          table.m-table-data.rb-task-table
+            colgroup
+              col.c1
+              col.c2
+              col.c3
+              col.c4
+              col.c5
+              col.c6
+              col.c7
+              col.c8
+              col.c9
+              col.c10
+            thead
+              tr
+                th 需求ID
+                th 需求名称
+                th.tcenter 当前状态
+                th.tcenter 页面数
+                th.tcenter 开始时间
+                th.tcenter 完成时间
+                th.tcenter 进度
+                th.tcenter 网站人员
+                th.tcenter 接口人
+                th 其它说明
+            tbody
+              for weekly in docs
+                tr
+                  td.readonly
+                    span(data-name="_id")= weekly._id
+                    [
+                    a(href='/task/del/#{weekly.id}') 删
+                    ]
+                  td
+                    【
+                    = weekly.type
+                    】
+                    a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                  td.tcenter
+                    - var statusText = ["排期中", "重构中", "联调中", "已上线"];
+                    span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                    input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
+                  td.tcenter
+                    span.editable(data-name="pages")= weekly.pages
+                  td.tcenter
+                    span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                  td.tcenter
+                    span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                  td.tcenter
+                    span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
+                    span %
+                  //- td.tcenter= weekly.online_date.toISOString()
+                  td
+                    span.editable(data-name="pp")= weekly.pp
+                  td
+                    span.editable(data-name="pm")= weekly.pm
+                  td
+                    span.editable(data-name="pm")= weekly.pm
+          p.tright
+            input.m-btn.btn-skin-2(type='submit', value='导出Excel文件')
+          p.output-textarea
+            textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="100")
+            textarea#outputTemp2.m-input(name="outputTemp2",rows="4",cols="100")
+      else
+        //- .empty-data -->
+        .empty-data
+          p 抱歉，暂时没有查询到相关需求。
+
+
+
+block pageScript
+  script(src="/js/jquery/jquery.json-2.4.js")
+  script.
+    (function(){
+      function onDomReady(){
+        //- current nav 
+        $(".nav-ul li").eq(2).addClass("current");
+        
+        //- datepicker
+        $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
+
+        //- Submit func ------------------------
+        $("#taskExportForm").on('submit',function(e){
+
+          //- 表单数据处理成 [{},{},{}……] 的格式
+          var colsData = [],
+              colsTh = $(this).find("th");
+          colsTh.each(function(i){
+            var dd = {};
+                dd.caption = colsTh.eq(i).html();
+                dd.type = "string";
+            colsData.push(dd);
+          })
+          //- 数据json化(使用jquery.json插件)
+          colsData = $.toJSON( colsData )
+
+          //- console.dir(data)
+          console.dir(colsData);
+          
+
+          //- 数据存入textarea里
+          $("#outputTemp").val(colsData);
+          return false;
+        });
+      }
+      $(onDomReady);
+    })()
