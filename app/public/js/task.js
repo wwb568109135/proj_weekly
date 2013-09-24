@@ -106,7 +106,7 @@
         o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
-      // console.log(ev);
+      console.log(ev);
 
       // 【重要】日期插件本身的加载配置代码 
       $('#calendar').fullCalendar({
@@ -201,8 +201,7 @@
     $("select.task-filter-select").on("change", function(){
         var param = $(this).val(),
             local = $(location).attr('href');
-        console.log(param);
-        console.log(local);
+        // console.log(param);console.log(local);
         local = local.replace(/[\?\&]status[^&]+/,"");
         local = local.replace(/[\?\&]priority[^&]+/,"");
         if(param){
@@ -227,11 +226,11 @@
     //- select.task-filter-select 当前选择位置处理 -------------
     var localSearch = $(location).attr('search');
     localSearch = localSearch.replace(/\?/,"");
-    console.log(localSearch);
+    // console.log(localSearch);
     if(localSearch){
       var $filterSelect = $("select.task-filter-select")
       $filterSelect.find("option").each(function(){
-        console.log($(this).attr('value'));
+        // console.log($(this).attr('value'));
         var v = $(this).attr('value');
         if ( v==localSearch ){
          $(this).attr('selected','selected')

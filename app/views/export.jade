@@ -54,18 +54,15 @@ block content
                 tr
                   td.readonly
                     span(data-name="_id")= weekly._id
-                    [
-                    a(href='/task/del/#{weekly.id}') 删
-                    ]
                   td
-                    【
-                    = weekly.type
-                    】
-                    a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                    span
+                      【
+                      = weekly.type
+                      】
+                      = weekly.title
                   td.tcenter
                     - var statusText = ["排期中", "重构中", "联调中", "已上线"];
                     span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
-                    input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
                   td.tcenter
                     span.editable(data-name="pages")= weekly.pages
                   td.tcenter
@@ -73,8 +70,8 @@ block content
                   td.tcenter
                     span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
                   td.tcenter
-                    span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
-                    span %
+                    span.editable(data-name="progress")= weekly.progress ? weekly.progress+'%' : 'N/A'
+                    //- span %
                   //- td.tcenter= weekly.online_date.toISOString()
                   td
                     span.editable(data-name="pp")= weekly.pp
@@ -85,8 +82,9 @@ block content
           p.tright
             input.m-btn.btn-skin-2(type='submit', value='导出Excel文件')
           p.output-textarea
-            textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="100")
-            textarea#outputTemp2.m-input(name="outputTemp2",rows="4",cols="100")
+            input#outputDataRange.m-input(name="outputDataRange",type="hidden")
+            textarea#outputCols.m-input.invisible(name="outputCols",rows="4",cols="100")
+            textarea#outputRows.m-input.invisible(name="outputRows",rows="4",cols="100")
       else
         //- .empty-data -->
         .empty-data
@@ -98,35 +96,76 @@ block pageScript
   script(src="/js/jquery/jquery.json-2.4.js")
   script.
     (function(){
+      
+      // 获取URL的param值
+      function GetQueryStringParams(sParam){
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++){
+          var sParameterName = sURLVariables[i].split('=');
+          if (sParameterName[0] == sParam){
+              return sParameterName[1];
+          }
+        }
+      }
+
       function onDomReady(){
         //- current nav 
         $(".nav-ul li").eq(2).addClass("current");
         
-        //- datepicker
+        //- taskStarDate placeholder fill ------------------------
+        var taskStarDate = GetQueryStringParams('taskStarDate'),
+            taskEndDate = GetQueryStringParams('taskEndDate');
+        if(taskStarDate){
+          $("#taskStarDate").val(taskStarDate)
+        }
+        if(taskEndDate){
+          $("#taskEndDate").val(taskEndDate)
+        }
+        //处理记录时间范围并存入 #outputDataRange
+        $("#outputDataRange").val(taskStarDate+"_"+taskEndDate);
+
+        //- datepicker func ------------------------
         $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
 
         //- Submit func ------------------------
         $("#taskExportForm").on('submit',function(e){
-
-          //- 表单数据处理成 [{},{},{}……] 的格式
+          //- 表格th数据处理成 [{},{},{}……] 的格式
           var colsData = [],
-              colsTh = $(this).find("th");
+              colsTh = $(this).find("th"),
+              colsLength = colsTh.length;
           colsTh.each(function(i){
             var dd = {};
-                dd.caption = colsTh.eq(i).html();
+                dd.caption = $(this).html();
                 dd.type = "string";
             colsData.push(dd);
           })
           //- 数据json化(使用jquery.json插件)
           colsData = $.toJSON( colsData )
-
-          //- console.dir(data)
           console.dir(colsData);
+          //- 数据存入textarea#outputCols
+          $("#outputCols").val(colsData);
           
+          //- 表格内容数据处理成 [[],[],[]……] 的格式
+          var rowsData = [],
+              rowsTd = $(this).find("td"),
+              rowsNum = $(this).find("tr").length - 1;  //检索出来的记录条数;
+          for(var j = 1 ; j<=rowsNum; j++ ){
+            var dd = [],
+                star = (j-1)*colsLength;
+            for( var i = star; i<j*colsLength; i++ ){
+              var tdData = rowsTd.eq(i).find("span").html();
+              dd.push(tdData);
+            }
+            rowsData.push(dd);
+          }
+          //- 数据json化(使用jquery.json插件)
+          rowsData = $.toJSON( rowsData )
+          console.dir(rowsData);
+          //- 数据存入textarea#outputRows
+          $("#outputRows").val(rowsData);
 
-          //- 数据存入textarea里
-          $("#outputTemp").val(colsData);
-          return false;
+          return true;
         });
       }
       $(onDomReady);

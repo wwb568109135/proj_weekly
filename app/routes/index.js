@@ -273,7 +273,7 @@ exports.task_callJSON = function(req, res){
   if (role == "rb"){
     //重构角色 日历表返回 上线时间为本月1号 - 本月30号
     Weekly.find({
-      "online_date": {"$gte": new Date(y, m, 1), "$lt": new Date(y, m, 30)}
+      "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
@@ -281,7 +281,7 @@ exports.task_callJSON = function(req, res){
   } else if ( role == "pm" ){
     //产品角色 日历表返回 上线时间为本月1号 - 本月30号
     Weekly.find({
-      "online_date": {"$gte": new Date(y, m, 1), "$lt": new Date(y, m, 30)}
+      "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
@@ -297,7 +297,7 @@ exports.task_export = function(req, res){
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true};
   // console.log(taskStarDate);console.log(taskEndDate);
   Weekly.find({
-    "rb_star_date": {"$gte": taskStarDate} ,"rb_end_date" : {"$lt": taskEndDate}
+    "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
   }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
     res.render('export', {docs:docs})
   })
@@ -309,9 +309,28 @@ exports.task_export = function(req, res){
  */
 exports.excel = function(req, res){
   
-  var colsData = req.body.outputTemp;
-  console.log(colsData);
+  var colsData = req.body.outputCols;
+  var rowsData = req.body.outputRows;
+  var outputDataRange = req.body.outputDataRange || "unknowDate";
 
+  if(colsData && rowsData){
+    // eval()解析JSON格式字符串
+    colsData = eval("("+colsData+")");
+    rowsData = eval("("+rowsData+")");
+    console.log(colsData);console.log(rowsData);
+
+    //设置excel的文件名
+    var excelFileName = "username" + "_" + outputDataRange + ".xlsx";
+    console.log(excelFileName);
+
+    var conf = {};
+    conf.cols = colsData;
+    conf.rows = rowsData;
+    var result = nodeExcel.execute(conf);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+    res.setHeader("Content-Disposition", "attachment; filename=" + excelFileName);
+    res.end(result, 'binary');
+  }
 
 /*
     var conf ={};
