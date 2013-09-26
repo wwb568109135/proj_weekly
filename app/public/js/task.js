@@ -106,7 +106,7 @@
         o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
-      console.log(ev);
+      // console.log(ev);
 
       // 【重要】日期插件本身的加载配置代码 
       $('#calendar').fullCalendar({
