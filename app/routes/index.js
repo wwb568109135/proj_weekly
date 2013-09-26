@@ -44,8 +44,9 @@ exports.task = function(req, res){
       console.error(error);
     } else {
       // console.log('Pages:', pageCount);
-      // console.log(paginatedResults);
+
       res.locals.path = req.path;
+      res.locals.originalUrl = req.originalUrl;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
     }
   });
@@ -70,7 +71,9 @@ exports.task_rb = function(req, res){
     if (error) {
       console.error(error);
     } else {
+
       res.locals.path = req.path;
+      res.locals.originalUrl = req.originalUrl;
       res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
       res.locals.ttdd = paginatedResults;
     }
