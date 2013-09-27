@@ -200,8 +200,44 @@
     //- select.task-filter-select 选择事件 -------------
     $("select.task-filter-select").on("change", function(){
         var param = $(this).val(),
-            local = $(location).attr('href');
-        // console.log(param);console.log(local);
+            local = $(location).attr('href'),
+            newlocal = local;
+        var paramHas = local.indexOf("?"),
+            statusPar = param.indexOf("status"),
+            priorityPar = param.indexOf("priority");
+        var regExp1 = /\?status=(\w+)?/,
+            regExp2 = /\&status=(\w+)?/;
+            regExp3 = /\?priority=(\w+)?/;
+            regExp4 = /\&priority=(\w+)?/;
+
+        // 1.先把 ?page= &page=干掉
+        local = local.replace(/[\?\&]page[^&]+$/,"");
+        console.log("local: "+local);
+
+        // 2.重新修改所带参数，有点复杂，待优化
+        if(paramHas =="-1"){          // 完全没参数，直接加上
+          newlocal = local + "?" + param;
+        }else if( statusPar!="-1" && regExp1.test(local)){  // 如果命中regExp1 用?status 替换
+          // console.log("?status");
+          newlocal = local.replace(regExp1,"?"+param);
+        }else if(statusPar!="-1" &&regExp2.test(local)){    // 如果命中regExp2 用&status 替换
+          // console.log("&status");
+          newlocal = local.replace(regExp2,"&"+param);
+        }else if(priorityPar!="-1" && regExp3.test(local)){ // 如果命中regExp3 用?priority 替换
+          // console.log("?priority");
+          newlocal = local.replace(regExp3,"?"+param);
+        }else if(priorityPar!="-1" && regExp4.test(local)){ // 如果命中regExp4 用&priority 替换
+          // console.log("&priority");
+          newlocal = local.replace(regExp4,"&"+param);
+        }else if(paramHas !="-1" && statusPar=="-1" ){      // 有参数，但不是status。
+          newlocal = local + "&" + param;
+        }else if(paramHas !="-1" && priorityPar=="-1" ){    // 有参数，但不是priority。
+          newlocal = local + "&" + param;
+        }
+        console.log("newlocal: "+newlocal)
+        $(location).attr('href',newlocal);
+
+        /*
         local = local.replace(/[\?\&]status[^&]+/,"");
         local = local.replace(/[\?\&]priority[^&]+/,"");
         if(param){
@@ -213,13 +249,6 @@
         }
         var newlocal = local+param;
         $(location).attr('href',newlocal);
-        /*
-        http://localhost:3000/task
-        http://localhost:3000/task?status=&page=2
-        http://localhost:3000/task?status=2&page=2
-        http://localhost:3000/task?status=21&page=2
-        http://localhost:3000/task?pp=2&status=2
-        [\?\&]status[^&]+
         */
     })
     

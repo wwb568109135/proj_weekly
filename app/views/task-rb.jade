@@ -23,15 +23,15 @@ block content
         form.search-form(action='')
           label(for='currentStatus') 筛选
           select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
-            option(value='', selected='selected') 当前状态筛选
-            option(value='') 全部状态
+            option(value='status=', selected='selected') 当前状态筛选
+            option(value='status=0') 全部状态
             option(value='status=0') 排期中
             option(value='status=1') 重构中
             option(value='status=2') 联调中
             option(value='status=3') 已上线
           select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
             option(value='', selected='selected') 优先级别筛选
-            option(value='') 全部级别
+            option(value='priority=') 全部级别
             option(value='priority=0') P0
             option(value='priority=1') P1
             option(value='priority=2') P2
