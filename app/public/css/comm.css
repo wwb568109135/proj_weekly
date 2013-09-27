@@ -27,6 +27,7 @@ button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;margin:0;}
 :focus{outline:0}
 /* 隐藏, 通常用来与 JS 配合 */
 body .hidden,body .shady{display:none}
+.invisible{visibility:hidden;}
 /*input,select{vertical-align:middle;}*/
 .fleft,.fright{display:inline;}
 .fleft{float:left}
@@ -241,6 +242,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	        box-shadow:0px 0px 4px #d8ae1b;	
 }
 .inp-textarea{height:auto;}
+.output-textarea .m-input{width:35%;}
 
 /*-- m-page --*/
 .m-page{clear:both;font-family:Tahoma;text-align:center;padding:2em 0;}

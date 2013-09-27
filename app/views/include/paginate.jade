@@ -1,8 +1,11 @@
 - pages = pages || 1
 - pageCur = pageCur || 1
-- paramPage = (path.indexOf("?")=="-1") ? path + '?page=' : path + '&page='
-//- - console.log(path)
-//- - console.log(paramPage)
+//- 正则去掉所有的 ?page= 或 &page=
+- originalUrl = originalUrl.replace(/[\?\&]page[^&]+$/,"")
+- paramPage = (originalUrl.indexOf("?")=="-1") ? originalUrl + '?page=' : originalUrl + '&page='
+//- div= path
+//- div= paramPage
+//- div= originalUrl
 if pages >1
   .m-page.page-skin-0
     .m-page-total
