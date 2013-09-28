@@ -4,6 +4,7 @@
 
 "use strict";
 var Weekly = require('../lib/weekly').Weekly;
+var Project = require('../lib/weekly').Project;
 var nodeExcel = require('excel-export');
 /**
  * basic example usage of `mongoose-pagination`
@@ -210,7 +211,7 @@ exports.task_ajaxUpdate = function(req, res) {
       fieldValue = req.query.fieldValue;
   var updateObj = {};
       updateObj[fieldName] = fieldValue;
-  console.log(updateObj);
+  // console.log(updateObj);
   // var task = req.body.task;
   // console.log(id);console.log(fieldName);console.log(fieldValue);
   
@@ -247,7 +248,7 @@ exports.calendar_ajaxUpdate = function(req, res) {
 
   if( id && start && end ){
     console.log("ajax saveing");
-      Weekly.findByIdAndUpdate(id, updateObj, 
+    Weekly.findByIdAndUpdate(id, updateObj, 
       {upsert : true},
       function (err) {
         if (err){
@@ -255,8 +256,7 @@ exports.calendar_ajaxUpdate = function(req, res) {
         }else {
           res.send(200, "修改成功！");
         }
-      }
-    );
+    });
   }
 
 };
@@ -354,5 +354,115 @@ exports.excel = function(req, res){
 */
 };
 
+/*
+ * Project Manager
+ */
+exports.setting_project = function(req, res){
+  var pageShowNum = 20,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1;
 
+  /*
+  Project.find({}, function (err, docs) {
+    if (err) {console.error(err);
+    } else {
+      res.render('setting-project', {docs:docs}); 
+    }
+  });*/
+     
+  Project.paginate({},{}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+    if (error) {
+      console.error(error);
+    } else {
+      res.locals.path = req.path;
+      res.locals.originalUrl = req.originalUrl;
+      res.render('setting-project', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+    }
+  });
+  
+  /*
+  MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Pages:', pageCount);
+      console.log(paginatedResults);
+    }
+  });
+  */
+ 
+};
+
+/*
+ * Project Save
+ */
+exports.setting_project_created = function(req, res){
+  var pj = new Project(req.body.project);
+  console.log(pj);
+  
+  pj.save(function(err){
+    if(!err) {
+      res.redirect('/setting-project');
+    } else {
+      res.send(404, '写入失败');
+      res.redirect('/setting-project');
+    }
+  });
+};
+
+/*
+ * Project Del
+ */
+exports.setting_project_del = function(req, res) {
+  var id = req.params.id;
+  var error = false;
+  var msg = '';
+  if(!id) {
+    error = "warning";
+    msg = '必须指定要删除的任务。';
+  } else {
+    Project.remove({_id:id},function(err){
+      if (err) {
+        res.send(404, err.message);
+      } else {
+        res.redirect('/setting-project');
+      }
+    });
+  }
+};
+
+/*
+ * 通用：AJAX保存
+ */
+exports.comm_ajaxUpdate = function(req, res) {
+  var id = req.query.id,
+      dbCollection = req.query.dbCollection,
+      fieldName = req.query.fieldName,
+      fieldValue = req.query.fieldValue;
+  var updateObj = {};
+      updateObj[fieldName] = fieldValue;
+
+  if(dbCollection == "Project" ){
+    dbCollection = Project;
+  }else if(dbCollection == "Weekly" ){
+    dbCollection = Weekly;
+  }
+  console.log(updateObj);
+  
+  if( id && dbCollection && fieldName ){  
+    console.log('ajax saveing');
+    dbCollection.findByIdAndUpdate(id, 
+      updateObj, 
+      {upsert : true},
+      function (err) {
+        if (err){
+          res.send(404, "格式错误，修改失败");
+        }else {
+          // res.redirect('/task/'+id);
+          res.send(200, "修改成功！");
+          // console.log("保存成功");
+        }
+      }
+    );
+  }
+};
 

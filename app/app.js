@@ -48,6 +48,8 @@ Weekly.connect(app.get('mongourl'));
 
 // Routes Rule
 app.get('/', routes.index);
+app.post('/comm-ajaxUpdate', routes.comm_ajaxUpdate);
+
 app.get('/task', routes.task);
 app.get('/task-rb', routes.task_rb);
 app.get('/task/create', routes.task_create);
@@ -59,8 +61,14 @@ app.post('/task/update/:id', routes.task_update);
 app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
 app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
 app.post('/task/callJSON', routes.task_callJSON);
+
 app.get('/export', routes.task_export);
 app.post('/excel', routes.excel);
+
+app.get('/setting-project', routes.setting_project);
+app.post('/setting-project/created', routes.setting_project_created);
+app.get('/setting-project/del/:id', routes.setting_project_del);
+
 app.get('/users', user.list);
 app.use(function(req, res){
   res.send("Page Not Found.",404);

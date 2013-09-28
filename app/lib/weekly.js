@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-
+// 需求主表集合
 var WeeklySchema = new Schema({
 	author: {type: String, requierd: false},		//需求创建者
 	type: {type: String, requierd: true},			//所属项目
@@ -21,6 +21,12 @@ var WeeklySchema = new Schema({
 	progress: {type: String, requierd: false}		//需求总进度
 });
 
+// 项目表集合
+var ProjectSchema = new Schema({
+	name: {type: String, requierd: true},			//所属项目名
+	star: {type: Number, defaults: 1}				//项目星级
+});
+
 var opened = false;
 
 mongoose.connection.on('open', function(ref) {
@@ -32,6 +38,8 @@ mongoose.connection.on('error', function(err) {
 });
 
 exports.Weekly = mongoose.model('Weekly', WeeklySchema);
+exports.Project = mongoose.model('Project', ProjectSchema);
+
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {
 		options = {
@@ -69,8 +77,9 @@ mongoose.Model.paginate = function(q, s, pageNumber, resultsPerPage, callback) {
   callback = callback || function(){};
   var skipFrom = (pageNumber * resultsPerPage) - resultsPerPage;
   var query = model.find(q).skip(skipFrom).limit(resultsPerPage);
-  if(s);
-  query = query.sort(s);
+  if(s){
+  	query = query.sort(s);
+  }
   query.exec(function(error, results) {
     if (error) {
       callback(error, null, null);

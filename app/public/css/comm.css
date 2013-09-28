@@ -228,7 +228,7 @@ body > .contnet{height: auto; min-height: 100%;}
 }
 
 /*-- m-input --*/
-.m-input{line-height: 16px;height: 16px;padding:4px;border:1px solid #ccc;width: 95%;
+.m-input{line-height: 16px;height: 16px;margin-right:4px;padding:4px;border:1px solid #ccc;width: 95%;
 	border-radius:4px;
 	/* css3 box-shadow */
 	-webkit-box-shadow:inset -1px 1px #eee;
@@ -453,13 +453,14 @@ body > .contnet{height: auto; min-height: 100%;}
 /* system-settings
 ---------------------------------------------------------------------------------------*/	
 .system-settings-box{}
+	.system-settings-box .m-page{text-align: left;}
 /*-- .role-settings-form --*/
 .role-settings-form{width: 580px;}
 	.role-settings-form li{position: relative;margin: 0 0 1em;padding-left:100px;}
 	.role-settings-form label{position: absolute;left:0px;top:0;width: 92px;text-align: right;line-height: 1.8em;}
 	.role-settings-form .inp-txt{}
 	.role-settings-form .m-btn{}
-
+	
 
 /*-- .staff-manage-table --*/
 .staff-manage-table{width: 780px;}
