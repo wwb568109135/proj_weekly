@@ -82,7 +82,15 @@ exports.task_rb = function(req, res){
 };
 
 exports.task_create = function(req, res) {
-  res.render('task-create');
+  Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
+    if(err){
+      console.error(err)
+    }else{
+      res.render('task-create', {pj:docs}); 
+    }
+  });
+
+  // res.render('task-create');
 };
 
 exports.task_created = function(req, res){
@@ -274,7 +282,7 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
   if (role == "rb"){
-    //重构角色 日历表返回 上线时间为本月1号 - 本月30号
+    //重构角色 日历表返回 重构开始时间为本月1号 - 本月30号
     Weekly.find({
       "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
@@ -282,9 +290,9 @@ exports.task_callJSON = function(req, res){
     });
     
   } else if ( role == "pm" ){
-    //产品角色 日历表返回 上线时间为本月1号 - 本月30号
+    //产品角色 日历表返回 上线时间为本月1号 - 下月月30号
     Weekly.find({
-      "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
+      "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
@@ -431,7 +439,7 @@ exports.setting_project_del = function(req, res) {
 };
 
 /*
- * 通用：AJAX保存
+ * Comm : Ajax Update
  */
 exports.comm_ajaxUpdate = function(req, res) {
   var id = req.query.id,
