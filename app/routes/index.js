@@ -3,8 +3,10 @@
  */
 
 "use strict";
-var Weekly = require('../lib/weekly').Weekly;
-var Project = require('../lib/weekly').Project;
+var Weekly = require('../lib/weekly').Weekly,
+    Project = require('../lib/weekly').Project,
+    Staff = require('../lib/weekly').Staff;
+
 var nodeExcel = require('excel-export');
 /**
  * basic example usage of `mongoose-pagination`
@@ -81,6 +83,9 @@ exports.task_rb = function(req, res){
   });
 };
 
+/*
+ * task create 
+ */
 exports.task_create = function(req, res) {
   Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
     if(err){
@@ -93,6 +98,9 @@ exports.task_create = function(req, res) {
   // res.render('task-create');
 };
 
+/*
+ * task created 
+ */
 exports.task_created = function(req, res){
   // console.log(req.body.outputTemp);
   var outputJSON = req.body.outputTemp,
@@ -128,6 +136,9 @@ exports.task_created = function(req, res){
   });*/
 };
 
+/*
+ * task detail 
+ */
 exports.task_detail = function(req, res) {
   var id = req.params.id;
   var error = false;
@@ -142,6 +153,9 @@ exports.task_detail = function(req, res) {
   }
 };
 
+/*
+ * task edit 
+ */
 exports.task_edit = function(req, res) {
   var id = req.params.id;
   var error = false;
@@ -153,6 +167,32 @@ exports.task_edit = function(req, res) {
       Weekly.findById(id, function(err, docs){
         res.render('task-edit', {docs:docs});
       });
+  }
+};
+
+/*
+ * task search 
+ */
+exports.task_search = function(req, res) {
+  var query = req.query.q;
+  console.log(query);
+
+  if(/\d{4,}/.test(query)){
+    // 按ID精确查找
+    console.log("精确查找")
+    Weekly.find({_id:query}, function(err, docs){
+       res.render('task-search', {docs:docs});
+    });
+  }else if(!query){
+    console.log("必须输入ID或标题");
+  }else{
+    // 通过title模糊查找
+    Weekly.find({
+      title : new RegExp(query)
+    }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+       res.render('task-search', {docs:docs})
+    });
+
   }
 };
 
@@ -363,7 +403,7 @@ exports.excel = function(req, res){
 };
 
 /*
- * Project Manager
+ * Setting Project Manager
  */
 exports.setting_project = function(req, res){
   var pageShowNum = 20,  //当前一页显示多少个
@@ -386,22 +426,11 @@ exports.setting_project = function(req, res){
       res.render('setting-project', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
     }
   });
-  
-  /*
-  MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log('Pages:', pageCount);
-      console.log(paginatedResults);
-    }
-  });
-  */
  
 };
 
 /*
- * Project Save
+ * Setting Project Save
  */
 exports.setting_project_created = function(req, res){
   var pj = new Project(req.body.project);
@@ -418,7 +447,7 @@ exports.setting_project_created = function(req, res){
 };
 
 /*
- * Project Del
+ * Setting Project Del
  */
 exports.setting_project_del = function(req, res) {
   var id = req.params.id;
@@ -436,6 +465,47 @@ exports.setting_project_del = function(req, res) {
       }
     });
   }
+};
+
+/*
+ * Setting Staff Create
+ */
+exports.setting_staff_create = function(req, res) {
+  if ( req.body.staff ){
+    var staff = new Staff(req.body.staff);
+    // console.log(staff);
+    staff.save(function(err){
+      if(!err) {
+        res.redirect('/setting-staff');
+      } else {
+        res.send(404, '写入失败');
+        res.redirect('/setting-staff/create');
+      }
+    });
+  }else{
+    Project.find({}, function (err, docs) {
+      if (err) {
+        console.error(err);
+      } else {
+        res.render('setting-staff-create', {pj:docs}); 
+      }
+    });
+  }
+};
+
+/*
+ * Setting Staff List
+ */
+exports.setting_staff = function(req, res) {
+
+    Staff.find({}, function (err, docs) {
+      if (err) {
+        console.error(err);
+      } else {
+        res.render('setting-staff', {docs:docs}); 
+      }
+    });
+
 };
 
 /*

@@ -41,6 +41,17 @@
       }
     })
 
+    //- Role Select Func
+    $("#staffRoles").bind("change",function(){
+      var n = parseInt($(this).val());
+      $("select.sub-select").hide();
+      if ( n==1 ){
+        $("select#staffProject").show();
+      }else{
+        $("select#staffGroup").show();
+      }
+    })
+
   }
 
 

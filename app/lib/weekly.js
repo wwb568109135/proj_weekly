@@ -27,6 +27,16 @@ var ProjectSchema = new Schema({
 	star: {type: Number, defaults: 1}				//项目星级
 });
 
+// 人员表集合
+var StaffSchema = new Schema({
+	name: {type: String, requierd: true},			//英文名
+	roles: {type:Number, defaults: 0},				//角色
+	project: {type:String},							//项目id
+	group: {type:Number, defaults: 0},				//组别
+	remark: {type: String, requierd: false},		//备注信息
+	create_date: {type:Date, requierd: true}		//创建时间
+});
+
 var opened = false;
 
 mongoose.connection.on('open', function(ref) {
@@ -39,6 +49,7 @@ mongoose.connection.on('error', function(err) {
 
 exports.Weekly = mongoose.model('Weekly', WeeklySchema);
 exports.Project = mongoose.model('Project', ProjectSchema);
+exports.Staff = mongoose.model('Staff', StaffSchema);
 
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {

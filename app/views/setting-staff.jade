@@ -1,0 +1,54 @@
+extends layout
+block content
+  //- c-box:系统设置-人员管理
+  .c-box
+  .c-box-hd
+    .c-box-hd-title
+      h3 系统设置
+    .c-box-hd-extra
+      a.m-btn.btn-skin-1(href='#') 返回需求列表
+  .c-box-bd
+    .m-tabs
+      .m-tabs-nav
+        ul.m-tabs-nav-ul
+          li
+            a(href='/setting-staff/create') 权限开通
+          li.current
+            a(href='/setting-staff') 人员管理
+          li
+            a(href='/setting-project') 项目管理
+        form.search-form(action='#')
+          input.inp-txt(name='', type='text', placeholder='项目名称')
+          input.btn-search(type='submit', value='搜索')
+      .m-tabs-content
+        .system-settings-box
+          if docs.length
+            table.m-table-data.staff-manage-table
+              colgroup
+                col.c1
+                col.c2
+                col.c3
+                col.c4
+                col.c5
+              thead
+                tr
+                  th 人员名字
+                  th 角色
+                  th 备注
+                  th 开通时间
+                  th 操作
+              tbody
+                for staff in docs
+                  tr
+                    td
+                      a(href='#')= staff.name
+                    td 产品 - 英雄联盟
+                    td= staff.remark
+                    td.tcenter= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
+                    td.tcenter
+                      a(href='#') 停用
+          else
+            //- .empty-data -->
+            .empty-data
+              p 您目前还未添加人员，可先 
+                a(href='/setting-staff/create') 添加人员

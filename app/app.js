@@ -54,6 +54,7 @@ app.get('/task', routes.task);
 app.get('/task-rb', routes.task_rb);
 app.get('/task/create', routes.task_create);
 app.post('/task/created', routes.task_created);
+app.get('/task/search', routes.task_search);
 app.get('/task/:id', routes.task_detail);
 app.get('/task/del/:id', routes.task_del);
 app.get('/task/edit/:id', routes.task_edit);
@@ -68,6 +69,9 @@ app.post('/excel', routes.excel);
 app.get('/setting-project', routes.setting_project);
 app.post('/setting-project/created', routes.setting_project_created);
 app.get('/setting-project/del/:id', routes.setting_project_del);
+app.get('/setting-staff/create', routes.setting_staff_create);
+app.post('/setting-staff/create', routes.setting_staff_create);
+app.get('/setting-staff', routes.setting_staff);
 
 app.get('/users', user.list);
 app.use(function(req, res){
