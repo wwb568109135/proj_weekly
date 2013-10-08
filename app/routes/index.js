@@ -535,6 +535,8 @@ exports.comm_ajaxUpdate = function(req, res) {
     dbCollection = Project;
   }else if(dbCollection == "Weekly" ){
     dbCollection = Weekly;
+  }else if(dbCollection == "Staff"){
+    dbCollection = Staff;
   }
   console.log(updateObj);
   
