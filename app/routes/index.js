@@ -497,15 +497,27 @@ exports.setting_staff_create = function(req, res) {
  * Setting Staff List
  */
 exports.setting_staff = function(req, res) {
-
-    Staff.find({}, function (err, docs) {
-      if (err) {
-        console.error(err);
-      } else {
-        res.render('setting-staff', {docs:docs}); 
+  var pj_array = new Array();
+  Project.find({},function(err,docs){
+    if(err){
+      console.error(err);
+    }else{
+      for(var i=0; i <docs.length;i++){
+        pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+        pj_array[docs[i]._id] = docs[i].name
       }
-    });
+    }
+    res.locals.pj_array = pj_array;
+  });
 
+
+  Staff.find({}, function (err, docs) {
+    if (err) {
+      console.error(err);
+    } else {
+      res.render('setting-staff', {docs:docs});
+    }
+  });
 };
 
 /*

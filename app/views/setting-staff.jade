@@ -42,7 +42,11 @@ block content
                   tr
                     td
                       a(href='#')= staff.name
-                    td 产品 - 英雄联盟
+                    - var rolesText = ["","产品", "管理", "重构"];
+                    - var GroupText = ["","重构1组", "重构2组", "重构3组"];
+                    td= rolesText[staff.roles]
+                      -
+                      = (staff.roles == 1) ? pj_array[staff.project] : GroupText[staff.group]
                     td= staff.remark
                     td.tcenter= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
                     td.tcenter
