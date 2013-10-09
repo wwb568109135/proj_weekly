@@ -47,6 +47,8 @@ if ('production' == app.get('env')) {
 Weekly.connect(app.get('mongourl'));
 
 // Routes Rule
+app.use(app.router);
+// app.all('*', user.auth);
 app.get('/', routes.index);
 app.post('/comm-ajaxUpdate', routes.comm_ajaxUpdate);
 
@@ -73,7 +75,7 @@ app.get('/setting-staff/create', routes.setting_staff_create);
 app.post('/setting-staff/create', routes.setting_staff_create);
 app.get('/setting-staff', routes.setting_staff);
 
-app.get('/users', user.list);
+app.get('/users', user.auth);
 app.use(function(req, res){
   res.send("Page Not Found.",404);
 });
