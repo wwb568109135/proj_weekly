@@ -1,8 +1,8 @@
+"use strict";
 /*
  * GET users listing.
  */
 
-"use strict";
 var tof = require('../lib/tof');
 
 exports.list = function(req, res){
@@ -13,9 +13,8 @@ exports.hi = function(req, res){
 };
 
 exports.isLogin = function(req, res){
-  if (req.cookies.user){
-  	var user = req.cookies.user;
-  }else{return false}
+  var user = req.cookies.user;
+  // return false
   
   if(user && user.uid) {
     res.locals.user = user;

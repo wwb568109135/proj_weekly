@@ -17,6 +17,8 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.favicon());
   app.use(express.logger('dev'));
+  app.use(express.cookieParser());
+  app.use(express.cookieSession({key:'sid',secret:'alsdkjfl28DJJAS'}));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -48,7 +50,7 @@ Weekly.connect(app.get('mongourl'));
 
 // Routes Rule
 app.use(app.router);
-// app.all('*', user.auth);
+app.all('*', user.auth);
 app.get('/', routes.index);
 app.post('/comm-ajaxUpdate', routes.comm_ajaxUpdate);
 
@@ -75,7 +77,7 @@ app.get('/setting-staff/create', routes.setting_staff_create);
 app.post('/setting-staff/create', routes.setting_staff_create);
 app.get('/setting-staff', routes.setting_staff);
 
-app.get('/users', user.auth);
+// app.get('/users', user.auth);
 app.use(function(req, res){
   res.send("Page Not Found.",404);
 });
