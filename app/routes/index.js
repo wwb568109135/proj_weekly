@@ -407,8 +407,10 @@ exports.excel = function(req, res){
  */
 exports.setting_project = function(req, res){
   var pageShowNum = 20,  //当前一页显示多少个
-      pageCur = parseInt(req.query.page) || 1;
-
+      pageCur = parseInt(req.query.page) || 1,
+      // 大小写不敏感的正则搜索
+      query = (req.query.projectName) ? { $regex: new RegExp("^" + req.query.projectName.toLowerCase(), "i") } : {'$exists': true};
+  // console.log(query);
   /*
   Project.find({}, function (err, docs) {
     if (err) {console.error(err);
@@ -417,7 +419,9 @@ exports.setting_project = function(req, res){
     }
   });*/
      
-  Project.paginate({},{}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Project.paginate(
+    {"name" : query },
+    {}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
@@ -497,7 +501,11 @@ exports.setting_staff_create = function(req, res) {
  * Setting Staff List
  */
 exports.setting_staff = function(req, res) {
-  var pj_array = new Array();
+  var pj_array = new Array(),
+      // 大小写不敏感的正则搜索
+      query = (req.query.staffName) ? { $regex: new RegExp("^" + req.query.staffName.toLowerCase(), "i") } : {'$exists': true};
+  console.log(query);
+
   Project.find({},function(err,docs){
     if(err){
       console.error(err);
@@ -511,7 +519,7 @@ exports.setting_staff = function(req, res) {
   });
 
 
-  Staff.find({}, function (err, docs) {
+  Staff.find( {"name" : query }, function (err, docs) {
     if (err) {
       console.error(err);
     } else {

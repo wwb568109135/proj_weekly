@@ -17,8 +17,8 @@ block content
             a(href='/setting-staff') 人员管理
           li
             a(href='/setting-project') 项目管理
-        form.search-form(action='#')
-          input.inp-txt(name='', type='text', placeholder='人员英文名')
+        form.search-form(method='get',action='/setting-staff')
+          input.inp-txt(name='staffName', type='text', placeholder='人员英文名')
           input.btn-search(type='submit', value='搜索')
       .m-tabs-content
         .system-settings-box
