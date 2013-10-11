@@ -566,3 +566,28 @@ exports.comm_ajaxUpdate = function(req, res) {
   }
 };
 
+/*
+ * Comm : Ajax Get Roles
+ */
+exports.comm_ajaxGetRoles = function(req, res) {
+  var staffName = req.query.staffName,
+      rolesText = ["未定义角色","产品角色", "管理角色", "重构角色"];
+
+  console.log(staffName);
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+      if(err){
+        res.send(404, "参数错误");
+      }else{
+        var roles = rolesText[docs[0].roles] || "获取角色失败";
+        // console.log(roles);
+        res.send(200, roles);
+      }
+    });
+
+  }
+
+};
+
+
+

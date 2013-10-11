@@ -60,8 +60,8 @@ block content
                     td.readonly
                       span(class="hidden",data-name="_id")= staff._id
                       span= staff.name
-                    - var rolesText = ["","产品", "管理", "重构"];
-                    - var GroupText = ["","重构1组", "重构2组", "重构3组"];
+                    - var rolesText = ["未定义","产品", "管理", "重构"];
+                    - var GroupText = ["未定义","重构1组", "重构2组", "重构3组"];
                     td= rolesText[staff.roles]
                       -
                       = (staff.roles == 1) ? pj_array[staff.project] : GroupText[staff.group]

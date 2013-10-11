@@ -18,6 +18,7 @@ exports.isLogin = function(req, res){
   
   if(user && user.uid) {
     res.locals.user = user;
+    // console.log(user);
     return true;
   } else {
     res.locals.user = null;

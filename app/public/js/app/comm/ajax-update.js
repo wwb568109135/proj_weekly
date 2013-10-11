@@ -41,13 +41,32 @@ var appAjax = (function(){
     }).fail(function(jqXHR, textStatus) {
       alert( "Request failed: " + textStatus );
     });
+  };
+
+  function getRoles(e,staffName){
+    if(e && staffName){
+      postAjaxUrl = "/comm-ajaxGetRoles?staffName="+staffName;
+      $.ajax({
+        type: "POST",
+        url: postAjaxUrl
+      }).done(function( roles ) {
+        e.html(roles);
+        console.log(roles);
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+
+    }
+
   }
+
 
   /* 供闭包外部使用的方法
   -------------------------------------*/
   return{
     callbackMsg : function(msg){ showAjaxCallbackMsg(msg) },
-    update : function(e,dbCollection){ update(e,dbCollection) }
+    update : function(e,dbCollection){ update(e,dbCollection) },
+    getRoles : function(e,staffName){ getRoles(e,staffName) }
   }
 
 })()

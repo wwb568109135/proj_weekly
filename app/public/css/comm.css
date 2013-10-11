@@ -108,6 +108,7 @@ body > .contnet{height: auto; min-height: 100%;}
 		.user-info-avatar{float: left;width:36px;margin:0 10px 0 0;}
 		.user-info-avatar img{border-radius:2em;}
 		.user-info-txt{overflow: hidden;*zoom:1;}
+		.user-info-txt p span{padding-right:6px;}
 
 /*-- .content --*/
 .content{padding:12px 12px 70px 12px;}
