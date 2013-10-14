@@ -18,31 +18,34 @@ var appAjax = (function(){
     setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
   };
 
+
+
   /**
-   * AJAX更新表单内容
-   * @param  {object} e (td object)
-   * @param  {string} dbCollection
+   * AJAX更新内容
+   * @param  {object} e ajaxupdata object
    * @return {func}
    */
-  function update(e,dbCollection){
-    if( e && dbCollection ){
-      var dbCollection = dbCollection,
-          _id = e.parent("tr").find("span[data-name='_id']").html(),
-          fieldName = e.find(".editable").attr("data-name"),
-          fieldValue = e.find(".editableval").val() || e.find(".editable").html(),
-          postAjaxUrl = "/comm-ajaxUpdate?dbCollection="+dbCollection+"&id="+_id+"&fieldName="+fieldName+"&fieldValue="+fieldValue;
+  function updateSet(o){
+    if( o && o.id && o.dbCollection ){
+      $.ajax({
+        type: "POST",
+        url: "/comm-ajaxUpdateSet",
+        data : o
+      }).done(function( msg ) {
+        callbackMsg(msg);
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
     }
-    console.log('postAjaxUrl :' + postAjaxUrl);
-    $.ajax({
-      type: "POST",
-      url: postAjaxUrl
-    }).done(function( msg ) {
-      callbackMsg(msg);
-    }).fail(function(jqXHR, textStatus) {
-      alert( "Request failed: " + textStatus );
-    });
-  };
+  }
 
+
+  /**
+   * 通过过传入英文名去获取用户的role名字
+   * @param  {element} e         显示角色名的element
+   * @param  {object} staffName 用户英文名
+   * @return {function}           
+   */
   function getRoles(e,staffName){
     if(e && staffName){
       postAjaxUrl = "/comm-ajaxGetRoles?staffName="+staffName;
@@ -51,13 +54,11 @@ var appAjax = (function(){
         url: postAjaxUrl
       }).done(function( roles ) {
         e.html(roles);
-        console.log(roles);
+        // console.log(roles);
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
-
     }
-
   }
 
 
@@ -65,7 +66,7 @@ var appAjax = (function(){
   -------------------------------------*/
   return{
     callbackMsg : function(msg){ showAjaxCallbackMsg(msg) },
-    update : function(e,dbCollection){ update(e,dbCollection) },
+    updateSet : function(o){ updateSet(o) },
     getRoles : function(e,staffName){ getRoles(e,staffName) }
   }
 

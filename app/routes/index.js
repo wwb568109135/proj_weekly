@@ -516,28 +516,31 @@ exports.setting_staff = function(req, res) {
       }
     }
     res.locals.pj_array = pj_array;
-  });
-
-
-  Staff.find( {"name" : query }, function (err, docs) {
-    if (err) {
-      console.error(err);
-    } else {
-      res.render('setting-staff', {docs:docs});
-    }
+    /*-----*/
+    Staff.find( {"name" : query }, function (err, docs) {
+      if (err) {
+        console.error(err);
+      } else {
+        res.render('setting-staff', {docs:docs});
+      }
+    });
+    /*-----*/
   });
 };
 
+
+
 /*
- * Comm : Ajax Update
+ * Comm : Ajax Update Set
  */
-exports.comm_ajaxUpdate = function(req, res) {
-  var id = req.query.id,
-      dbCollection = req.query.dbCollection,
-      fieldName = req.query.fieldName,
-      fieldValue = req.query.fieldValue;
-  var updateObj = {};
-      updateObj[fieldName] = fieldValue;
+exports.comm_ajaxUpdateSet = function(req, res) {
+  var data = req.body;  
+  var id = data.id,
+      dbCollection = data.dbCollection;
+  delete data.id;
+  delete data.dbCollection;
+
+  // console.log(id);console.log(dbCollection);console.log(data);
 
   if(dbCollection == "Project" ){
     dbCollection = Project;
@@ -546,12 +549,11 @@ exports.comm_ajaxUpdate = function(req, res) {
   }else if(dbCollection == "Staff"){
     dbCollection = Staff;
   }
-  console.log(updateObj);
   
-  if( id && dbCollection && fieldName ){  
+  if( id && dbCollection && data ){  
     console.log('ajax saveing');
     dbCollection.findByIdAndUpdate(id, 
-      updateObj, 
+      data, 
       {upsert : true},
       function (err) {
         if (err){
@@ -565,6 +567,7 @@ exports.comm_ajaxUpdate = function(req, res) {
     );
   }
 };
+
 
 /*
  * Comm : Ajax Get Roles
@@ -584,7 +587,6 @@ exports.comm_ajaxGetRoles = function(req, res) {
         res.send(200, roles);
       }
     });
-
   }
 
 };

@@ -104,7 +104,7 @@ body > .contnet{height: auto; min-height: 100%;}
 				        box-shadow:inset 0px 1px 0px #1b5a86;
 			}
 
-	.user-info{position: absolute;right:12px;top:16px;}
+	.user-info{position: absolute;right:12px;top:16px;min-width:200px;}
 		.user-info-avatar{float: left;width:36px;margin:0 10px 0 0;}
 		.user-info-avatar img{border-radius:2em;}
 		.user-info-txt{overflow: hidden;*zoom:1;}
@@ -126,13 +126,11 @@ body > .contnet{height: auto; min-height: 100%;}
 ---------------------------------------------------------------------------------------*/
 #calendar {width: 940px; /*width:90%;*/}
 .fc-event:link,.fc-event:visited,.fc-event:hover{color: #fff;}
-.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em; 1em;background-color: #ff0000;}
+.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em 1em;background-color: #ff0000;}
 .callback-msg{
 	visibility: hidden;
 	opacity: 0;
-	-webkit-transition: all 1s;
-	-moz-transition: all 1s;
-	transition: all 1s;
+	-webkit-transition: all 1s;-moz-transition: all 1s;transition: all 1s;
 }
 .msg-show{
 	visibility: visible;

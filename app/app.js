@@ -52,7 +52,7 @@ Weekly.connect(app.get('mongourl'));
 app.use(app.router);
 app.all('*', user.auth);
 app.get('/', routes.index);
-app.post('/comm-ajaxUpdate', routes.comm_ajaxUpdate);
+app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 
 app.get('/task', routes.task);

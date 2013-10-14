@@ -22,22 +22,23 @@ block content
           input.btn-search(type='submit', value='搜索')
       .m-tabs-content
         .system-settings-box
-          div.select-div
-            select#staffRoles(name='staff[roles]')
+          div#staffRoleSelectBox.select-div
+            select.main-select(name='roles')
               option(value='0', selected='selected') 请选择角色
               option(value='1') 产品角色
               option(value='2') 管理角色
               option(value='3') 重构角色
-            select.sub-select#staffProject(name='staff[project]')
+            select.sub-select.sub-select-project(class='hidden',name='project')
               option(value='0') 请选择负责的产品
               if pj_array.length
                 for pj in pj_array
                   option(value='#{pj.id}')= pj.name
-            select.sub-select#staffGroup(name='staff[group]')
+            select.sub-select.sub-select-group(class='hidden',name='group')
               option(value='0', selected='selected') 请选择组别
               option(value='1') 重构1组
               option(value='2') 重构2组
               option(value='3') 重构3组
+            button.staff-role-change-button 确认修改
 
           if docs.length
             table.m-table-data.staff-manage-table(data-collection="Staff")
@@ -62,9 +63,17 @@ block content
                       span= staff.name
                     - var rolesText = ["未定义","产品", "管理", "重构"];
                     - var GroupText = ["未定义","重构1组", "重构2组", "重构3组"];
-                    td= rolesText[staff.roles]
-                      -
-                      = (staff.roles == 1) ? pj_array[staff.project] : GroupText[staff.group]
+                    td.staffRoles
+                      span.editable(data-name="role")= rolesText[staff.roles]
+                      span.editable -
+                      //- span.editable(data-name="project")= (staff.roles == 1) ? pj_array[staff.project] : GroupText[staff.group]
+                      if (staff.roles == 1)
+                        span.editable= pj_array[staff.project]
+                      else
+                        span.editable(data-name="group")= GroupText[staff.group]
+                      input(type="hidden", data-name="roles", value="#{staff.roles}")
+                      input(type="hidden", data-name="project", value="#{staff.project}")
+                      input(type="hidden", data-name="group", value="#{staff.group}")
                     td
                       span.editable(data-name="remark")= staff.remark
                     td.tcenter.readonly= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
@@ -81,5 +90,4 @@ block content
 block pageScript
   //- page javascript
   script(src="/js/app/comm/m-table-data.js")
-  script(src="/js/app/comm/ajax-update.js")
   script(src="/js/app/setting/setting.js")
