@@ -126,16 +126,17 @@ body > .contnet{height: auto; min-height: 100%;}
 ---------------------------------------------------------------------------------------*/
 #calendar {width: 940px; /*width:90%;*/}
 .fc-event:link,.fc-event:visited,.fc-event:hover{color: #fff;}
-.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em 1em;background-color: #ff0000;}
-.callback-msg{
-	visibility: hidden;
+.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em 1em;background-color: #ff0000;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: all 0.5s;
 	opacity: 0;
-	-webkit-transition: all 1s;-moz-transition: all 1s;transition: all 1s;
 }
 .msg-show{
 	visibility: visible;
 	opacity: 1;
 }
+
 
 /*-- c-box --*/
 .c-box{margin-bottom:1em;}

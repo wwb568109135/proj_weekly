@@ -62,15 +62,17 @@ block content
                       span(class="hidden",data-name="_id")= staff._id
                       span= staff.name
                     - var rolesText = ["未定义","产品", "管理", "重构"];
-                    - var GroupText = ["未定义","重构1组", "重构2组", "重构3组"];
+                    - var groupText = ["未定义","重构1组", "重构2组", "重构3组"];
                     td.staffRoles
-                      span.editable(data-name="role")= rolesText[staff.roles]
-                      span.editable -
-                      //- span.editable(data-name="project")= (staff.roles == 1) ? pj_array[staff.project] : GroupText[staff.group]
+                      span.editable(data-name="roles")= rolesText[staff.roles]
+                      span.editable(data-name="line") -
+                      //- span.editable(data-name="project")= (staff.roles == 1) ? pj_array[staff.project] : groupText[staff.group]
                       if (staff.roles == 1)
-                        span.editable= pj_array[staff.project]
+                        span.editable(data-name="project")= pj_array[staff.project]
+                        span.editable.hidden(data-name="group")= groupText[staff.group]
                       else
-                        span.editable(data-name="group")= GroupText[staff.group]
+                        span.editable.hidden(data-name="project")= pj_array[staff.project]
+                        span.editable(data-name="group")= groupText[staff.group]
                       input(type="hidden", data-name="roles", value="#{staff.roles}")
                       input(type="hidden", data-name="project", value="#{staff.project}")
                       input(type="hidden", data-name="group", value="#{staff.group}")

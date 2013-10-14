@@ -28,7 +28,7 @@
        // console.log(dbCollection);
 
       if(_self.hasClass('td-editing')){ //- 打开编辑时
-        if(editShow.attr("data-name") =="role" ){ return false }
+        if(editShow.attr("data-name") =="roles" ){ return false }
         var returnHtml = editInput.val();
         editShow.html(returnHtml).show();
         editInput.remove();
@@ -47,7 +47,7 @@
         appAjax.updateSet(postData);
       }else{                            //- 未编辑时
         var editShowHtml = editShow.html();
-        if(editShow.attr("data-name") =="role" ){
+        if(editShow.attr("data-name") =="roles" ){
           var staffRoleSelectBox = $("#staffRoleSelectBox").html();
           var editInputHtml = '<div class="select-div editinput">'+staffRoleSelectBox+'</div>';
         }else{
@@ -101,16 +101,31 @@
         alert("请选择组别")
       }else{
         appAjax.updateSet(postData);
-
-
+        tdRolesShow($staffRolesTd);
       }
-
-
     })
-
-
   }
 
+  // 角色重新显示；
+  function tdRolesShow(obj){
+    var o = obj;
+    var rolesText = ["未定义","产品", "管理", "重构"],
+        groupText = ["未定义","重构1组", "重构2组", "重构3组"],
+        rolesVal = o.find('input[data-name="roles"]').val(),
+        ProjectVal = o.find('input[data-name="project"]').val(),
+        groupVal = o.find('input[data-name="group"]').val();
+    
+    o.find('span[data-name="roles"]').html(rolesText[rolesVal]).show();
+    o.find('span[data-name="line"]').show();
+    if(rolesVal == 1){
+      o.find('span[data-name="project"]').html(ProjectVal).show();
+    }else{
+      o.find('span[data-name="group"]').html(groupText[groupVal]).show();
+    }
+
+    o.find(".select-div").remove();
+    o.removeClass("td-editing");
+  }
 
   $(initDomReady);
 })()
