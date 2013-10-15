@@ -1,6 +1,27 @@
 // Setting all func
 (function(){
 
+  //- 角色重新显示 ------------------------------------------------------------------
+  function tdRolesShow(obj){
+    var o = obj;
+    var rolesText = ["未定义","产品", "管理", "重构"],
+        groupText = ["未定义","重构1组", "重构2组", "重构3组"],
+        rolesVal = o.find('input[data-name="roles"]').val(),
+        ProjectVal = o.find('input[data-name="project"]').val(),
+        groupVal = o.find('input[data-name="group"]').val();
+    
+    o.find('span[data-name="roles"]').html(rolesText[rolesVal]).show();
+    o.find('span[data-name="line"]').show();
+    if(rolesVal == 1){
+      o.find('span[data-name="project"]').html(ProjectVal).show();
+    }else{
+      o.find('span[data-name="group"]').html(groupText[groupVal]).show();
+    }
+
+    o.find(".select-div").remove();
+    o.removeClass("td-editing");
+  }
+
   //- 初始化 ------------------------------------------------------------------
   function initDomReady(){
     //- current nav 
@@ -61,7 +82,7 @@
       }
     })
 
-    //- Role Select Func
+    //- Role Select Func ------------------------
     $("div.system-settings-box").delegate("select.main-select","change",function(){
     // $("#staffRoles").bind("change",function(){
       var n = parseInt($(this).val()),
@@ -76,7 +97,7 @@
       }
     })
 
-    //- .staff-role-change-button Func
+    //- .staff-role-change-button Func ------------------------
     $("div.system-settings-box").delegate(".staff-role-change-button","click",function(){
       var $staffRolesTd = $(this).parents(".staffRoles");
       var postData = {};
@@ -104,28 +125,45 @@
         tdRolesShow($staffRolesTd);
       }
     })
+
+    //- .staff-hidden-link Func ------------------------
+    $("table.staff-manage-table .staff-hidden-link").on("click",function(){
+      var _self = $(this),
+          isHidden = _self.attr("data-name") == "hidden" ? true : false; 
+
+      if(isHidden){
+        var answer = confirm("确认停用此用户?"),
+            callbackFunc = function(){
+              _self.parents("tr").addClass("hide");
+              _self.hide();
+            }
+      }else{
+        var answer = confirm("确认重新启用么?"),
+            callbackFunc = function(){
+              _self.parents("tr").removeClass("hide");
+              _self.hide();
+            }
+      }
+      console.log(isHidden);
+      
+
+      if (answer){
+        var staffID = _self.parents("tr").find("span[data-name='_id']").html();
+
+        var postData={};
+            postData.id = staffID,
+            postData.dbCollection = _self.parents("table").attr("data-collection"),
+            postData.hidden = isHidden;
+        console.log(postData);
+        
+        appAjax.updateSet(postData,callbackFunc)
+      }
+    })
+
+
   }
 
-  // 角色重新显示；
-  function tdRolesShow(obj){
-    var o = obj;
-    var rolesText = ["未定义","产品", "管理", "重构"],
-        groupText = ["未定义","重构1组", "重构2组", "重构3组"],
-        rolesVal = o.find('input[data-name="roles"]').val(),
-        ProjectVal = o.find('input[data-name="project"]').val(),
-        groupVal = o.find('input[data-name="group"]').val();
-    
-    o.find('span[data-name="roles"]').html(rolesText[rolesVal]).show();
-    o.find('span[data-name="line"]').show();
-    if(rolesVal == 1){
-      o.find('span[data-name="project"]').html(ProjectVal).show();
-    }else{
-      o.find('span[data-name="group"]').html(groupText[groupVal]).show();
-    }
 
-    o.find(".select-div").remove();
-    o.removeClass("td-editing");
-  }
 
   $(initDomReady);
 })()

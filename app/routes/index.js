@@ -553,7 +553,9 @@ exports.comm_ajaxUpdateSet = function(req, res) {
   if( id && dbCollection && data ){  
     console.log('ajax saveing');
     dbCollection.findByIdAndUpdate(id, 
-      data, 
+      { 
+        $set: data
+      }, 
       {upsert : true},
       function (err) {
         if (err){

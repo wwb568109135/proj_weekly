@@ -22,17 +22,23 @@ var appAjax = (function(){
 
   /**
    * AJAX更新内容
-   * @param  {object} e ajaxupdata object
+   * @param  {object} o ajaxupdata object
+   * @param  {func} callback Callback Function
    * @return {func}
    */
-  function updateSet(o){
+  function updateSet(o,callback){
     if( o && o.id && o.dbCollection ){
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",
         data : o
       }).done(function( msg ) {
-        callbackMsg(msg);
+        if(callback){
+          callbackMsg(msg);
+          (callback)();
+        }else{
+          callbackMsg(msg);
+        }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
@@ -66,7 +72,7 @@ var appAjax = (function(){
   -------------------------------------*/
   return{
     callbackMsg : function(msg){ showAjaxCallbackMsg(msg) },
-    updateSet : function(o){ updateSet(o) },
+    updateSet : function(o,callback){ updateSet(o,callback) },
     getRoles : function(e,staffName){ getRoles(e,staffName) }
   }
 

@@ -57,7 +57,7 @@ block content
                   th 操作
               tbody
                 for staff in docs
-                  tr
+                  tr(class="#{staff.hidden?'hide':''}")
                     td.readonly
                       span(class="hidden",data-name="_id")= staff._id
                       span= staff.name
@@ -80,7 +80,10 @@ block content
                       span.editable(data-name="remark")= staff.remark
                     td.tcenter.readonly= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
                     td.tcenter.readonly
-                      a(href='#') 停用
+                      if staff.hidden
+                        a(class="staff-hidden-link",href='javascript:;') 启用
+                      else
+                        a(class="staff-hidden-link",data-name="hidden",href='javascript:;') 停用
           else
             //- .empty-data -->
             .empty-data
