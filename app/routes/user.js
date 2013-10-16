@@ -26,6 +26,26 @@ exports.isLogin = function(req, res){
   }
 };
 
+// 合中白名单用户返回
+exports.isWhiteListUser = function(req, res){
+  var isLogin = exports.isLogin(req, res);
+  if(isLogin){
+    // console.log("用户登录过了B");
+    // 设置可通行白名单列表
+    var userWhiteList = ["sonichuang","panther","dgguo","kainfeng"],
+        u = req.cookies.user;
+    if(u){
+      var enName = u.rtx;
+      for(var i=0;i<userWhiteList.length;i++){
+        if( enName == userWhiteList[i] ){
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+};
+
 exports.tofLogin = function(req, res){
   var url = req.protocol || 'http';
   url += "://";

@@ -8,6 +8,8 @@ var Weekly = require('../lib/weekly').Weekly,
     Staff = require('../lib/weekly').Staff;
 
 var nodeExcel = require('excel-export');
+
+var User = require('../routes/user');
 /**
  * basic example usage of `mongoose-pagination`
  * querying for `all` {} items in `MyModel`
@@ -406,6 +408,12 @@ exports.excel = function(req, res){
  * Setting Project Manager
  */
 exports.setting_project = function(req, res){
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
   var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       // 大小写不敏感的正则搜索
@@ -437,6 +445,12 @@ exports.setting_project = function(req, res){
  * Setting Project Save
  */
 exports.setting_project_created = function(req, res){
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
   var pj = new Project(req.body.project);
   console.log(pj);
   
@@ -475,6 +489,12 @@ exports.setting_project_del = function(req, res) {
  * Setting Staff Create
  */
 exports.setting_staff_create = function(req, res) {
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
   if ( req.body.staff ){
     var staff = new Staff(req.body.staff);
     // console.log(staff);
@@ -501,6 +521,12 @@ exports.setting_staff_create = function(req, res) {
  * Setting Staff List
  */
 exports.setting_staff = function(req, res) {
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
   var pj_array = new Array(),
       // 大小写不敏感的正则搜索
       query = (req.query.staffName) ? { $regex: new RegExp("^" + req.query.staffName.toLowerCase(), "i") } : {'$exists': true};
@@ -578,7 +604,7 @@ exports.comm_ajaxGetRoles = function(req, res) {
   var staffName = req.query.staffName,
       rolesText = ["未定义角色","产品角色", "管理角色", "重构角色"];
 
-  console.log(staffName);
+  // console.log(staffName);
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){

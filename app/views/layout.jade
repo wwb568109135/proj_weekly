@@ -24,18 +24,13 @@ html(lang="zh-CN")
                 a(href='/setting-project') 系统设置
           .user-info
             if user
-            //- p= user.nick
-              a.navbar-link(href="http://km.oa.com/user/#{user.rtx}") #{user.rtx}(#{user.nick})
-
             .user-info-avatar
               img(src='http://r.hrc.oa.com/photo/100/#{user.rtx}.png', width='36', height='36', alt='sonichuang')
             .user-info-txt
               p
-                //- | 
                 span#userRtx= user.rtx 
                 span.gray (#{user.nick})
                 - var local = "localhost:3000"
-              //- p 重构角色
               p
                 span#userRoles.gray
                 | [
