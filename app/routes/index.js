@@ -26,30 +26,66 @@ MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
 }
 */
 
+/*
+ * index View
+ */
 exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+
 /*
- * product task list 
+ * Switch role and goto View
  */
 exports.task = function(req, res){
+  var staffName = req.cookies.user.rtx;
+  console.log(staffName);
+  // console.log(staffName);
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+      if(err){
+        res.send(404, "参数错误");
+      }else{
+        var roles = docs[0].roles,
+            goView = "";
+        switch(roles){
+          case 0:                  //未定义角色，转到产品视图
+            goView = exports.task_pd(req, res);
+            break;
+          case 1:                  //产品角色，转到产品视图
+            goView = exports.task_pd(req, res);
+            break;
+          case 2:                  //管理角色，转到管理视图
+            goView = exports.task_rb(req, res);
+            break;
+          case 3:                  //重构角色，转到重构视图
+            goView = exports.task_rb(req, res);
+            break;
+        }
+        goView;
+      }
+    });
+  }
+}
+
+
+/*
+ * product task View 
+ */
+exports.task_pd = function(req, res){
   var pageShowNum = 5,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true};
-      // console.log(status);
+
   /*
   for (var param in req.query) {
    console.log(param, req.query[param]);
   }*/
-
   Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
-      // console.log('Pages:', pageCount);
-
       res.locals.path = req.path;
       res.locals.originalUrl = req.originalUrl;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
@@ -64,7 +100,7 @@ exports.task = function(req, res){
 };
 
 /*
- * webRebuild task list 
+ * webRebuild task View 
  */
 exports.task_rb = function(req, res){
   var pageShowNum = 5,  //当前一页显示多少个

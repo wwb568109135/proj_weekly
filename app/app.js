@@ -56,6 +56,7 @@ app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 
 app.get('/task', routes.task);
+app.get('/task-pd', routes.task_pd);
 app.get('/task-rb', routes.task_rb);
 app.get('/task/create', routes.task_create);
 app.post('/task/created', routes.task_created);

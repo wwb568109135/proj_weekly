@@ -26,13 +26,12 @@ exports.isLogin = function(req, res){
   }
 };
 
-// 合中白名单用户返回
+// 命中白名单用户则返回
 exports.isWhiteListUser = function(req, res){
   var isLogin = exports.isLogin(req, res);
   if(isLogin){
-    // console.log("用户登录过了B");
     // 设置可通行白名单列表
-    var userWhiteList = ["sonichuang","panther","dgguo","kainfeng"],
+    var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo"],
         u = req.cookies.user;
     if(u){
       var enName = u.rtx;
