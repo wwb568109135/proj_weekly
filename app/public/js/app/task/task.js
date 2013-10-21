@@ -76,16 +76,9 @@
 
   // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
   function calendarInit(){
-    // 来源/task-rb /task 判断，并输出不同的AJAX URL
-    var pathName = $(location).attr("pathname"),
-        ajaxUrl = "";
-
-    // console.log(pathName);
-    if (pathName == "/task"){
-      ajaxUrl = "/task/callJSON?role=pm";
-    }else if(pathName == "/task-rb"){
-      ajaxUrl = "/task/callJSON?role=rb";
-    }
+    // 通过#calendar上的记录，组合不同的 calendar请求地址
+    var roles = $("#calendar").attr("data-roles"),
+        ajaxUrl = "/task/callJSON?roles="+roles;
 
     var arrayOfEvents = [];
     // AJAX的方式从service拉回 json数据并处理
@@ -130,7 +123,7 @@
             showAjaxCallbackMsg(msg);
           })
         },
-        // 日期块修改结束时间长期后 ajax保存
+        // 日期块修改结束时间长度后 ajax保存
         eventResize:function(event, dayDelta, minuteDelta){
           var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
           $.ajax({

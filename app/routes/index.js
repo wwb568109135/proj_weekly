@@ -38,16 +38,18 @@ exports.index = function(req, res){
  * Switch role and goto View
  */
 exports.task = function(req, res){
+  // 公司环境，直接取OA用户名
   var staffName = req.cookies.user.rtx;
-  console.log(staffName);
-  // console.log(staffName);
+  // 在家环境，模拟用户名
+  // var staffName = "sonichuang";
+
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){
         res.send(404, "参数错误");
       }else{
-        var roles = docs[0].roles,
-            goView = "";
+        var goView = "",
+            roles = docs[0] ? docs[0].roles : 0;
         switch(roles){
           case 0:                  //未定义角色，转到产品视图
             goView = exports.task_pd(req, res);
@@ -76,43 +78,46 @@ exports.task_pd = function(req, res){
   var pageShowNum = 5,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
-      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true};
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      // 公司环境，直接取OA用户名
+      staffName = req.cookies.user.rtx,
+      // 在家环境，模拟用户名
+      // staffName = "sonichuang",
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  /*
-  for (var param in req.query) {
-   console.log(param, req.query[param]);
-  }*/
-  Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Weekly.paginate({'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
+      res.locals.roles = 1;
       res.locals.path = req.path;
       res.locals.originalUrl = req.originalUrl;
       res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
     }
   });
   
-  /*
-  Weekly.find({}).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-    res.render('task', {docs:docs}); 
-  });*/
-  // var docss = Weekly.find().sort({"_id" : -1});
 };
 
 /*
  * webRebuild task View 
  */
 exports.task_rb = function(req, res){
-  var pageShowNum = 5,  //当前一页显示多少个
+  var pageShowNum = 10,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
-      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true};
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      // 公司环境，直接取OA用户名
+      staffName = req.cookies.user.rtx,
+      // 在家环境，模拟用户名
+      // staffName = "sonichuang",
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Weekly.paginate({'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
-
+      res.locals.roles = 3;
       res.locals.path = req.path;
       res.locals.originalUrl = req.originalUrl;
       res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
@@ -132,8 +137,6 @@ exports.task_create = function(req, res) {
       res.render('task-create', {pj:docs}); 
     }
   });
-
-  // res.render('task-create');
 };
 
 /*
@@ -157,21 +160,6 @@ exports.task_created = function(req, res){
       res.redirect('/task/create');
     }
   });
-
-  /*
-  var task = new Weekly(req.body.task);
-  console.log(task);
-  // res.send(404, function(){console.log(task);});
-  
-  task.save(function(err){
-    if(!err) {
-      res.redirect('/task');
-    } else {
-      // req.session.flash = new Flash("error",err.message);
-      res.send(404, '写入失败');
-      res.redirect('/task/create');
-    }
-  });*/
 };
 
 /*
@@ -310,9 +298,7 @@ exports.task_ajaxUpdate = function(req, res) {
         if (err){
           res.send(404, "格式错误，修改失败");
         }else {
-          // res.redirect('/task/'+id);
           res.send(200, "修改成功！");
-          // console.log("保存成功");
         }
       }
     );
@@ -351,29 +337,38 @@ exports.calendar_ajaxUpdate = function(req, res) {
  * 响应并响出索引结果json数据
  */
 exports.task_callJSON = function(req, res){
-  var role = req.query.role;
+  var roles = req.query.roles || "";
+  // var role = "rb";
   var date = new Date(),
       d = date.getDate(),
       m = date.getMonth(),
       y = date.getFullYear();
 
   // console.log(role);
-  var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
-  if (role == "rb"){
+  var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
+      // 公司环境，直接取OA用户名
+      staffName = req.cookies.user.rtx,
+      // 在家环境，模拟用户名
+      // staffName = "sonichuang";
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+
+  if (roles == "3"){
+    console.log("重构日历视图")
     //重构角色 日历表返回 重构开始时间为本月1号 - 本月30号
     Weekly.find({
-      "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
+      "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
-    
-  } else if ( role == "pm" ){
+  } else if (roles == "1"){
     //产品角色 日历表返回 上线时间为本月1号 - 下月月30号
     Weekly.find({
-      "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
+      "author":staffName, "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
+  } else {
+      res.json({});
   }
 };
 
@@ -454,14 +449,7 @@ exports.setting_project = function(req, res){
       pageCur = parseInt(req.query.page) || 1,
       // 大小写不敏感的正则搜索
       query = (req.query.projectName) ? { $regex: new RegExp("^" + req.query.projectName.toLowerCase(), "i") } : {'$exists': true};
-  // console.log(query);
-  /*
-  Project.find({}, function (err, docs) {
-    if (err) {console.error(err);
-    } else {
-      res.render('setting-project', {docs:docs}); 
-    }
-  });*/
+      // console.log(query);
      
   Project.paginate(
     {"name" : query },
@@ -644,10 +632,14 @@ exports.comm_ajaxGetRoles = function(req, res) {
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){
-        res.send(404, "参数错误");
+        res.send(404, "查询异常");
       }else{
-        var roles = rolesText[docs[0].roles] || "获取角色失败";
-        // console.log(roles);
+        // console.log(docs[0]);
+        if(docs[0]){
+          var roles = rolesText[docs[0].roles]
+        }else{
+          var roles = "角色未定义"
+        }
         res.send(200, roles);
       }
     });

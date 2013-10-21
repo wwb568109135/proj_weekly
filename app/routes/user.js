@@ -13,12 +13,14 @@ exports.hi = function(req, res){
 };
 
 exports.isLogin = function(req, res){
+  // 公司环境，直接取OA用户名
   var user = req.cookies.user;
-  // return false
+  // 在家环境，模拟用户名
+  // var user = { uid:123, nick:"黄文杰", rtx:"sonichuang" }
+  // console.log(user);
   
   if(user && user.uid) {
     res.locals.user = user;
-    // console.log(user);
     return true;
   } else {
     res.locals.user = null;
@@ -32,7 +34,10 @@ exports.isWhiteListUser = function(req, res){
   if(isLogin){
     // 设置可通行白名单列表
     var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo"],
+        // 公司环境，直接取OA用户名
         u = req.cookies.user;
+        // 在家环境，模拟用户名
+        // u = { uid:123, nick:"黄文杰", rtx:"sonichuang" };
     if(u){
       var enName = u.rtx;
       for(var i=0;i<userWhiteList.length;i++){
