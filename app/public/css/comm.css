@@ -172,6 +172,8 @@ body > .contnet{height: auto; min-height: 100%;}
 	.table-hover td{background-color: #ffffcc;}
 	.table-modify td{background-color: #ffffcc;}
 	.m-table-data .hide td{background-color: #fafafa;color: #999;}
+	.m-table-data .error{background-color: #ffcc66;}
+
 
 /*-- m-tabs --*/
 .m-tabs{}

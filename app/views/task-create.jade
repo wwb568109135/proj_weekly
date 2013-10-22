@@ -122,12 +122,26 @@ block content
 
 block pageScript
   script(src="/js/jquery/jquery.json-2.4.js")
+  script(src="/js/app/comm/m-table-data.js")
   script.
     (function(){
-      
+      var isReturn = false;
+
       //- 表单非空检测
-      function checkForm(){
-        
+      function checkCreateForm(){
+        var errorInput = 0;
+        var dataTD = $("#taskCreateForm .data-line input, #taskCreateForm .data-line select");
+        dataTD.each(function(index, el){
+          if(el.value == ""){
+            //- console.log(el);
+            $(this).parent("td").addClass("error");
+            errorInput += 1;
+          }else{
+            $(this).parent("td").removeClass("error");
+          }
+        })
+        console.log("errorInput:"+ errorInput);
+        if(errorInput == 0 ){  isReturn = true }
       }
 
       function onDomReady(){
@@ -172,30 +186,32 @@ block pageScript
         $("#taskCreateForm").on('submit',function(e){
           //- 提交前删除 tr模板代码;
           $("#insertTr").remove();
+            checkCreateForm();
 
-          //- 表单数据处理成 [{},{},{}……] 的格式
-          var data = $(this).serializeArray(),
-              data2 = [],
-              trNum = $(this).find("tr.data-line").length,
-              //- 重要，慎改！设定1行tr有多少个表单值；
-              objectNum = 12;
-          for(var j = 1 ; j<=trNum; j++ ){
-            var dd = {},
-                star = (j-1)*objectNum;
-            for( var i = star; i<j*objectNum; i++ ){
-              dd[data[i].name] = data[i].value;
+            //- 表单数据处理成 [{},{},{}……] 的格式
+            var data = $(this).serializeArray(),
+                data2 = [],
+                trNum = $(this).find("tr.data-line").length,
+                //- 重要，慎改！设定1行tr有多少个表单值；
+                objectNum = 12;
+            for(var j = 1 ; j<=trNum; j++ ){
+              var dd = {},
+                  star = (j-1)*objectNum;
+              for( var i = star; i<j*objectNum; i++ ){
+                dd[data[i].name] = data[i].value;
+              }
+              data2.push(dd);
             }
-            data2.push(dd);
-          }
-          //- console.dir(data)
-          console.dir(data2);
+            //- console.dir(data)
+            console.dir(data2);
 
-          //- 数据json化(使用jquery.json插件)
-          data2 = $.toJSON( data2 )
+            //- 数据json化(使用jquery.json插件)
+            data2 = $.toJSON( data2 )
 
-          //- 数据存入textarea里
-          $("#outputTemp").val(data2);
-          return true;
+            //- 数据存入textarea里
+            $("#outputTemp").val(data2);
+            return isReturn;
+
         });
       }
       $(onDomReady);

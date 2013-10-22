@@ -13,9 +13,10 @@
     /* .m-table-data 通用事件
     -----------------------------------------*/
     //- tr hover 变色  ----
-    if($("table.m-table-data")){
-      $( "table.m-table-data" ).delegate( "tr", "hover", function() {
-        $( this ).toggleClass( "table-hover" );
+    if($("table.m-table-data").html()){
+      $("table.m-table-data").delegate(".m-table-data tr", "mouseenter", function() {
+        console.log("hover")
+        $(this).toggleClass("table-hover");
       });
     }
 
