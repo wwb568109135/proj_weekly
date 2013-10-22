@@ -279,15 +279,13 @@ exports.task_del = function(req, res) {
 /*
  * 需求列表修改AJAX保存
  */
+/*
 exports.task_ajaxUpdate = function(req, res) {
   var id = req.query.id,
       fieldName = req.query.fieldName,
       fieldValue = req.query.fieldValue;
   var updateObj = {};
       updateObj[fieldName] = fieldValue;
-  // console.log(updateObj);
-  // var task = req.body.task;
-  // console.log(id);console.log(fieldName);console.log(fieldValue);
   
   if( id && fieldName ){  
     console.log('ajax saveing');
@@ -303,13 +301,12 @@ exports.task_ajaxUpdate = function(req, res) {
       }
     );
   }
-};
+};*/
 
 /*
  * 日历中的需求拖动后修改保存
  */
 exports.calendar_ajaxUpdate = function(req, res) {
-  // console.log(req.body.start);
   var id = req.query.id,
       start = req.query.start,
       end = req.query.end;

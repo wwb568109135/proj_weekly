@@ -46,13 +46,15 @@
     return returnVal;
   }
 
+  /*
   function showAjaxCallbackMsg( msg ){
     var $ajaxCallbackMsg = $("#ajaxCallbackMsg");
         $ajaxCallbackMsg.html(msg).addClass('msg-show');
       setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
-  }
+  }*/
 
   // AJAX更新表单内容
+  /*
   function ajaxUpdate(e){
     if(e){
       var _id = e.parent("tr").find("span[data-name='_id']").html(),
@@ -71,8 +73,8 @@
     }).fail(function(jqXHR, textStatus) {
       alert( "Request failed: " + textStatus );
     });
-
-  }
+  }*/
+  
 
   // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
   function calendarInit(){
@@ -114,13 +116,17 @@
         // 日期块拖动后 ajax保存
         eventDrop: function (event, dayDelta, minuteDelta) {
           var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+          /*
+          var postAjaxUrl = "/comm-ajaxUpdateSet",
+              postData = { id: event.id, dbCollection:"Weekly", rb_star_date: event.start, rb_end_date:event.end };
+          console.log(postData);*/
+          
           $.ajax({
             type: "POST",
             url : postAjaxUrl
-            // url: "/task/ajaxUpdateCalendar",
-            // data: { id: event.id, start: event.start, end:event.end }
+            // data: postData
           }).done(function( msg ) {
-            showAjaxCallbackMsg(msg);
+            appAjax.callbackMsg(msg);
           })
         },
         // 日期块修改结束时间长度后 ajax保存
@@ -130,7 +136,7 @@
             type: "POST",
             url : postAjaxUrl
           }).done(function( msg ) {
-            showAjaxCallbackMsg(msg);
+            appAjax.callbackMsg(msg);
           })
         }
 
@@ -150,7 +156,8 @@
       //- alert("hello");
       var _self = $(this),
           editShow = _self.find(".editable"),
-          editInput = _self.find(".editinput");
+          editInput = _self.find(".editinput"),
+          dbCollection = _self.parents("table").attr("data-collection");
       
       checkAndUpdate(); //- 检测是否存在其它编辑中的表单项
 
@@ -159,7 +166,19 @@
         editShow.html(returnHtml).show();
         editInput.remove();
         _self.removeClass("td-editing");
-        ajaxUpdate(_self);
+        // ajaxUpdate(_self);
+
+        // 拼装准备ajax发送的数据
+        var recordId = _self.parent("tr").find("span[data-name='_id']").html(),
+            fieldName = _self.find(".editable").attr("data-name"),
+            fieldValue = _self.find(".editableval").val() || _self.find(".editable").html();
+        var postData = {};
+            postData.id = recordId,
+            postData.dbCollection = dbCollection,
+            postData[fieldName] = fieldValue;
+        // 数据送ajax保存
+        appAjax.updateSet(postData);
+
       }else{                            //- 未编辑时
         var editShowHtml = editShow.html();
         var editInputHtml = callEditInputHtml(editShow,editShowHtml);

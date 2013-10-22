@@ -71,7 +71,7 @@ var appAjax = (function(){
   /* 供闭包外部使用的方法
   -------------------------------------*/
   return{
-    callbackMsg : function(msg){ showAjaxCallbackMsg(msg) },
+    callbackMsg : function(msg){ callbackMsg(msg) },
     updateSet : function(o,callback){ updateSet(o,callback) },
     getRoles : function(e,staffName){ getRoles(e,staffName) }
   }
