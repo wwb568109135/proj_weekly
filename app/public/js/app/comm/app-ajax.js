@@ -23,8 +23,8 @@ var appAjax = (function(){
   /**
    * AJAX更新内容
    * @param  {object} o ajaxupdata object
-   * @param  {func} callback Callback Function
-   * @return {func}
+   * @param  {function} callback Callback Function
+   * @return {funcion}
    */
   function updateSet(o,callback){
     if( o && o.id && o.dbCollection ){

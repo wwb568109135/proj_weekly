@@ -85,7 +85,7 @@ exports.task_pd = function(req, res){
       // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  Weekly.paginate({'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {
@@ -112,7 +112,7 @@ exports.task_rb = function(req, res){
       // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  Weekly.paginate({'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+  Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
   // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
@@ -353,14 +353,14 @@ exports.task_callJSON = function(req, res){
     console.log("重构日历视图")
     //重构角色 日历表返回 重构开始时间为本月1号 - 本月30号
     Weekly.find({
-      "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
+      $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
   } else if (roles == "1"){
     //产品角色 日历表返回 上线时间为本月1号 - 下月月30号
     Weekly.find({
-      "author":staffName, "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
+      $nor:[{hidden: true}], "author":staffName, "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });

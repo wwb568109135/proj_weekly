@@ -18,7 +18,8 @@ var WeeklySchema = new Schema({
 	pp: {type: String, requierd: true},				//需求负责人员
 	pm: {type: String, requierd: false},			//需求接口人
 	status: {type: Number, defaults: 0},			//需求当前状态
-	progress: {type: String, requierd: false}		//需求总进度
+	progress: {type: String, requierd: false},		//需求总进度
+	hidden: {type:Boolean, defaults: false}			//结束的需求
 });
 
 // 项目表集合
