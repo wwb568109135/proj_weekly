@@ -24,7 +24,11 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 
+  // 本地测试时数据库地址
   app.set('mongourl', 'mongodb://localhost/weekly_dev');
+  
+  // 173 的数据库地址
+  // app.set('mongourl', 'mongodb://test:test888@localhost/weekly_dev');
 });
 
 app.configure('development', function(){
@@ -38,7 +42,7 @@ if ('production' == app.get('env')) {
   var mongourl = '';
   mongo.hostname = (mongo.hostname || 'localhost');
   mongo.port = (mongo.port || 27017);
-  mongo.db = (mongo.db || 'todoDb');
+  mongo.db = (mongo.db || 'weekly_dev');
   if(mongo.username && mongo.password){
     mongourl = "mongodb://" + mongo.username + ":" + mongo.password + "@" + mongo.hostname + ":" + mongo.port + "/" + mongo.db;
   }else{
