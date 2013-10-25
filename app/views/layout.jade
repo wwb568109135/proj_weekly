@@ -40,6 +40,43 @@ html(lang="zh-CN")
       div.content
         block content
 
+    //- m-dialog (角色选择弹层)
+    div.m-dialog.dialog-select-roles
+      .m-dialog-box
+        .m-dialog-hd
+          h3 请选择您的角色
+        .m-dialog-bd
+          form#selectRolesForm.select-roles-form(action='')
+            p.tcenter.user-select-rtx
+              span 英文名 
+              input(value='#{user.rtx}',readonly='true')
+              input#userRolesSet(name='roles',type='hidden',value='0')
+              input(name="create_date",type='hidden',value="#{Date()}")
+            ul.user-select-roles
+              li
+                h4 产品经理
+                label(for='userRolesPD')
+                  img(src='../img/role-pm.png', alt='我是产品经理', width='120', height='120')
+                p.tcenter
+                  input#userRolesPD(type='radio', value='1', name='userRolesSelect')
+                p.tcenter
+                  select#userProject(name='project')
+                    option(value='0', selected='selected') 请选项您负责的项目
+              li
+                h4 网页重构师
+                label(for='userRolesRB')
+                  img(src='../img/role-rb.png', alt='我是网页重构', width='120', height='120')
+                p.tcenter
+                  input#userRolesRB(type='radio', value='3', name='userRolesSelect')
+                p.tcenter
+                  select#userGroup(name='group')
+                    option(value='0', selected='selected') 请选项组别
+                    option(value='1') 重构一组
+                    option(value='2') 重构二组
+                    option(value='3') 重构三组
+            p.user-select-roles-btn
+              input.m-btn.btn-skin-2(type='submit', value='确认确色')
+
     .footer
       p.copyright
         | Copyright © 1998-2013 TENCENT.ALL RIGHT RESERVED.

@@ -18,8 +18,6 @@ var appAjax = (function(){
     setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
   };
 
-
-
   /**
    * AJAX更新内容
    * @param  {object} o ajaxupdata object
@@ -43,7 +41,7 @@ var appAjax = (function(){
         alert( "Request failed: " + textStatus );
       });
     }
-  }
+  };
 
 
   /**
@@ -59,13 +57,50 @@ var appAjax = (function(){
         type: "POST",
         url: postAjaxUrl
       }).done(function( roles ) {
-        e.html(roles);
         // console.log(roles);
+        e.html(roles);
+        //----- 如果角色未定义的话，调用 user.js 的弹出选择用户角色函数
+        if( roles == "角色未定义" ){
+          appUser.showUserRolesSelect();
+        }
+
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
     }
-  }
+  };
+
+
+  /**
+   * 获取所有的项目名称
+   * @param  {[type]} e [description]
+   * @return {[type]}   [description]
+   */
+  function getProjects(e){
+    var eop = e.find("option");
+    // console.log(eop.length);
+
+    if (e && eop.length < 2 ) {
+      var postAjaxUrl = "/comm-ajaxGetProjects";
+      $.ajax({
+        type: "POST",
+        url: postAjaxUrl
+      }).done(function( pj ) {
+        if(pj){
+          var insertHTML = "";
+          for(var i = 0; i < pj.length; i++){
+            insertHTML+= "<option value='"+ pj[i].id +"'>"+ pj[i].name +"</option>";
+          }
+          console.log("插入option");
+          e.append(insertHTML);
+        }
+
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+    }
+
+  };
 
 
   /* 供闭包外部使用的方法
@@ -73,7 +108,8 @@ var appAjax = (function(){
   return{
     callbackMsg : function(msg){ callbackMsg(msg) },
     updateSet : function(o,callback){ updateSet(o,callback) },
-    getRoles : function(e,staffName){ getRoles(e,staffName) }
+    getRoles : function(e,staffName){ getRoles(e,staffName) },
+    getProjects : function(e){ getProjects(e) }
   }
 
 })()
