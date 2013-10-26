@@ -49,9 +49,9 @@ html(lang="zh-CN")
           form#selectRolesForm.select-roles-form(action='')
             p.tcenter.user-select-rtx
               span 英文名 
-              input(value='#{user.rtx}',readonly='true')
+              input#userRtxName(value='#{user.rtx}',readonly='true')
               input#userRolesSet(name='roles',type='hidden',value='0')
-              input(name="create_date",type='hidden',value="#{Date()}")
+              input#userCreateDate(name="create_date",type='hidden',value="#{Date()}")
             ul.user-select-roles
               li
                 h4 产品经理

@@ -277,11 +277,11 @@ body > .contnet{height: auto; min-height: 100%;}
 	.m-remind-box-hd h3{position: absolute;left:-1.5em;top:-1.5em;color: #fff;padding:0.5em 1em;background-color: #3f65b0;border-radius:8px;}
 
 /*-- .m-dialog --*/
-.m-dialog{visibility: hidden;position:fixed;z-index:10000;top:15%;left:50%;margin:0 0 0 -200px;width:400px;
+.m-dialog{/*display: none;*/visibility: hidden;position:fixed;z-index:10000;top:15%;left:50%;margin:0 0 0 -200px;width:400px;
 	/*-webkit-transition: all 0.5s;-moz-transition: all 0.5s;transition: all 0.5s;	*/
 	/*opacity:0;*/
 }
-	.md-show{visibility: visible;}
+	.md-show{/*display: block;*/visibility: visible;}
 	.m-dialog-box{background-color: #fff;border-radius:12px;
 	/* css3 box-shadow */
 	-webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.4);

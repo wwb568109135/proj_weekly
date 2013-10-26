@@ -25,7 +25,7 @@ var appAjax = (function(){
    * @return {funcion}
    */
   function updateSet(o,callback){
-    if( o && o.id && o.dbCollection ){
+    if( o && o.dbCollection ){
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",
@@ -72,9 +72,9 @@ var appAjax = (function(){
 
 
   /**
-   * 获取所有的项目名称
-   * @param  {[type]} e [description]
-   * @return {[type]}   [description]
+   * 获取所有的项目并填入slect框里
+   * @param  {element} e select 元素
+   * @return {function}   alax callback
    */
   function getProjects(e){
     var eop = e.find("option");
