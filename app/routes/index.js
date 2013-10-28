@@ -375,10 +375,16 @@ exports.task_callJSON = function(req, res){
  */
 exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
-      taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true};
+      taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
+      // 公司环境，直接取OA用户名
+      // staffName = req.cookies.user.rtx,
+      // 在家环境，模拟用户名
+      staffName = "sonichuang",
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+
   // console.log(taskStarDate);console.log(taskEndDate);
   Weekly.find({
-    "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
+    $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
   }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
     res.render('export', {docs:docs})
   })
