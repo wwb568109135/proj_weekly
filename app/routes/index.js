@@ -39,9 +39,9 @@ exports.index = function(req, res){
  */
 exports.task = function(req, res){
   // 公司环境，直接取OA用户名
-  // var staffName = req.cookies.user.rtx;
+  var staffName = req.cookies.user.rtx;
   // 在家环境，模拟用户名
-  var staffName = "sonichuang";
+  // var staffName = "sonichuang";
 
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -80,9 +80,9 @@ exports.task_pd = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
@@ -107,9 +107,9 @@ exports.task_rb = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
@@ -344,9 +344,9 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   if (roles == "3"){
@@ -377,9 +377,9 @@ exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // console.log(taskStarDate);console.log(taskEndDate);

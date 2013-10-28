@@ -24,11 +24,11 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 
-  // 本地测试时数据库地址
+  // 本地测试时数据库连接地址
   app.set('mongourl', 'mongodb://localhost/weekly_dev');
   
-  // 173 的数据库地址
-  // app.set('mongourl', 'mongodb://test:test888@localhost/weekly_dev');
+  // 173 的数据库连接地址
+  // app.set('mongourl', 'mongodb://test:WeoY*5TB@localhost/weekly_dev');
 });
 
 app.configure('development', function(){
@@ -36,20 +36,20 @@ app.configure('development', function(){
 });
 
 // Connect MongoDB
-if ('production' == app.get('env')) {
-  var afEnv = JSON.parse(process.env.VCAP_SERVICES);
-  var mongo = afEnv['mongodb-1.8'][0]['credentials'];
-  var mongourl = '';
-  mongo.hostname = (mongo.hostname || 'localhost');
-  mongo.port = (mongo.port || 27017);
-  mongo.db = (mongo.db || 'weekly_dev');
-  if(mongo.username && mongo.password){
-    mongourl = "mongodb://" + mongo.username + ":" + mongo.password + "@" + mongo.hostname + ":" + mongo.port + "/" + mongo.db;
-  }else{
-    mongourl = "mongodb://" + mongo.hostname + ":" + mongo.port + "/" + mongo.db;
-  }
-  app.set('mongourl', mongourl);
-}
+// if ('production' == app.get('env')) {
+//   var afEnv = JSON.parse(process.env.VCAP_SERVICES);
+//   var mongo = afEnv['mongodb-1.8'][0]['credentials'];
+//   var mongourl = '';
+//   mongo.hostname = (mongo.hostname || 'localhost');
+//   mongo.port = (mongo.port || 27017);
+//   mongo.db = (mongo.db || 'weekly_dev');
+//   if(mongo.username && mongo.password){
+//     mongourl = "mongodb://" + mongo.username + ":" + mongo.password + "@" + mongo.hostname + ":" + mongo.port + "/" + mongo.db;
+//   }else{
+//     mongourl = "mongodb://" + mongo.hostname + ":" + mongo.port + "/" + mongo.db;
+//   }
+//   app.set('mongourl', mongourl);
+// }
 Weekly.connect(app.get('mongourl'));
 
 // Routes Rule

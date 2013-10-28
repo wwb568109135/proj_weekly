@@ -71,7 +71,7 @@ var appUser = (function(){
             postData.create_date = d;
         console.dir(postData);
         var callbackFunc = function(){
-          setTimeout(function(){location.reload()},3000)
+          setTimeout(function(){location.reload()},2500)
         }
         appAjax.updateSet(postData,callbackFunc);
       }
