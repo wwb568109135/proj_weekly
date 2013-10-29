@@ -20,6 +20,9 @@ block content
           input.inp-txt(type='text',name="q", placeholder='需求ID/名称')
           input.btn-search(type='submit', value='搜索')
       .c-box-hd-extra
+        div#directionSelectDiv.hidden
+          select#directionSelect.editinput(data-name='direction')
+            option(value='0') 选择当前说明
         form.search-form(action='')
           label(for='currentStatus') 筛选
           select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
@@ -95,7 +98,7 @@ block content
                 td
                   span.editable(data-name="pm")= weekly.pm
                 td
-                  span.editable(data-name="pm")= weekly.pm
+                  span.editable(data-name="direction")= weekly.direction
       else
         //- .empty-data -->
         .empty-data

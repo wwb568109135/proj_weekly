@@ -59,6 +59,7 @@ app.get('/', routes.index);
 app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);
+app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
 
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);
@@ -80,6 +81,9 @@ app.post('/excel', routes.excel);
 app.get('/setting-project', routes.setting_project);
 app.post('/setting-project/created', routes.setting_project_created);
 app.get('/setting-project/del/:id', routes.setting_project_del);
+app.get('/setting-direction', routes.setting_direction);
+app.post('/setting-direction/created', routes.setting_direction_created);
+app.get('/setting-direction/del/:id', routes.setting_direction_del);
 app.get('/setting-staff/create', routes.setting_staff_create);
 app.post('/setting-staff/create', routes.setting_staff_create);
 app.get('/setting-staff', routes.setting_staff);

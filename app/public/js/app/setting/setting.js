@@ -40,7 +40,7 @@
     })
 
     //- Click to Edit ------------------------
-    $("table.project-manage-table td,table.staff-manage-table td").not("td.readonly").on("dblclick",function(){
+    $("table.project-manage-table td,table.direction-manage-table td,table.staff-manage-table td").not("td.readonly").on("dblclick",function(){
       // alert("hello");
       var _self = $(this),
           editShow = _self.find(".editable"),

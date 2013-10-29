@@ -180,7 +180,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.m-tabs-nav{*zoom:1;border-bottom: 1px solid #ddd;margin:0 0 2em;}
 	.m-tabs-nav:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
 	.m-tabs-nav-ul{float: left;}
-	.m-tabs-nav-ul li{position: relative;display: inline-block;*display: inline;*zoom:1;min-width:90px;height: 28px;padding:0 3px;margin:0 0.5em -1px 0;font-size:1.2em;background-color: #f1f1f1;border: 1px solid #ddd;border-top-left-radius:4px;border-top-right-radius:4px;vertical-align: bottom;}
+	.m-tabs-nav-ul li{position: relative;display: inline-block;*display: inline;*zoom:1;min-width:80px;height: 28px;padding:0 15px;margin:0 0.5em -1px 0;font-size:1.2em;background-color: #f1f1f1;border: 1px solid #ddd;border-top-left-radius:4px;border-top-right-radius:4px;vertical-align: bottom;}
 	.m-tabs-nav-ul a{ display: block;height: 100%;line-height: 28px;text-align: center;}
 	.m-tabs-nav-ul a:link,.m-tabs-nav-ul a:visited{text-decoration: none;color: #333;}
 	.m-tabs-nav-ul .current{background-color: #fff;border-bottom: 1px solid #fff;height:30px;}
@@ -536,6 +536,14 @@ body > .contnet{height: auto; min-height: 100%;}
 	.add-project-form .inp-txt{width: 300px;}
 
 
+/*-- .direction-manage-table{} --*/
+.direction-manage-table{width: 720px;}
+	.direction-manage-table th{text-align: center;}
+	.direction-manage-table .c1{width:15%;}
+	.direction-manage-table .c2{width:70%;}
+	.direction-manage-table .c3{width:15%;}
+.add-direction-form{overflow: hidden;*zoom:1;margin:0 0 1em;}
+	.add-direction-form .inp-txt{width: 400px;}
 
 
 

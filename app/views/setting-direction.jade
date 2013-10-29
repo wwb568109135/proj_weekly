@@ -1,0 +1,66 @@
+extends layout
+block content
+  //- c-box:系统设置-项目管理
+  .c-box
+    .c-box-hd
+      .c-box-hd-title
+        h3 系统设置
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1(href='#') 返回需求列表
+    .c-box-bd
+      .m-tabs
+        .m-tabs-nav
+          ul.m-tabs-nav-ul
+            li
+              a(href='/setting-staff/create') 权限开通
+            li
+              a(href='/setting-staff') 人员管理
+            li
+              a(href='/setting-project') 项目管理
+            li.current
+              a(href='/setting-direction') 其它说明管理 
+          //- form.search-form(method='get',action='/setting-direction')
+          //-   input.inp-txt(name='projectName', type='text', placeholder='其它说明的文字')
+          //-   input.btn-search(type='submit', value='搜索')
+        .m-tabs-content
+          //- .system-settings-box
+          .system-settings-box
+            form#addProjectForm.add-direction-form(method="post", action='/setting-direction/created')
+              input.m-input.inp-txt(id="addDirectionName", name="direction[name]", type='text', placeholder='输入说明，如：重构完成，等待开发联调')
+              input.m-btn.btn-skin-1(type='submit', value='+新增说明')
+            if docs.length
+              table.m-table-data.direction-manage-table(data-collection="Direction")
+                colgroup
+                  col.c1
+                  col.c2
+                  col.c3
+                thead
+                  th 排列
+                  th 其他说明
+                  th 操作
+                tbody
+                  for direction in docs
+                    tr
+                      td.tcenter 
+                        span(class="hidden",data-name="_id")= direction._id
+                        span.editable(data-name="array")= direction.array
+                      td
+                        span.editable(data-name="name")= direction.name
+                        if direction.star
+                          [ 
+                          #{direction.star}
+                          ]
+                      td.tcenter
+                        a(href='/setting-direction/del/#{direction.id}') 删除
+            else
+              //- .empty-data -->
+              .empty-data
+                p 目前还未发布说明，请先发布说明
+            include include/paginate
+  div.callback-msg#ajaxCallbackMsg hello    
+
+
+block pageScript
+  //- page javascript
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/setting/setting.js")

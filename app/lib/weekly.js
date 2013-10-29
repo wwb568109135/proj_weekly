@@ -17,6 +17,7 @@ var WeeklySchema = new Schema({
 	rb_end_date: {type:Date},						//重构完成时间
 	pp: {type: String, requierd: true},				//需求负责人员
 	pm: {type: String, requierd: false},			//需求接口人
+	direction: {type: String, requierd: false},		//需求其它说明
 	status: {type: Number, defaults: 0},			//需求当前状态
 	progress: {type: String, requierd: false},		//需求总进度
 	hidden: {type:Boolean, defaults: false}			//结束的需求
@@ -39,6 +40,12 @@ var StaffSchema = new Schema({
 	hidden: {type:Boolean, defaults: false}			//停用的用户
 });
 
+// 其化说明集合
+var DirectionSchema = new Schema({
+	name: {type: String, requierd: true},			//预设说明1
+	array: {type: Number, defaults: 1}				//说明排列
+});
+
 var opened = false;
 
 mongoose.connection.on('open', function(ref) {
@@ -52,6 +59,7 @@ mongoose.connection.on('error', function(err) {
 exports.Weekly = mongoose.model('Weekly', WeeklySchema);
 exports.Project = mongoose.model('Project', ProjectSchema);
 exports.Staff = mongoose.model('Staff', StaffSchema);
+exports.Direction = mongoose.model('Direction', DirectionSchema);
 
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {

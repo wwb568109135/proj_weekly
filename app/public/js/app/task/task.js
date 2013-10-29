@@ -13,7 +13,7 @@
   function callEditInputHtml(o,s){
     var cbVal = s || "";
     if(o.attr("data-name") == "status" ){
-    //- 设置需求状态时反馈回的HTML
+      //- 设置需求状态时反馈回的HTML
       var cbHtml = '';
           cbHtml += '<select class="editinput" name="editStatus">';
           //- cbHtml += '<option value="' + cbVal +'">' + cbVal +'</option>';
@@ -22,6 +22,10 @@
           cbHtml += '<option value="2">联调中</option>';
           cbHtml += '<option value="3">已上线</option>';
           cbHtml += '</select>';
+    }else if(o.attr("data-name") == "direction" ){
+      // - 设置其它说明时反馈回的HTML
+      var cbHtml = $("#directionSelectDiv").html();
+
     }else if(o.attr("data-name") == "online_date" || o.attr("data-name") == "rb_star_date" || o.attr("data-name") == "rb_end_date"){
       //- 设置日期input 反馈回的HTML
       var cbHtml = '<input type="txt" class="m-input date-picker editinput" value="'+ cbVal +'" />';
@@ -45,35 +49,6 @@
     }
     return returnVal;
   }
-
-  /*
-  function showAjaxCallbackMsg( msg ){
-    var $ajaxCallbackMsg = $("#ajaxCallbackMsg");
-        $ajaxCallbackMsg.html(msg).addClass('msg-show');
-      setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
-  }*/
-
-  // AJAX更新表单内容
-  /*
-  function ajaxUpdate(e){
-    if(e){
-      var _id = e.parent("tr").find("span[data-name='_id']").html(),
-          fieldName = e.find(".editable").attr("data-name"),
-          fieldValue = e.find(".editableval").val() || e.find(".editable").html(),
-          postAjaxUrl = "/task/ajaxUpdate?id="+_id+"&fieldName="+fieldName+"&fieldValue="+fieldValue;
-    }
-    console.log('postAjaxUrl :' + postAjaxUrl);
-    $.ajax({
-      type: "POST",
-      url: postAjaxUrl
-      //- data: { fieldName: "John", location: "Boston" }
-    }).done(function( msg ) {
-      //- alert( "Data Saved: " + msg );
-      showAjaxCallbackMsg(msg);
-    }).fail(function(jqXHR, textStatus) {
-      alert( "Request failed: " + textStatus );
-    });
-  }*/
   
 
   // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
@@ -265,6 +240,9 @@
     // 日历插件启动
     calendarInit();
 
+    // 填充当前说明的下载框
+    var $directionSelect = $("#directionSelect");
+    appAjax.getDirections($directionSelect)
   }
   $(initDomReady);
 })()

@@ -5,7 +5,8 @@
 "use strict";
 var Weekly = require('../lib/weekly').Weekly,
     Project = require('../lib/weekly').Project,
-    Staff = require('../lib/weekly').Staff;
+    Staff = require('../lib/weekly').Staff,
+    Direction = require('../lib/weekly').Direction;
 
 var nodeExcel = require('excel-export');
 
@@ -513,6 +514,81 @@ exports.setting_project_del = function(req, res) {
 };
 
 /*
+ * Setting Direction Manager
+ */
+exports.setting_direction = function(req, res){
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
+  var pageShowNum = 20,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1,
+      // 大小写不敏感的正则搜索
+      query = (req.query.directionName) ? { $regex: new RegExp("^" + req.query.directionName.toLowerCase(), "i") } : {'$exists': true};
+      // console.log(query);
+     
+  Direction.paginate(
+    {"name" : query },
+    {array:1}, 
+    pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+    if (error) {
+      console.error(error);
+    } else {
+      res.locals.path = req.path;
+      res.locals.originalUrl = req.originalUrl;
+      res.render('setting-direction', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+    }
+  });
+ 
+};
+
+/*
+ * Setting Direction Save
+ */
+exports.setting_direction_created = function(req, res){
+  var isWhiteListUser = User.isWhiteListUser(req, res);
+  if(!isWhiteListUser){
+    // 不是白单名用户，直接跳转回首页；
+    res.redirect('/');
+  }
+
+  var pj = new Direction(req.body.direction);
+  console.log(pj);
+  
+  pj.save(function(err){
+    if(!err) {
+      res.redirect('/setting-direction');
+    } else {
+      res.send(404, '写入失败');
+      res.redirect('/setting-direction');
+    }
+  });
+};
+
+/*
+ * Setting Direction Del
+ */
+exports.setting_direction_del = function(req, res) {
+  var id = req.params.id;
+  var error = false;
+  var msg = '';
+  if(!id) {
+    error = "warning";
+    msg = '必须指定要删除的任务。';
+  } else {
+    Direction.remove({_id:id},function(err){
+      if (err) {
+        res.send(404, err.message);
+      } else {
+        res.redirect('/setting-direction');
+      }
+    });
+  }
+};
+
+/*
  * Setting Staff Create
  */
 exports.setting_staff_create = function(req, res) {
@@ -601,6 +677,8 @@ exports.comm_ajaxUpdateSet = function(req, res) {
     dbCollection = Weekly;
   }else if(dbCollection == "Staff"){
     dbCollection = Staff;
+  }else if(dbCollection = "Direction"){
+    dbCollection = Direction;
   }
   
   if( id && dbCollection && data ){  
@@ -631,8 +709,6 @@ exports.comm_ajaxUpdateSet = function(req, res) {
       }
     })
   }
-
-
 };
 
 
@@ -661,11 +737,11 @@ exports.comm_ajaxGetRoles = function(req, res) {
   }
 };
 
+
 /*
  * Comm : Ajax Get Projects
  */
 exports.comm_ajaxGetProjects = function(req, res) {
-
   Project.find({},function(err,docs){
     if(err){
       console.error(err);
@@ -678,8 +754,23 @@ exports.comm_ajaxGetProjects = function(req, res) {
       res.send(200, pj_array);
     }
   });
-
-
 };
 
 
+/*
+ * Comm : Ajax Get Directions
+ */
+exports.comm_ajaxGetDirections = function(req, res) {
+  Direction.find({}).sort({array: 1}).exec(function(err,docs){
+    if(err){
+      console.error(err);
+    }else{
+      var dir_array = new Array();
+      for(var i=0; i <docs.length;i++){
+        dir_array[i] = {id:docs[i]._id, name:docs[i].name}
+        dir_array[docs[i]._id] = docs[i].name
+      }
+      res.send(200, dir_array);
+    }
+  });
+};

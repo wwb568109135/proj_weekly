@@ -74,12 +74,11 @@ var appAjax = (function(){
   /**
    * 获取所有的项目并填入slect框里
    * @param  {element} e select 元素
-   * @return {function}   alax callback
+   * @return {function}   ajax callback
    */
   function getProjects(e){
     var eop = e.find("option");
     // console.log(eop.length);
-
     if (e && eop.length < 2 ) {
       var postAjaxUrl = "/comm-ajaxGetProjects";
       $.ajax({
@@ -91,15 +90,42 @@ var appAjax = (function(){
           for(var i = 0; i < pj.length; i++){
             insertHTML+= "<option value='"+ pj[i].id +"'>"+ pj[i].name +"</option>";
           }
-          console.log("插入option");
+          // console.log("插入option");
           e.append(insertHTML);
         }
-
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
     }
+  };
 
+
+  /**
+   * 获取所有的其它说明并填入slect框里
+   * @param  {element} e select 元素
+   * @return {function}   ajax callback
+   */
+  function getDirections(e){
+    var eop = e.find("option");
+    // console.log(eop.length);
+    if (e && eop.length < 2 ) {
+      var postAjaxUrl = "/comm-ajaxGetDirections";
+      $.ajax({
+        type: "POST",
+        url: postAjaxUrl
+      }).done(function( dir ) {
+        if(dir){
+          var insertHTML = "";
+          for(var i = 0; i < dir.length; i++){
+            insertHTML+= "<option value='"+ dir[i].name +"'>"+ dir[i].name +"</option>";
+          }
+          // console.log("插入option");
+          e.append(insertHTML);
+        }
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+    }
   };
 
 
@@ -109,7 +135,8 @@ var appAjax = (function(){
     callbackMsg : function(msg){ callbackMsg(msg) },
     updateSet : function(o,callback){ updateSet(o,callback) },
     getRoles : function(e,staffName){ getRoles(e,staffName) },
-    getProjects : function(e){ getProjects(e) }
+    getProjects : function(e){ getProjects(e) },
+    getDirections : function(e){ getDirections(e) }
   }
 
 })()
