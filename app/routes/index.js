@@ -774,3 +774,5 @@ exports.comm_ajaxGetDirections = function(req, res) {
     }
   });
 };
+
+/* ADD TEST*/
