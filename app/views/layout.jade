@@ -30,11 +30,12 @@ html(lang="zh-CN")
               p
                 span#userRtx= user.rtx 
                 span.gray (#{user.nick})
-                - var local = "localhost:3000"
+                //- - var local = "localhost:3000"
               p
                 span#userRoles.gray
                 | [
-                a(href='http://www.oa.com/api/loginout.ashx?ref='+local) 退出
+                //- a(href='http://www.oa.com/api/loginout.ashx?ref='+local) 退出
+                a(href='/logout') 退出
                 | ]
               //- p #{user.uid}
       div.content

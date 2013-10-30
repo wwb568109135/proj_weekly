@@ -34,6 +34,12 @@ exports.index = function(req, res){
   res.render('index', { title: 'Express' });
 };
 
+/*
+ * logout View
+ */
+exports.logout = function(req, res){
+  User.tofLogout(req, res);
+};
 
 /*
  * Switch role and goto View

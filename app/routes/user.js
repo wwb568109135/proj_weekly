@@ -54,13 +54,26 @@ exports.tofLogin = function(req, res){
   var url = req.protocol || 'http';
   url += "://";
   url += req.get('host');
-  url += req.originalUrl; 
+  // url += req.originalUrl; 
   res.redirect('http://passport.oa.com/modules/passport/signin.ashx?url='+encodeURIComponent(url));
+};
+
+exports.tofLogout = function(req, res){
+  res.locals.user = null;
+  res.clearCookie('user');
+
+  var url = req.protocol || 'http';
+      url += "://";
+      url += req.get('host');
+      // url += req.originalUrl;
+  console.log(url);
+  res.redirect('http://www.oa.com/api/loginout.ashx?ref='+encodeURIComponent(url));
 };
 
 exports.auth = function(req, res, next) {
   if('undefined' === typeof process.env.NODE_ENV || 'production' !== process.env.NODE_ENV) {
     var isLogin = exports.isLogin(req, res);
+    // var ticket = req.query.ticket || '';
     var ticket = req.query.ticket || '';
     if(!isLogin){
       if(!ticket) {

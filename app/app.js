@@ -56,6 +56,7 @@ Weekly.connect(app.get('mongourl'));
 app.use(app.router);
 app.all('*', user.auth);
 app.get('/', routes.index);
+app.get('/logout', routes.logout);
 app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);
