@@ -385,7 +385,7 @@ exports.task_callJSON = function(req, res){
       res.json(docs)
     });
   } else if (roles == "1"){
-    //产品角色 日历表返回 上线时间为本月1号 - 下月月30号
+    //产品角色 日历表返回 上线时间为本月1号 - 下月30号
     Weekly.find({
       $nor:[{hidden: true}], "author":staffName, "online_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m+1, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
@@ -807,7 +807,7 @@ exports.comm_ajaxUpdateSet = function(req, res) {
  */
 exports.comm_ajaxGetRoles = function(req, res) {
   var staffName = req.query.staffName,
-      rolesText = ["未定义角色","产品角色", "管理角色", "重构角色"];
+      rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色"];
 
   // console.log(staffName);
   if(staffName){

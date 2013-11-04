@@ -28,11 +28,11 @@ html(lang="zh-CN")
               img(src='http://r.hrc.oa.com/photo/100/#{user.rtx}.png', width='36', height='36', alt='sonichuang')
             .user-info-txt
               p
-                span#userRtx= user.rtx 
+                span#userRtx= user.rtx
                 span.gray (#{user.nick})
                 //- - var local = "localhost:3000"
               p
-                span#userRoles.gray
+                span#userRoles.gray(data-roles="#{roles}") 角色未定义
                 | [
                 //- a(href='http://www.oa.com/api/loginout.ashx?ref='+local) 退出
                 a(href='/logout') 退出

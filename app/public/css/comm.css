@@ -404,7 +404,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.rb-task-table td{white-space:nowrap;}
 	.rb-task-table .c1{width:10%;}
 	.rb-task-table .c2{width:22%;}
-	.rb-task-table .c3{width:6%1;}
+	.rb-task-table .c3{width:6%;}
 	.rb-task-table .c4{width:5%;}
 	.rb-task-table .c5{width:6%;}
 	.rb-task-table .c6{width:6%;}
@@ -468,7 +468,6 @@ body > .contnet{height: auto; min-height: 100%;}
 	/*- .task-detail-operate -*/
 	.task-detail-operate{clear: both;}
 		.tdo-list li{margin:0 0 1em;}
-
 		.tdo-static-title{}
 		.tdo-static-group{display: inline;}
 		.tdo-static-group label{padding:0 4px 0 0;}

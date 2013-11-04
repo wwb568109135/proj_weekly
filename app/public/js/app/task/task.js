@@ -79,43 +79,50 @@
       })
       // console.log(ev);
 
-      // 【重要】日期插件本身的加载配置代码 
-      $('#calendar').fullCalendar({
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'basicWeek,month'
-        },
-        editable: true,
-        events: ev,
-        // 日期块拖动后 ajax保存
-        eventDrop: function (event, dayDelta, minuteDelta) {
-          var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
-          /*
-          var postAjaxUrl = "/comm-ajaxUpdateSet",
-              postData = { id: event.id, dbCollection:"Weekly", rb_star_date: event.start, rb_end_date:event.end };
-          console.log(postData);*/
-          
-          $.ajax({
-            type: "POST",
-            url : postAjaxUrl
-            // data: postData
-          }).done(function( msg ) {
-            appAjax.callbackMsg(msg);
-          })
-        },
-        // 日期块修改结束时间长度后 ajax保存
-        eventResize:function(event, dayDelta, minuteDelta){
-          var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
-          $.ajax({
-            type: "POST",
-            url : postAjaxUrl
-          }).done(function( msg ) {
-            appAjax.callbackMsg(msg);
-          })
-        }
-
-      });
+      if(roles == 1){
+        // 【产品角色日历】日历读取日期插件本身的加载配置代码 
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'basicWeek,month'
+          },
+          editable: false,
+          events: ev
+        })
+      }else if (roles == 3){
+        // 【产品角色日历】日历读取日期插件本身的加载配置代码 
+        $('#calendar').fullCalendar({
+          header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'basicWeek,month'
+          },
+          editable: true,
+          events: ev,
+          // 日期块拖动后 ajax保存
+          eventDrop: function (event, dayDelta, minuteDelta) {
+            var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+            $.ajax({
+              type: "POST",
+              url : postAjaxUrl
+              // data: postData
+            }).done(function( msg ) {
+              appAjax.callbackMsg(msg);
+            })
+          },
+          // 日期块修改结束时间长度后 ajax保存
+          eventResize:function(event, dayDelta, minuteDelta){
+            var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+            $.ajax({
+              type: "POST",
+              url : postAjaxUrl
+            }).done(function( msg ) {
+              appAjax.callbackMsg(msg);
+            })
+          }
+        });
+      }
 
     })
   }
