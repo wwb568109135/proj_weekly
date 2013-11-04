@@ -46,6 +46,13 @@ var DirectionSchema = new Schema({
 	array: {type: Number, defaults: 1}				//说明排列
 });
 
+// 需求历史变更
+var TasksHistorySchema = new Schema({
+	task: {type: String, requierd: true},			//变更需求ID
+	modify: [{edate: Date, editor: String, efield: String, evalue_before: String, evalue_after: String}]	//修改细节
+	// 变更时间	 变更人	变更字段	变更前	变更后
+});
+
 var opened = false;
 
 mongoose.connection.on('open', function(ref) {
@@ -60,6 +67,7 @@ exports.Weekly = mongoose.model('Weekly', WeeklySchema);
 exports.Project = mongoose.model('Project', ProjectSchema);
 exports.Staff = mongoose.model('Staff', StaffSchema);
 exports.Direction = mongoose.model('Direction', DirectionSchema);
+exports.TasksHistory = mongoose.model('TasksHistory', TasksHistorySchema);
 
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {

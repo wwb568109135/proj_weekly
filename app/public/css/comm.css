@@ -457,6 +457,13 @@ body > .contnet{height: auto; min-height: 100%;}
 		.task-base-information{}
 		.task-base-information li{position: relative;min-height:1.5em;_height:1.5em;margin: 0 0 1em;padding-left:92px;}
 		.task-base-information li label{position: absolute;left:0;top:0;width: 86px;text-align: right;}
+		.task-modify-history{overflow: hidden;*zoom:1;border-bottom: 1px solid #eee;}
+		.task-modify-history li{float:left;width:25%;line-height:2em;}
+		.task-modify-history-th li{background-color: #eee;}
+		.task-modify-history .m1{}
+		.task-modify-history .m2{}
+		.task-modify-history .m3{text-align: center;}
+		.task-modify-history .m4{}
 
 	/*- .task-detail-operate -*/
 	.task-detail-operate{clear: both;}

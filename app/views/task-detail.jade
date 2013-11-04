@@ -102,6 +102,29 @@ block content
               li
                 label 页面数：
                 em= weekly.pages
+
+          .task-detail-side-hd
+            h3 需求修改历史：
+          .task-detail-side-bd
+            ul.task-modify-history.task-modify-history-th
+              li.m1 
+                strong 修改者
+              li.m2
+                strong 字段名
+              li.m3
+                strong 修改后
+              li.m4
+                strong 变更时间
+            - var fieldName = {title:"需求标题", focus:"是否重点需求", pages:"页面数", pp:"网站人员", online_date:"上线时间", rb_star_date:"重构开始时间", rb_end_date:"重构结束时间"}
+            if taskHistory
+              for hh in taskHistory.modify
+                ul.task-modify-history
+                  li= hh.editor
+                  li= fieldName[hh.efield]
+                  li.tcenter= hh.evalue_after
+                  li= hh.edate ? hh.edate.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
+
+
         //- task-detail-operate
         .task-detail-operate
           fieldset

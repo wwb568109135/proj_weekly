@@ -18,6 +18,44 @@ var appAjax = (function(){
     setTimeout(function(){$ajaxCallbackMsg.removeClass('msg-show')},2000)
   };
 
+
+  /**
+   * Ajax修改需求单,记录进修改历史
+   * @param  {object} o ajaxupdata object
+   * @param  {function} callback Callback Function
+   * @return {funcion}
+   */
+  function tasksModifyRecord(o){
+    if( o ){
+
+      var editObj = {};
+          editObj.task = o.id,
+          editObj.modify = [],
+          editObj.modify[0] = {},
+          editObj.modify[0].edate = new Date(),
+          editObj.modify[0].editor = $("#userRtx").html();
+      delete o.id;
+      delete o.dbCollection;
+      for( prop in o ){
+        editObj.modify[0].efield = prop;
+        editObj.modify[0].evalue_after = o[prop];
+      }
+
+      console.dir(editObj);
+
+      $.ajax({
+        type: "POST",
+        url: "/tasksHistoryCreate",
+        data : editObj
+      }).done(function( msg ) {
+        alert("修改记录成功！")
+      }).fail(function(jqXHR, textStatus) {
+        alert( "修改记录失败：" + textStatus );
+      });
+    }
+  };
+
+
   /**
    * AJAX更新内容
    * @param  {object} o ajaxupdata object
@@ -26,6 +64,8 @@ var appAjax = (function(){
    */
   function updateSet(o,callback){
     if( o && o.dbCollection ){
+      
+
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",
@@ -40,6 +80,11 @@ var appAjax = (function(){
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
+
+      if(o.dbCollection === "Weekly"){
+        console.log("is Weekly");
+        tasksModifyRecord(o);
+      }
     }
   };
 

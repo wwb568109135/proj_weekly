@@ -6,7 +6,8 @@
 var Weekly = require('../lib/weekly').Weekly,
     Project = require('../lib/weekly').Project,
     Staff = require('../lib/weekly').Staff,
-    Direction = require('../lib/weekly').Direction;
+    Direction = require('../lib/weekly').Direction,
+    TasksHistory = require('../lib/weekly').TasksHistory;
 
 var nodeExcel = require('excel-export');
 
@@ -180,9 +181,19 @@ exports.task_detail = function(req, res) {
     error = "warning";
     msg = '必须指定要显示的任务ID。';
   } else {
-      Weekly.findById(id, function(err, docs){
-        res.render('task-detail', {docs:docs});
-      });
+      
+    TasksHistory.findOne({task:id},function(err,doc){
+      if(err){console.log(err)}else{
+        res.locals.taskHistory = doc;
+        
+        Weekly.findById(id, function(err, docs){
+          if(err){console.log(err);}else{
+            res.render('task-detail', {docs:docs});
+          }
+        });
+      }
+    })
+
   }
 };
 
@@ -664,6 +675,69 @@ exports.setting_staff = function(req, res) {
 };
 
 
+/*
+ * tasksHistory Create
+ */
+exports.tasksHistory_create = function(req, res) {
+  var data = req.body;
+  console.dir("tasksHistory_create" + data);
+
+  if (data.task){
+
+
+    TasksHistory.find({"task":data.task}, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+
+
+        if(docs.length == 0){    // 没记录，新创建1个记录
+          console.error("没记录");
+          TasksHistory.create(data, function (err) {
+            if (err){
+              res.send(404, "格式错误，需求历史记录失败");
+            }else {
+              res.send(200, "需求历史记录成功");
+            }
+          })
+        }else{                  // 有记录，在原记录上修改
+          console.error("有记录");
+          TasksHistory.findOne({task:data.task}, function (err, doc) {
+            if (err){
+              console.log(error);
+              res.send(404, "格式错误，需求历史记录失败");
+            }else{
+              doc.name = 'jason borne';
+              doc.modify.push(data.modify[0]);
+              doc.save();
+              res.send(200, "需求历史记录成功");
+            }
+          })
+
+          // 把 新增的记录push到docs上并进行保存
+          /*var newDataModify = docs[0].modify;
+              newDataModify.push(data.modify[0]);
+          console.log(newDataModify)    
+          TasksHistory.findOneAndUpdate({"task":data.task}, 
+            {$set: newDataModify}, 
+            {upsert : true},
+            function (err) {
+              if (err){
+                res.send(404, "格式错误，需求历史记录失败");
+              }else {
+                res.send(200, "需求历史记录成功");
+              }
+            }
+          );*/
+
+        }
+
+      }
+    });
+  }
+
+};
+
 
 /*
  * Comm : Ajax Update Set
@@ -687,13 +761,14 @@ exports.comm_ajaxUpdateSet = function(req, res) {
     dbCollection = Direction;
   }
   
-  if( id && dbCollection && data ){  
+  // console.log(id);
+  // console.log(data);
+
+  if( id && data ){  
     console.log('ajax saveing');
-    console.dir(data);
+    // console.dir(data);
     dbCollection.findByIdAndUpdate(id, 
-      { 
-        $set: data
-      }, 
+      {$set: data},
       {upsert : true},
       function (err) {
         if (err){
@@ -705,7 +780,7 @@ exports.comm_ajaxUpdateSet = function(req, res) {
         }
       }
     );
-  }else if( !id && dbCollection && data ){
+  }else if( !id && data ){
     console.log('ajax ceate');
     dbCollection.create(data, function (err) {
       if (err){
