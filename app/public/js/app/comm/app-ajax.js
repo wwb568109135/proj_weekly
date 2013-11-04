@@ -27,7 +27,6 @@ var appAjax = (function(){
    */
   function tasksModifyRecord(o){
     if( o ){
-
       var editObj = {};
           editObj.task = o.id,
           editObj.modify = [],
@@ -41,16 +40,16 @@ var appAjax = (function(){
         editObj.modify[0].evalue_after = o[prop];
       }
 
-      console.dir(editObj);
+      // console.dir(editObj);
 
       $.ajax({
         type: "POST",
         url: "/tasksHistoryCreate",
         data : editObj
       }).done(function( msg ) {
-        alert("修改记录成功！")
+        // alert("修改记录成功！")
       }).fail(function(jqXHR, textStatus) {
-        alert( "修改记录失败：" + textStatus );
+        // alert( "修改记录失败：" + textStatus );
       });
     }
   };
@@ -64,8 +63,6 @@ var appAjax = (function(){
    */
   function updateSet(o,callback){
     if( o && o.dbCollection ){
-      
-
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",
@@ -82,7 +79,8 @@ var appAjax = (function(){
       });
 
       if(o.dbCollection === "Weekly"){
-        console.log("is Weekly");
+        // console.log("is Weekly");
+        // 记录进需求修改历史
         tasksModifyRecord(o);
       }
     }

@@ -24,12 +24,22 @@ block content
               .task-edit-part
                 label.lab(for='taskType') 需求类型： 
                 select#taskType(name='task[type]')
-                  option(value='', selected='selected') XX官网
-                  option(value='') XX官网
-                  option(value='') XX官网
+                  option(value='') 选择项目
+                  if pj.length
+                    for project in pj
+                      if project.name == weekly.type
+                        option(value='#{project.name}', selected='selected')= project.name
+                      else
+                         option(value='#{project.name}')= project.name
+
               .task-edit-part
                 label.lab(for='taskPriority') 优先程度： 
                 select#taskType(name='task[priority]')
+                  //- for i in 4
+                  //-   if (weekly.priority == i)
+                  //-     option(value=i, selected='selected') TT
+                  //-   else
+                  //-     option(value=i) TT
                   - if (weekly.priority == 0)
                      option(value='0', selected='selected') T0
                   - else

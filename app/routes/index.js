@@ -208,9 +208,18 @@ exports.task_edit = function(req, res) {
     error = "warning";
     msg = '必须指定要编辑的任务ID。';
   } else {
-      Weekly.findById(id, function(err, docs){
-        res.render('task-edit', {docs:docs});
+
+      Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
+        if(err){
+          console.error(err)
+        }else{
+          res.locals.pj = docs; 
+          Weekly.findById(id, function(err, docs){
+            res.render('task-edit', {docs:docs});
+          });
+        }
       });
+      
   }
 };
 
