@@ -249,7 +249,17 @@
 
     // 填充当前说明的下载框
     var $directionSelect = $("#directionSelect");
-    appAjax.getDirections($directionSelect)
+    if($directionSelect.length > 0 ){
+      appAjax.getDirections($directionSelect);
+    }
+
+    // 填充#advFilterProject 下拉框里所有项目
+    var $advFilterProject = $("#advFilterProject");
+    if($advFilterProject.length > 0 ){
+      console.log("get Project")
+      appAjax.getProjects($advFilterProject);
+    }
+
   }
   $(initDomReady);
 })()

@@ -57,7 +57,8 @@ exports.task = function(req, res){
         res.send(404, "参数错误");
       }else{
         var goView = "",
-            roles = docs[0] ? docs[0].roles : 0;
+            roles = docs[0] ? docs[0].roles : 0,
+            group = docs[0] ? docs[0].group : 0;
         switch(roles){
           case 0:                  //未定义角色，转到产品视图
             goView = exports.task_pd(req, res);
@@ -66,7 +67,7 @@ exports.task = function(req, res){
             goView = exports.task_pd(req, res);
             break;
           case 2:                  //管理角色，转到管理视图
-            goView = exports.task_rb(req, res);
+            goView = exports.task_ld(req, res, group);
             break;
           case 3:                  //重构角色，转到重构视图
             goView = exports.task_rb(req, res);
@@ -132,6 +133,52 @@ exports.task_rb = function(req, res){
       res.locals.ttdd = paginatedResults;
     }
   });
+};
+
+/*
+ * Leader task View 
+ */
+exports.task_ld = function(req, res, group){
+  if(group){
+    console.log("group: "+ group);
+  }
+  var pageShowNum = 20,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1,
+      status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      ppQuery =  (req.query.pp) ? parseInt(req.query.pp) : {'$exists': true};
+
+
+  // 1.把某个组的人员全部取出来
+  Staff.find({"group":group}).exec(function(err,docs){
+    if(err){
+      console.log(err)
+    }else{
+      var staff_array = new Array();
+      for(var i=0; i <docs.length;i++){
+        staff_array[i] = docs[i].name;
+      }
+      res.locals.staffName = staff_array;
+
+      // 2.把符合筛选的项目取出来
+      Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+      // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.locals.roles = 2;
+          res.locals.path = req.path;
+          res.locals.originalUrl = req.originalUrl;
+          res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+          res.locals.ttdd = paginatedResults;
+        }
+      });
+
+    }
+  });
+
+
+
 };
 
 /*

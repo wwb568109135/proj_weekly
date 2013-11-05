@@ -65,6 +65,7 @@ app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);
 app.get('/task-rb', routes.task_rb);
+app.get('/task-ld', routes.task_rb);
 app.get('/task/create', routes.task_create);
 app.post('/task/created', routes.task_created);
 app.get('/task/search', routes.task_search);

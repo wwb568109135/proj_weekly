@@ -1,6 +1,38 @@
 extends layout
 
 block content
+  //- [m-remind-box:管理角色，高级筛选]
+  if roles == 2
+    .m-remind-box.advanced-filter
+        .m-remind-box-hd
+          h3 筛选功能：仅管理角色可见
+        .m-remind-box-bd
+          form(action='#')
+            ul.advance-filter-list
+              li
+                label(for='advFilter1') 人员筛选：
+                select#advFilterMember(name='advFilterMember')
+                  option(value='', selected='selected') 请选项人员（本组内）
+                  if staffName
+                    for nn in staffName
+                      option(value='#{nn}')= nn
+              li
+                label(for='advFilterMember') 项目筛选：
+                select#advFilterProject(name='advFilterProject')
+                  option(value='', selected='selected') 请选择项目
+              li
+                label(for='') 当前状态：
+                select#currentStatusLeader(class='task-filter-select',data-name='status',name='currentStatus')
+                  option(value='status=', selected='selected') 请选择项目状态
+                  option(value='status=') 所有状态
+                  option(value='status=0') 排期中
+                  option(value='status=1') 重构中
+                  option(value='status=2') 调联中
+                  option(value='status=3') 已上线
+            p.advance-filter-btn
+              input.m-btn.btn-skin-2(type='submit', value='查询')
+
+
   //- [c-box:重构需求日历]
   .c-box
     .c-box-hd.task-calendar
@@ -27,7 +59,7 @@ block content
           label(for='currentStatus') 筛选
           select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
             option(value='status=', selected='selected') 当前状态筛选
-            option(value='status=0') 全部状态
+            option(value='status=') 全部状态
             option(value='status=0') 排期中
             option(value='status=1') 重构中
             option(value='status=2') 联调中
