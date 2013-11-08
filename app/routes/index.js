@@ -142,6 +142,7 @@ exports.task_ld = function(req, res, group){
   if(group){
     console.log("group: "+ group);
   }
+
   var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
@@ -169,17 +170,66 @@ exports.task_ld = function(req, res, group){
           res.locals.roles = 2;
           res.locals.path = req.path;
           res.locals.originalUrl = req.originalUrl;
+          res.locals.group = group;
           res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-          res.locals.ttdd = paginatedResults;
         }
       });
 
     }
   });
-
-
-
 };
+
+/*
+ * Leader AdvFilter task View 
+ */
+exports.task_ld_adv = function(req, res){
+
+  var data = req.body;
+  console.log(data);
+  var group = data.advGroup;
+  console.log("advGroup: " + group);
+
+
+  var pageShowNum = 20,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1,
+      status = (data.advFilterStatus) ? parseInt(data.advFilterStatus) : {'$exists': true},
+      priority = (data.advFilterPriority) ? parseInt(data.advFilterPriority) : {'$exists': true},
+      // staffName = (data.advFilterStaff) ? data.advFilterStaff : {'$exists': true};
+      ppQuery =  (data.advFilterStaff) ? {$regex: new RegExp(data.advFilterStaff.toLowerCase() + "\\b", "i") } : {'$exists': true};
+
+  console.log(status)
+  console.log(priority)
+  console.log(ppQuery)
+
+  // 1.把某个组的人员全部取出来
+  Staff.find({"group":group}).exec(function(err,docs){
+    if(err){
+      console.log(err)
+    }else{
+      var staff_array = new Array();
+      for(var i=0; i <docs.length;i++){
+        staff_array[i] = docs[i].name;
+      }
+      res.locals.staffName = staff_array;
+
+      // 2.把符合筛选的项目取出来
+      Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+      // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.locals.roles = 2;
+          res.locals.path = req.path;
+          res.locals.originalUrl = req.originalUrl;
+          res.locals.group = group;
+          res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+        }
+      });
+
+    }
+  });
+};
+
 
 /*
  * task create 
@@ -864,11 +914,12 @@ exports.comm_ajaxGetRoles = function(req, res) {
       }else{
         // console.log(docs[0]);
         if(docs[0]){
-          var roles = rolesText[docs[0].roles]
+          var roles = rolesText[docs[0].roles];
         }else{
-          var roles = "角色未定义"
+          var roles = "角色未定义";
         }
         res.send(200, roles);
+
       }
     });
   }

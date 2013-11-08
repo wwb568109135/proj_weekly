@@ -7,31 +7,41 @@ block content
         .m-remind-box-hd
           h3 筛选功能：仅管理角色可见
         .m-remind-box-bd
-          form(action='#')
+          form(action='/task-ld-adv',method='post')
             ul.advance-filter-list
               li
-                label(for='advFilter1') 人员筛选：
-                select#advFilterMember(name='advFilterMember')
+                label(for='advFilterStaff') 人员筛选：
+                select#advFilterStaff(name='advFilterStaff')
                   option(value='', selected='selected') 请选项人员（本组内）
                   if staffName
                     for nn in staffName
                       option(value='#{nn}')= nn
               li
-                label(for='advFilterMember') 项目筛选：
+                label(for='advFilterProject') 项目筛选：
                 select#advFilterProject(name='advFilterProject')
                   option(value='', selected='selected') 请选择项目
               li
-                label(for='') 当前状态：
-                select#currentStatusLeader(class='task-filter-select',data-name='status',name='currentStatus')
-                  option(value='status=', selected='selected') 请选择项目状态
-                  option(value='status=') 所有状态
-                  option(value='status=0') 排期中
-                  option(value='status=1') 重构中
-                  option(value='status=2') 调联中
-                  option(value='status=3') 已上线
+                label(for='advFilterStatus') 当前状态：
+                select#advFilterStatus(data-name='status',name='advFilterStatus')
+                  option(value='', selected='selected') 请选择项目状态
+                  option(value='') 所有状态
+                  option(value='0') 排期中
+                  option(value='1') 重构中
+                  option(value='2') 调联中
+                  option(value='3') 已上线
+              li
+                label(for='advFilterPriority') 优先级别：
+                select#advFilterPriority(data-name='priority',name='advFilterPriority')
+                  option(value='', selected='selected') 请选择优先级别
+                  option(value='') 全部级别
+                  option(value='0') P0
+                  option(value='1') P1
+                  option(value='2') P2
+                  option(value='3') P3
+              li
+                input#advGroup(type="hidden",value="#{group}",name='advGroup')
             p.advance-filter-btn
-              input.m-btn.btn-skin-2(type='submit', value='查询')
-
+              input.m-btn.btn-skin-2(type='submit',value='查询')
 
   //- [c-box:重构需求日历]
   .c-box
@@ -64,7 +74,7 @@ block content
             option(value='status=1') 重构中
             option(value='status=2') 联调中
             option(value='status=3') 已上线
-          select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
+          select#advFilterPriority(class='task-filter-select',data-name='priority',name='currentPriority')
             option(value='', selected='selected') 优先级别筛选
             option(value='priority=') 全部级别
             option(value='priority=0') P0
