@@ -47,9 +47,9 @@ exports.logout = function(req, res){
  */
 exports.task = function(req, res){
   // 公司环境，直接取OA用户名
-  var staffName = req.cookies.user.rtx;
+  // var staffName = req.cookies.user.rtx;
   // 在家环境，模拟用户名
-  // var staffName = "sonichuang";
+  var staffName = "sonichuang";
 
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -89,9 +89,9 @@ exports.task_pd = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
@@ -116,9 +116,9 @@ exports.task_rb = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
@@ -185,21 +185,16 @@ exports.task_ld = function(req, res, group){
 exports.task_ld_adv = function(req, res){
 
   var data = req.body;
-  console.log(data);
   var group = data.advGroup;
-  console.log("advGroup: " + group);
-
 
   var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
+      project = (data.advFilterProject) ? parseInt(data.advFilterProject) : {'$exists': true},
       status = (data.advFilterStatus) ? parseInt(data.advFilterStatus) : {'$exists': true},
       priority = (data.advFilterPriority) ? parseInt(data.advFilterPriority) : {'$exists': true},
       // staffName = (data.advFilterStaff) ? data.advFilterStaff : {'$exists': true};
       ppQuery =  (data.advFilterStaff) ? {$regex: new RegExp(data.advFilterStaff.toLowerCase() + "\\b", "i") } : {'$exists': true};
 
-  console.log(status)
-  console.log(priority)
-  console.log(ppQuery)
 
   // 1.把某个组的人员全部取出来
   Staff.find({"group":group}).exec(function(err,docs){
@@ -213,7 +208,7 @@ exports.task_ld_adv = function(req, res){
       res.locals.staffName = staff_array;
 
       // 2.把符合筛选的项目取出来
-      Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+      Weekly.paginate({ $nor:[{hidden: true}], 'type':project, 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
       // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
         if (error) {
           console.error(error);
@@ -222,6 +217,8 @@ exports.task_ld_adv = function(req, res){
           res.locals.path = req.path;
           res.locals.originalUrl = req.originalUrl;
           res.locals.group = group;
+          // 把提交的数据传回页面，用于筛选表单中的上次筛选记录呈现
+          res.locals.formData = data;
           res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
         }
       });
@@ -458,7 +455,10 @@ exports.calendar_ajaxUpdate = function(req, res) {
  * 响应并响出索引结果json数据
  */
 exports.task_callJSON = function(req, res){
-  var roles = req.query.roles || "";
+  var roles = req.query.roles || "",
+      filterStaff = req.query.filterStaff || "";
+  // console.log("filterStaff: "+filterStaff)
+
   // var role = "rb";
   var date = new Date(),
       d = date.getDate(),
@@ -468,10 +468,11 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+
 
   if (roles == "3"){
     console.log("重构日历视图")
@@ -488,8 +489,15 @@ exports.task_callJSON = function(req, res){
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
-  } else {
-      res.json({});
+  } else if(roles == "2" && filterStaff) {
+      var ppQuery = {$regex: new RegExp(filterStaff.toLowerCase() + "\\b", "i") };
+      console.log( "管理角色，筛选了: "+ filterStaff );
+      //管理者筛选某个角色的日历视图，重构开始时间为本月1号 - 本月30号
+      Weekly.find({
+        $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}
+      }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+        res.json(docs)
+      });
   }
 };
 
@@ -501,9 +509,9 @@ exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // console.log(taskStarDate);console.log(taskEndDate);

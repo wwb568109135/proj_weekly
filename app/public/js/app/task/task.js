@@ -55,8 +55,10 @@
   function calendarInit(){
     // 通过#calendar上的记录，组合不同的 calendar请求地址
     var roles = $("#calendar").attr("data-roles"),
-        ajaxUrl = "/task/callJSON?roles="+roles;
+        filterStaff = $("#calendar").attr("data-staff"),
+        ajaxUrl = "/task/callJSON?roles="+roles+'&filterStaff='+filterStaff;
 
+    // console.log("filterStaff: "+filterStaff);
     var arrayOfEvents = [];
     // AJAX的方式从service拉回 json数据并处理
     $.ajax({
@@ -77,10 +79,11 @@
         o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
-      // console.log(ev);
-
-      if(roles == 1){
-        // 【产品角色日历】日历读取日期插件本身的加载配置代码 
+      console.log(ev);
+      console.log(roles);
+      if(roles == 1 || roles == 2){
+        console.log("in ")
+        // 【产品角色日历】日历读取日期插件本身的加载配置代码 ----------------
         $('#calendar').fullCalendar({
           header: {
             left: 'prev,next today',
@@ -91,7 +94,7 @@
           events: ev
         })
       }else if (roles == 3){
-        // 【产品角色日历】日历读取日期插件本身的加载配置代码 
+        // 【重构角色日历】日历读取日期插件本身的加载配置代码 ----------------
         $('#calendar').fullCalendar({
           header: {
             left: 'prev,next today',
@@ -127,6 +130,25 @@
     })
   }
 
+  // - 管理视频筛选框先中上次的晒选记录
+  function advFilterSelectActive(){
+    var roles = $("#calendar").attr("data-roles");
+
+    if(roles==2){
+      $("#advFilterProject, #advFilterStatus, #advFilterPriority").each(function(index){
+        oData = $(this).attr("data-o");
+
+        filterOption = $(this).find("option");
+        filterOption.each(function(){
+          var _self = $(this);
+          // console.log(_self.val());
+          if(_self.val() == oData){
+            _self.attr("selected","selected");
+          }
+        })
+      })
+    }
+  }
 
   //- 初始化
   function initDomReady(){
@@ -256,10 +278,19 @@
     // 填充#advFilterProject 下拉框里所有项目
     var $advFilterProject = $("#advFilterProject");
     if($advFilterProject.length > 0 ){
-      console.log("get Project")
-      appAjax.getProjects($advFilterProject);
+      // console.log("get Project")
+      appAjax.getProjects($advFilterProject,advFilterSelectActive);
     }
 
+    // 管理者筛选框记录
+    // advFilterSelectActive();
   }
   $(initDomReady);
+
+  /* 供闭包外部使用的方法
+  -------------------------------------*/
+  return{
+    advFilterSelectActive : advFilterSelectActive
+  }
+
 })()

@@ -117,9 +117,10 @@ var appAjax = (function(){
   /**
    * 获取所有的项目并填入slect框里
    * @param  {element} e select 元素
+   * @param  {callback} callback function
    * @return {function}   ajax callback
    */
-  function getProjects(e){
+  function getProjects(e,callback){
     var eop = e.find("option");
     // console.log(eop.length);
     if (e && eop.length < 2 ) {
@@ -135,6 +136,9 @@ var appAjax = (function(){
           }
           // console.log("插入option");
           e.append(insertHTML);
+        }
+        if(callback){
+          (callback)();
         }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
@@ -178,7 +182,7 @@ var appAjax = (function(){
     callbackMsg : function(msg){ callbackMsg(msg) },
     updateSet : function(o,callback){ updateSet(o,callback) },
     getRoles : function(e,staffName){ getRoles(e,staffName) },
-    getProjects : function(e){ getProjects(e) },
+    getProjects : function(e,callback){ getProjects(e,callback) },
     getDirections : function(e){ getDirections(e) }
   }
 

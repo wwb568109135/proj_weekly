@@ -15,15 +15,18 @@ block content
                   option(value='', selected='selected') 请选项人员（本组内）
                   if staffName
                     for nn in staffName
-                      option(value='#{nn}')= nn
+                        if formData && nn == formData.advFilterStaff
+                          option(value='#{nn}',selected="selected")= nn
+                        else
+                          option(value='#{nn}')= nn
               li
                 label(for='advFilterProject') 项目筛选：
-                select#advFilterProject(name='advFilterProject')
-                  option(value='', selected='selected') 请选择项目
+                  select#advFilterProject(data-o="#{formData?formData.advFilterProject:''}",name='advFilterProject')
+                    option(value='', selected='selected') 请选择项目
               li
                 label(for='advFilterStatus') 当前状态：
-                select#advFilterStatus(data-name='status',name='advFilterStatus')
-                  option(value='', selected='selected') 请选择项目状态
+                select#advFilterStatus(data-o="#{formData?formData.advFilterStatus:''}",data-name='status',name='advFilterStatus')
+                  option(value='') 请选择项目状态
                   option(value='') 所有状态
                   option(value='0') 排期中
                   option(value='1') 重构中
@@ -31,13 +34,20 @@ block content
                   option(value='3') 已上线
               li
                 label(for='advFilterPriority') 优先级别：
-                select#advFilterPriority(data-name='priority',name='advFilterPriority')
+                select#advFilterPriority(data-o="#{formData?formData.advFilterPriority:''}",data-name='priority',name='advFilterPriority')
                   option(value='', selected='selected') 请选择优先级别
                   option(value='') 全部级别
                   option(value='0') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
+              li.hidden
+                if formData
+                  p= formData.advFilterStaff
+                  p= formData.advFilterProject
+                  p= formData.advFilterStatus
+                  p= formData.advFilterPriority
+                  p= formData.advGroup
               li
                 input#advGroup(type="hidden",value="#{group}",name='advGroup')
             p.advance-filter-btn
@@ -47,17 +57,27 @@ block content
   .c-box
     .c-box-hd.task-calendar
       .c-box-hd-title
-        h3 本周需求
+        if formData && formData.advFilterStaff
+          h3
+            span#filterStaff.orange=formData.advFilterStaff
+            | 本月需求
+        else
+          h3 本月全部需求
       .c-box-hd-extra
         a.m-btn.btn-skin-1.btn-new-task(href='/export') 导出本周周报
     .c-box-bd
-      #calendar(data-roles="#{roles}")
+      #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
 
   //-[c-box:重构需求列表]
   .c-box
     .c-box-hd.task-list
       .c-box-hd-title
-        h3 全部需求
+        if formData && formData.advFilterStaff
+          h3
+            span.orange=formData.advFilterStaff
+            | 全部需求
+        else
+          h3 全部需求
         form.search-form(action='/task/search')
           input.inp-txt(type='text',name="q", placeholder='需求ID/名称')
           input.btn-search(type='submit', value='搜索')
@@ -65,22 +85,24 @@ block content
         div#directionSelectDiv.hidden
           select#directionSelect.editinput(data-name='direction')
             option(value='0') 选择当前说明
-        form.search-form(action='')
-          label(for='currentStatus') 筛选
-          select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
-            option(value='status=', selected='selected') 当前状态筛选
-            option(value='status=') 全部状态
-            option(value='status=0') 排期中
-            option(value='status=1') 重构中
-            option(value='status=2') 联调中
-            option(value='status=3') 已上线
-          select#advFilterPriority(class='task-filter-select',data-name='priority',name='currentPriority')
-            option(value='', selected='selected') 优先级别筛选
-            option(value='priority=') 全部级别
-            option(value='priority=0') P0
-            option(value='priority=1') P1
-            option(value='priority=2') P2
-            option(value='priority=3') P3
+        //- 管理视图不出现此快捷筛选
+        if roles != 2
+          form.search-form(action='')
+            label(for='currentStatus') 筛选
+            select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
+              option(value='status=', selected='selected') 当前状态筛选
+              option(value='status=') 全部状态
+              option(value='status=0') 排期中
+              option(value='status=1') 重构中
+              option(value='status=2') 联调中
+              option(value='status=3') 已上线
+            select#currentPriority(class='task-filter-select',data-name='priority',name='currentPriority')
+              option(value='', selected='selected') 优先级别筛选
+              option(value='priority=') 全部级别
+              option(value='priority=0') P0
+              option(value='priority=1') P1
+              option(value='priority=2') P2
+              option(value='priority=3') P3
     .c-box-bd
       if docs.length
         - var i = 1
