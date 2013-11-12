@@ -38,7 +38,7 @@ block content
                   option(value='', selected='selected') 选择项目
                   if pj.length
                     for project in pj
-                      option(value='#{project.name}')= project.name
+                      option(value='#{project.id}')= project.name
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
@@ -74,7 +74,7 @@ block content
                   option(value='', selected='selected') 选择项目
                   if pj.length
                     for project in pj
-                      option(value='#{project.name}')= project.name
+                      option(value='#{project.id}')= project.name
                   //- option(value='TGP') TGP
                   //- option(value='TGA') TGA
                   //- option(value='lol') 英雄联盟
