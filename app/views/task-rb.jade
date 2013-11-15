@@ -135,12 +135,16 @@ block content
               tr
                 td.readonly
                   span(data-name="_id")= weekly._id
-                  [
-                  a(href='/task/del/#{weekly.id}') 删
-                  ]
+                  if roles == 2
+                    [
+                    a(href='/task/del/#{weekly.id}') 删
+                    ]
                 td
                   【
-                  = weekly.type
+                  if projectName
+                    = projectName[weekly.type]
+                  else
+                    | none
                   】
                   a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
                 td.tcenter

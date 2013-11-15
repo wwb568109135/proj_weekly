@@ -94,17 +94,30 @@ exports.task_pd = function(req, res){
       // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-    if (error) {
-      console.error(error);
-    } else {
-      res.locals.roles = 1;
-      res.locals.path = req.path;
-      res.locals.originalUrl = req.originalUrl;
-      res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+  // 1.把ProjectName全部取出来
+  Project.find({},function(err,docs){
+    if(err){console.error(err);
+    }else{
+      var pj_array = new Array();
+      for(var i=0; i <docs.length;i++){
+        pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+        pj_array[docs[i]._id] = docs[i].name
+      }
+      res.locals.projectName = pj_array;
+
+        // 2.把符合筛选的需求取出来
+        Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+          if (error) {
+            console.error(error);
+          } else {
+            res.locals.roles = 1;
+            res.locals.path = req.path;
+            res.locals.originalUrl = req.originalUrl;
+            res.render('task', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+          }
+        });
     }
   });
-  
 };
 
 /*
@@ -121,18 +134,33 @@ exports.task_rb = function(req, res){
       // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-  // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-    if (error) {
-      console.error(error);
-    } else {
-      res.locals.roles = 3;
-      res.locals.path = req.path;
-      res.locals.originalUrl = req.originalUrl;
-      res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-      res.locals.ttdd = paginatedResults;
+  // 1.把ProjectName全部取出来
+  Project.find({},function(err,docs){
+    if(err){console.error(err);
+    }else{
+      var pj_array = new Array();
+      for(var i=0; i <docs.length;i++){
+        pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+        pj_array[docs[i]._id] = docs[i].name
+      }
+      res.locals.projectName = pj_array;
+        
+        // 2.把符合筛选的需求取出来
+        Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+          if (error) {
+            console.error(error);
+          } else {
+            res.locals.roles = 3;
+            res.locals.path = req.path;
+            res.locals.originalUrl = req.originalUrl;
+            res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+            res.locals.ttdd = paginatedResults;
+          }
+        });
     }
   });
+
 };
 
 /*
@@ -161,17 +189,30 @@ exports.task_ld = function(req, res, group){
       }
       res.locals.staffName = staff_array;
 
-      // 2.把符合筛选的需求取出来
-      Weekly.paginate({ $nor:[{hidden: true}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-      // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-        if (error) {
-          console.error(error);
-        } else {
-          res.locals.roles = 2;
-          res.locals.path = req.path;
-          res.locals.originalUrl = req.originalUrl;
-          res.locals.group = group;
-          res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+      // 2.把ProjectName全部取出来
+      Project.find({},function(err,docs){
+        if(err){console.error(err);
+        }else{
+          var pj_array = new Array();
+          for(var i=0; i <docs.length;i++){
+            pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+            pj_array[docs[i]._id] = docs[i].name
+          }
+          res.locals.projectName = pj_array;
+
+            // 3.把符合筛选的需求取出来
+            Weekly.paginate({ $nor:[{hidden: true}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+            // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+              if (error) {
+                console.error(error);
+              } else {
+                res.locals.roles = 2;
+                res.locals.path = req.path;
+                res.locals.originalUrl = req.originalUrl;
+                res.locals.group = group;
+                res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+              }
+            });
         }
       });
 
@@ -183,7 +224,6 @@ exports.task_ld = function(req, res, group){
  * Leader AdvFilter task View 
  */
 exports.task_ld_adv = function(req, res){
-
   var data = req.body;
   var group = data.advGroup;
 
@@ -207,21 +247,34 @@ exports.task_ld_adv = function(req, res){
       }
       res.locals.staffName = staff_array;
 
-      // 2.把符合筛选的需求取出来
-      Weekly.paginate({ $nor:[{hidden: true}], 'type':project, 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-      // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-        if (error) {
-          console.error(error);
-        } else {
-          res.locals.roles = 2;
-          res.locals.path = req.path;
-          res.locals.originalUrl = req.originalUrl;
-          res.locals.group = group;
-          // 把提交的数据传回页面，用于筛选表单中的上次筛选记录呈现
-          res.locals.formData = data;
-          res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-        }
-      });
+        // 2.把ProjectName全部取出来
+        Project.find({},function(err,docs){
+          if(err){console.error(err);
+          }else{
+            var pj_array = new Array();
+            for(var i=0; i <docs.length;i++){
+              pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+              pj_array[docs[i]._id] = docs[i].name
+            }
+            res.locals.projectName = pj_array;
+
+              // 3.把符合筛选的需求取出来
+              Weekly.paginate({ $nor:[{hidden: true}], 'type':project, 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+              // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+                if (error) {
+                  console.error(error);
+                } else {
+                  res.locals.roles = 2;
+                  res.locals.path = req.path;
+                  res.locals.originalUrl = req.originalUrl;
+                  res.locals.group = group;
+                  // 把提交的数据传回页面，用于筛选表单中的上次筛选记录呈现
+                  res.locals.formData = data;
+                  res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+                }
+              });
+          }
+        });
 
     }
   });

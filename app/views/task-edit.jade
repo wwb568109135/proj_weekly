@@ -27,10 +27,10 @@ block content
                   option(value='') 选择项目
                   if pj.length
                     for project in pj
-                      if project.name == weekly.type
-                        option(value='#{project.name}', selected='selected')= project.name
+                      if project.id == weekly.type
+                        option(value='#{project.id}', selected='selected')= project.name
                       else
-                         option(value='#{project.name}')= project.name
+                         option(value='#{project.id}')= project.name
 
               .task-edit-part
                 label.lab(for='taskPriority') 优先程度： 
