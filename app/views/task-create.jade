@@ -184,9 +184,9 @@ block pageScript
 
         //- Submit func ------------------------
         $("#taskCreateForm").on('submit',function(e){
-          //- 提交前删除 tr模板代码;
-          $("#insertTr").remove();
             checkCreateForm();
+            //- 提交前删除 tr模板代码;
+            if(isReturn){ $("#insertTr").remove();}
 
             //- 表单数据处理成 [{},{},{}……] 的格式
             var data = $(this).serializeArray(),

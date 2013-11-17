@@ -229,12 +229,12 @@ exports.task_ld_adv = function(req, res){
 
   var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
-      project = (data.advFilterProject) ? parseInt(data.advFilterProject) : {'$exists': true},
+      project = (data.advFilterProject) ? data.advFilterProject : {'$exists': true},
       status = (data.advFilterStatus) ? parseInt(data.advFilterStatus) : {'$exists': true},
       priority = (data.advFilterPriority) ? parseInt(data.advFilterPriority) : {'$exists': true},
       // staffName = (data.advFilterStaff) ? data.advFilterStaff : {'$exists': true};
       ppQuery =  (data.advFilterStaff) ? {$regex: new RegExp(data.advFilterStaff.toLowerCase() + "\\b", "i") } : {'$exists': true};
-
+      console.log(project);
 
   // 1.把某个组的人员全部取出来
   Staff.find({"group":group}).exec(function(err,docs){
@@ -1001,7 +1001,7 @@ exports.comm_ajaxGetProjects = function(req, res) {
         pj_array[i] = {id:docs[i]._id, name:docs[i].name}
         pj_array[docs[i]._id] = docs[i].name
       }
-      console.log(pj_array)
+      // console.log(pj_array)
       res.send(200, pj_array);
     }
   });
