@@ -14,9 +14,13 @@
     -----------------------------------------*/
     //- tr hover 变色  ----
     if($("table.m-table-data").html()){
-      $("table.m-table-data").delegate(".m-table-data tr", "mouseenter", function() {
-        console.log("hover")
-        $(this).toggleClass("table-hover");
+      $("table.m-table-data").delegate("tr", "mouseover", function() {
+        var _self = $(this);
+        _self.addClass("table-hover");
+      });
+      $("table.m-table-data").delegate("tr", "mouseout", function() {
+        var _self = $(this);
+        _self.removeClass("table-hover");
       });
     }
 

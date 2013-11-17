@@ -53,6 +53,29 @@
 
   // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
   function calendarInit(){
+    
+    // 把projectName全部取出来赋在一个变量里
+    var projectName = {};
+    $.ajax({
+      type: "POST",
+      url: "/comm-ajaxGetProjects"
+    }).done(function( pj ) {
+      if(pj){
+        // projectName = pj;
+        // 取回的数组处理
+        $.each(pj,function(i){
+          var a = pj[i].id,
+              b = pj[i].name;
+          projectName[a] = b;
+        })
+        console.dir(projectName);
+      }
+    }).fail(function(jqXHR, textStatus) {
+      projectName = "";
+    });
+
+
+
     // 通过#calendar上的记录，组合不同的 calendar请求地址
     var roles = $("#calendar").attr("data-roles"),
         filterStaff = $("#calendar").attr("data-staff"),
@@ -66,11 +89,12 @@
       url: ajaxUrl
     }).done(function( msg ) {
       // 把获得的JSON拼成 calendar 需要的数据格式
+      // console.dir(projectName);
       var ev = [];
       $.each(msg,function(i){
         var o = {};
         o.id = msg[i]._id;
-        o.title = "【"+msg[i].type+"】"+msg[i].title;
+        o.title = "【"+projectName[msg[i].type]+"】"+msg[i].title;
         o.url = "/task/" + msg[i]._id;
         
         var oStart = msg[i].rb_star_date,
@@ -79,10 +103,9 @@
         o.end = oEnd ? oEnd.replace(/T/, '').replace(/\..+/, '').substr(0,10) : null;
         ev.push(o);
       })
-      console.log(ev);
-      console.log(roles);
+      // console.log(ev);
+      // console.log(roles);
       if(roles == 1 || roles == 2){
-        console.log("in ")
         // 【产品角色日历】日历读取日期插件本身的加载配置代码 ----------------
         $('#calendar').fullCalendar({
           header: {
