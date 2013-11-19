@@ -81,6 +81,7 @@ app.post('/task/callJSON', routes.task_callJSON);
 app.post('/tasksHistoryCreate', routes.tasksHistory_create);
 
 app.get('/export', routes.task_export);
+app.get('/export-group', routes.task_export_group);
 app.post('/excel', routes.excel);
 
 app.get('/setting-project', routes.setting_project);

@@ -13,7 +13,7 @@ block content
         .m-remind-box-hd
           h3 导出周报
         .m-remind-box-bd
-          form.export-data-form(method='get',action='/export')
+          form#exportDataFormGroup.export-data-form(method='get',action='/export')
             p
               label(for='weeklyStarDate') 请选择时间段：
               input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='YYYY-MM-DD')
@@ -21,7 +21,6 @@ block content
               input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='YYYY-MM-DD')
             p
               input.m-btn.btn-skin-1(type='submit', value='导出本人')
-              //- input.m-btn.btn-skin-1(type='submit', value='导出全组')
       
       if docs && docs.length
         form#taskExportForm(method="POST",action="/excel")

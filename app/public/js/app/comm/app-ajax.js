@@ -101,9 +101,12 @@ var appAjax = (function(){
         url: postAjaxUrl
       }).done(function( roles ) {
         // console.log(roles);
-        e.html(roles);
+        rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色"];
+        roleName = rolesText[parseInt(roles)];
+        e.html(roleName);
+        e.attr("data-roles",roles);
         //----- 如果角色未定义的话，调用 user.js 的弹出选择用户角色函数
-        if( roles == "角色未定义" ){
+        if( roles == "0" ){
           appUser.showUserRolesSelect();
         }
 

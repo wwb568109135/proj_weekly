@@ -47,9 +47,9 @@ exports.logout = function(req, res){
  */
 exports.task = function(req, res){
   // 公司环境，直接取OA用户名
-  // var staffName = req.cookies.user.rtx;
+  var staffName = req.cookies.user.rtx;
   // 在家环境，模拟用户名
-  var staffName = "sonichuang";
+  // var staffName = "sonichuang";
 
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -89,9 +89,9 @@ exports.task_pd = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -129,9 +129,9 @@ exports.task_rb = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -522,9 +522,9 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
 
@@ -563,9 +563,9 @@ exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // console.log(taskStarDate);console.log(taskEndDate);
@@ -576,6 +576,38 @@ exports.task_export = function(req, res){
   })
 };
 
+
+/*
+ * export Weekly Data Group
+ */
+exports.task_export_group = function(req, res){
+  var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
+      taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
+      // 公司环境，直接取OA用户名
+      staffName = req.cookies.user.rtx;
+      // 在家环境，模拟用户名
+      // staffName = "sonichuang";
+
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(error,uu){
+      if(err){
+        res.send(404, "查询异常");
+      }else{
+        if(docs[0] && docs[0]== 2 ){
+          console.log("导出验证，是管理角色");
+        }
+        res.send(200, roles);
+      }
+    });
+  }
+
+  // Weekly.find({
+  //   $nor:[{hidden: true}], "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
+  // }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+  //   res.render('export', {docs:docs})
+  // })
+
+};
 
 /*
  * export Excel File
@@ -965,8 +997,8 @@ exports.comm_ajaxUpdateSet = function(req, res) {
  * Comm : Ajax Get Roles
  */
 exports.comm_ajaxGetRoles = function(req, res) {
-  var staffName = req.query.staffName,
-      rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色"];
+  var staffName = req.query.staffName;
+      // rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色"];
 
   // console.log(staffName);
   if(staffName){
@@ -974,14 +1006,13 @@ exports.comm_ajaxGetRoles = function(req, res) {
       if(err){
         res.send(404, "查询异常");
       }else{
-        // console.log(docs[0]);
         if(docs[0]){
-          var roles = rolesText[docs[0].roles];
+          // var roles = rolesText[docs[0].roles];
+          var roles = docs[0].roles + "";
         }else{
-          var roles = "角色未定义";
+          var roles = "0";
         }
         res.send(200, roles);
-
       }
     });
   }
