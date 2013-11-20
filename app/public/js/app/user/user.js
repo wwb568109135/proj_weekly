@@ -71,6 +71,7 @@ var appUser = (function(){
             postData.create_date = d;
         console.dir(postData);
         var callbackFunc = function(){
+          $(".user-select-roles-btn").html("<span class='red'>保存中...</span>");
           setTimeout(function(){location.reload()},2500)
         }
         appAjax.updateSet(postData,callbackFunc);

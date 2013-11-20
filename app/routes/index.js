@@ -871,6 +871,23 @@ exports.setting_staff = function(req, res) {
   });
 };
 
+/*
+ * Setting Staff Del
+ */
+exports.setting_staff_del = function(req, res) {
+  var id = req.params.id;
+  if(!id) {
+    res.send(404, '必须指定id才能操作！');
+  } else {
+    Staff.remove({_id:id},function(err){
+      if (err) {
+        res.send(404, err.message);
+      } else {
+        res.redirect('/setting-staff');
+      }
+    });
+  }
+};
 
 /*
  * tasksHistory Create

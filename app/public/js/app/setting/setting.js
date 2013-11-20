@@ -130,7 +130,7 @@
     $("table.staff-manage-table .staff-hidden-link").on("click",function(){
       var _self = $(this),
           isHidden = _self.attr("data-name") == "hidden" ? true : false; 
-
+      
       if(isHidden){
         var answer = confirm("确认停用此用户?"),
             callbackFunc = function(){
@@ -146,7 +146,6 @@
       }
       console.log(isHidden);
       
-
       if (answer){
         var staffID = _self.parents("tr").find("span[data-name='_id']").html();
 
@@ -160,10 +159,19 @@
       }
     })
 
+    //- .staff-del-link Func ------------------------
+    $("table.staff-manage-table .staff-del-link").on("click",function(){
+      var _self = $(this),
+          staffID = _self.parents("tr").find("span[data-name='_id']").html(),
+          url = "/setting-staff/del/"+staffID,
+          answer = confirm("确认停用此用户?");
+      
+      if(answer){
+        $(location).attr("href",url);
+      }
+    })
+
 
   }
-
-
-
   $(initDomReady);
 })()

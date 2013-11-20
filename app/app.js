@@ -92,6 +92,7 @@ app.get('/setting-direction/del/:id', routes.setting_direction_del);
 app.get('/setting-staff/create', routes.setting_staff_create);
 app.post('/setting-staff/create', routes.setting_staff_create);
 app.get('/setting-staff', routes.setting_staff);
+app.get('/setting-staff/del/:id', routes.setting_staff_del);
 
 // app.get('/users', user.auth);
 app.use(function(req, res){
