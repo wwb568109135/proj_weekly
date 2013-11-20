@@ -521,7 +521,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.export-task-table .c9{width:6%;}
 	.export-task-table .c10{width:14%;}
 	.export-task-table th,.export-task-table th:hover{font-weight: bold;background-color:#b4dcdc}
-	.export-task-table .project-line{color:#fff;font-weight:bold;background:#555}
+	.export-task-table .project-line td{color:#fff;font-weight:bold;background:#555}
 
 /* system-settings
 ---------------------------------------------------------------------------------------*/	
