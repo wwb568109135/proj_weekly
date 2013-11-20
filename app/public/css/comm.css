@@ -440,7 +440,6 @@ body > .contnet{height: auto; min-height: 100%;}
 		.tda-list li p{float: left;}
 		.tda-list li cite{margin-left:300px;color: #999;}
 
-
 	/*- .task-detail-side -*/
 	.task-detail-side{overflow: hidden;*zoom:1;border-left:1px solid #ddd;}
 		.task-detail-side-hd{padding:1em 2em;border-bottom: 1px solid #ddd;}
@@ -507,9 +506,22 @@ body > .contnet{height: auto; min-height: 100%;}
 		.export-data-form label{}
 		.export-data-form .inp-txt{width: 190px;}
 		.export-data-form span{padding:0 4px;}
-
-
-
+.export-task-table{}
+	.export-task-table,.export-task-table th,.export-task-table td{border-color:#333;}
+	.export-task-table th{height: 48px;line-height: 48px;tac}
+	.export-task-table td{white-space:nowrap;height: 20px;line-height: 20px;}
+	.export-task-table .c1{width:10%;}
+	.export-task-table .c2{width:22%;}
+	.export-task-table .c3{width:6%;}
+	.export-task-table .c4{width:5%;}
+	.export-task-table .c5{width:6%;}
+	.export-task-table .c6{width:6%;}
+	.export-task-table .c7{width:6%;}
+	.export-task-table .c8{width:22%;}
+	.export-task-table .c9{width:6%;}
+	.export-task-table .c10{width:14%;}
+	.export-task-table th,.export-task-table th:hover{font-weight: bold;background-color:#b4dcdc}
+	.export-task-table .project-line{color:#fff;font-weight:bold;background:#555}
 
 /* system-settings
 ---------------------------------------------------------------------------------------*/	

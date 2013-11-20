@@ -16,15 +16,18 @@ block content
           form#exportDataFormGroup.export-data-form(method='get',action='/export')
             p
               label(for='weeklyStarDate') 请选择时间段：
-              input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='YYYY-MM-DD')
+              input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='重构开始时间')
               span 至
-              input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='YYYY-MM-DD')
+              input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='重构结束时间')
             p
-              input.m-btn.btn-skin-1(type='submit', value='导出本人')
+              if roles == 2
+                input.m-btn.btn-skin-2(type='submit', value='查询大组周报')
+              else
+                input.m-btn.btn-skin-2(type='submit', value='查询本人周报')
       
       if docs && docs.length
         form#taskExportForm(method="POST",action="/excel")
-          table.m-table-data.rb-task-table
+          table.m-table-data.export-task-table
             colgroup
               col.c1
               col.c2
@@ -49,35 +52,35 @@ block content
                 th.tcenter 接口人
                 th 其它说明
             tbody
-              for weekly in docs
+              for ppp in projectName
                 tr
-                  td.readonly
-                    span(data-name="_id")= weekly._id
-                  td
-                    span
-                      【
-                      = weekly.type
-                      】
-                      = weekly.title
-                  td.tcenter
-                    - var statusText = ["排期中", "重构中", "联调中", "已上线"];
-                    span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
-                  td.tcenter
-                    span.editable(data-name="pages")= weekly.pages
-                  td.tcenter
-                    span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
-                  td.tcenter
-                    span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
-                  td.tcenter
-                    span.editable(data-name="progress")= weekly.progress ? weekly.progress+'%' : 'N/A'
-                    //- span %
-                  //- td.tcenter= weekly.online_date.toISOString()
-                  td
-                    span.editable(data-name="pp")= weekly.pp
-                  td
-                    span.editable(data-name="pm")= weekly.pm
-                  td
-                    span.editable(data-name="pm")= weekly.pm
+                  td.project-line(colspan="10")= ppp.name
+                for weekly in docs
+                  if weekly.type == ppp.id   
+                    tr
+                      td.readonly
+                        span(data-name="_id")= weekly._id
+                      td
+                        span= weekly.title
+                      td.tcenter
+                        - var statusText = ["排期中", "重构中", "联调中", "已上线"];
+                        span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                      td.tcenter
+                        span.editable(data-name="pages")= weekly.pages
+                      td.tcenter
+                        span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                      td.tcenter
+                        span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                      td.tcenter
+                        span.editable(data-name="progress")= weekly.progress ? weekly.progress+'%' : 'N/A'
+                        //- span %
+                      //- td.tcenter= weekly.online_date.toISOString()
+                      td
+                        span.editable(data-name="pp")= weekly.pp
+                      td
+                        span.editable(data-name="pm")= weekly.pm
+                      td
+                        span.editable(data-name="direction")= weekly.direction
           p.tright
             input.m-btn.btn-skin-2(type='submit', value='导出Excel文件')
           p.output-textarea
@@ -126,6 +129,7 @@ block pageScript
 
         //- datepicker func ------------------------
         $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
+
 
         //- Submit func ------------------------
         $("#taskExportForm").on('submit',function(e){

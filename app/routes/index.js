@@ -568,46 +568,43 @@ exports.task_export = function(req, res){
       // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-  // console.log(taskStarDate);console.log(taskEndDate);
-  Weekly.find({
-    $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
-  }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-    res.render('export', {docs:docs})
-  })
-};
-
-
-/*
- * export Weekly Data Group
- */
-exports.task_export_group = function(req, res){
-  var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
-      taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
-      // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx;
-      // 在家环境，模拟用户名
-      // staffName = "sonichuang";
-
   if(staffName){
-    Staff.find({name:staffName}).limit(1).exec(function(error,uu){
+    // 1.把用户角色取出
+    Staff.find({name:staffName}).limit(1).exec(function(err,uu){
       if(err){
         res.send(404, "查询异常");
       }else{
-        if(docs[0] && docs[0]== 2 ){
-          console.log("导出验证，是管理角色");
+        if(uu[0] && uu[0].roles == 2){
+          ppQuery = {'$exists': true}
         }
-        res.send(200, roles);
+        res.locals.roles = uu[0].roles;
+
+          // 2.把ProjectName全部取出来
+          Project.find({},function(err,docs){
+            if(err){console.error(err);
+            }else{
+              var pj_array = new Array();
+              for(var i=0; i <docs.length;i++){
+                pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+                pj_array[docs[i]._id] = docs[i].name
+              }
+              res.locals.projectName = pj_array;
+
+                // 3.需求筛选
+                Weekly.find({
+                  $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
+                }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+                  res.render('export', {docs:docs})
+                })
+
+            }
+          })
       }
     });
   }
 
-  // Weekly.find({
-  //   $nor:[{hidden: true}], "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate}
-  // }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-  //   res.render('export', {docs:docs})
-  // })
-
 };
+
 
 /*
  * export Excel File
