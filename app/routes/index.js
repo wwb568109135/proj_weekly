@@ -376,24 +376,43 @@ exports.task_edit = function(req, res) {
  */
 exports.task_search = function(req, res) {
   var query = req.query.q;
-  console.log(query);
-
-  if(/\d{4,}/.test(query)){
-    // 按ID精确查找
-    console.log("精确查找")
-    Weekly.find({_id:query}, function(err, docs){
-       res.render('task-search', {docs:docs});
-    });
-  }else if(!query){
+      console.log(query);
+  if(!query){
     console.log("必须输入ID或标题");
-  }else{
-    // 通过title模糊查找
-    Weekly.find({
-      title : new RegExp(query)
-    }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-       res.render('task-search', {docs:docs})
-    });
+  }else if(/\d{4,}/.test(query)){   // 按ID精确查找
+    console.log("精确查找");
+    var queryParm = {_id:query};
+  }else{                            // 通过title模糊查找
+    console.log("通过title模糊查找");
+    var queryParm = {title:new RegExp(query)}
+  }
 
+  if(queryParm){
+    // 1.把ProjectName全部取出来
+    Project.find({},function(err,docs){
+      if(err){console.error(err);
+      }else{
+        var pj_array = new Array();
+        for(var i=0; i <docs.length;i++){
+          pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+          pj_array[docs[i]._id] = docs[i].name
+        }
+        // console.dir("pj_array: "+pj_array)
+        res.locals.projectName = pj_array;
+
+          // 2.把搜索结果取出来取出来
+          Weekly.find(queryParm).sort({create_date: -1}).exec(function(err,docs){
+            if(err){
+              console.error(err);
+              res.send(404, "查询异常");
+            }else if(docs.length){
+              res.render('task-search', {docs:docs})
+            }else{
+              res.send(404, "查不到数据");
+            }
+          });
+      }
+    });
   }
 };
 

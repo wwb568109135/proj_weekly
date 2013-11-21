@@ -399,7 +399,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.task-create-ok .lab{display: inline-block;*display: inline;*zoom:1;width: 80px;}
 
 
-/* task-create-table
+/* task-task-table
 ---------------------------------------------------------------------------------------*/
 .rb-task-table{}
 	.rb-task-table td{white-space:nowrap;}
@@ -413,6 +413,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.rb-task-table .c8{width:22%;}
 	.rb-task-table .c9{width:6%;}
 	.rb-task-table .c10{width:14%;}
+	.rb-task-table .m-input{width:85%;}
 .advanced-filter{margin-top:1em;}
 .advance-filter-list{overflow: hidden;*zoom:1;}
 	.advance-filter-list li{float:left;width:250px;margin:0 0 1em;}
