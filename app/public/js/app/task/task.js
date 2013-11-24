@@ -68,7 +68,7 @@
               b = pj[i].name;
           projectName[a] = b;
         })
-        console.dir(projectName);
+        // console.dir(projectName);
       }
     }).fail(function(jqXHR, textStatus) {
       projectName = "";
@@ -275,18 +275,28 @@
     })
     
     //- select.task-filter-select 当前选择位置处理 -------------
-    var localSearch = $(location).attr('search');
-    localSearch = localSearch.replace(/\?/,"");
+    var localSearch = $(location).attr('search'),
+        localSearch = localSearch.replace(/\?/,"");
     // console.log(localSearch);
     if(localSearch){
+      // console.log(localSearch);
       var $filterSelect = $("select.task-filter-select")
-      $filterSelect.find("option").each(function(){
-        // console.log($(this).attr('value'));
-        var v = $(this).attr('value');
-        if ( v==localSearch ){
-         $(this).attr('selected','selected')
-        }
+
+      var param = localSearch.split("&");
+      // console.log(param);
+      $.each(param,function(i){
+        // console.log(param[i]);
+        $filterSelect.find("option").each(function(){
+          // console.log($(this).attr('value'));
+          var v = $(this).attr('value');
+          if ( v==param[i] ){
+           $(this).attr('selected','selected')
+          }
+        })
+        
       })
+
+      
     }
 
     // 日历插件启动
