@@ -13,8 +13,10 @@ block content
             a.m-btn.btn-skin-1(href='/task') 返回需求列表
           li
             a.m-btn.btn-skin-1(href='/task/edit/'+weekly.id) 编辑需求
-          li
-            a.m-btn.btn-skin-1(href='/task/del/'+weekly.id) 删除需求
+          - console.log(roles);
+          if roles == 2 || roles == 1
+            li
+              a#taskDelBtn.m-btn.btn-skin-1(data-id="#{weekly.id}") 删除需求
         div#tackDoneDiv.task-done-div(class="#{weekly.hidden?'hidden':''}")
           a#taskDoneBtn.m-btn.btn-skin-0(href='javascript:;') 结束需求
           p#taskDoneTips.tips 注：如果需求已完成，请结束需求
@@ -166,13 +168,26 @@ block pageScript
         var $taskStatus = $("#taskStatus")
             $inputStatus = $('input[name="taskStatus"]')
             statusVal = $("#taskStatus").val(),
-            statusRadioID = "#taskStatus-"+ statusVal;
+            statusRadioID = "#taskStatus-"+ statusVal
+            $taskDelBtn = $("#taskDelBtn");
         $(statusRadioID).attr("checked","checked");
 
         $inputStatus.click(function(){
             var index = $inputStatus.index($(this))
             console.log(index);
             $taskStatus.val(index)
+        })
+
+        //- 删除需求事件 ------------------------
+        $taskDelBtn.on("click",function(){
+          var _self = $(this),
+              taskID = _self.attr("data-id"),
+              url = "/task/del/"+taskID,
+              answer = confirm("确认删除此需求？（如果需求已完成，请点击右边的需求完成按钮！）");
+          
+          if(answer){
+            $(location).attr("href",url);
+          }
         })
 
         //- 结束需求事件
