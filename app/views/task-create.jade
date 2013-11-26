@@ -61,7 +61,8 @@ block content
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
+                input#StoryDeveloper2(type='hidden', value='feastfu;', userchooser='true', name='data[Story][developer]')
+                input.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用逗号隔开', onfocus='_tcc_write_userscript("StoryDeveloper2", "1");')
               td
                 input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='0000-00-00')
               td
@@ -128,6 +129,8 @@ block content
 block pageScript
   script(src="/js/jquery/jquery.json-2.4.js")
   script(src="/js/app/comm/m-table-data.js")
+  //- 网站人员英文名自动完成js代码
+  script(src="/js/app/oa-user/tcc.js")
   script.
     (function(){
       var isReturn = false;

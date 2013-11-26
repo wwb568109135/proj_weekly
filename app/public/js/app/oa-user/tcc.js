@@ -209,13 +209,15 @@ function _tcc_write_userscript(clientid, choosertype) {
     tmp_ctl_val = ctl.val();
     if (typeof(Actb) == 'undefined') {
         disableCtl();
-        $.getScriptEx('http://itask.oa.com/script/userchooser.js?r=20110331', function() {
+        // $.getScriptEx('http://itask.oa.com/script/userchooser.js?r=20110331', function() {
+        $.getScriptEx('/js/app/oa-user/userchooser.js', function() {
             sign[0] = 1;
             initChooser();
         });
     } else {
         sign[0] = 1;
     }
+    console.log("ee");
 
     var chooserdata = 'users';
     switch (choosertype) {
@@ -292,4 +294,8 @@ function _tcc_write_userscript(clientid, choosertype) {
             ctl.focus();
         }
     }
+}
+function bbdd(){
+    console.log("bbdd");
+
 }
