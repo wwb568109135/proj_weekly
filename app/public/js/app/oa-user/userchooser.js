@@ -1,7 +1,6 @@
 //var _userChoosers = [];
 
 function setChooser(ca, value_ctl) {
-
     var chooser = new Actb(ca, value_ctl);
     value_ctl._chooser = chooser;
     //_userChoosers.push(chooser);
@@ -53,7 +52,9 @@ function Actb(ca, value_ctl) {
 
     var actb_self = this;
 
+    var actb_curr = "";
     this.actb_curr = $('#' + value_ctl.id + 'Value')[0];
+    console.log(actb_curr)
     this.actb_curr.value_ctl = value_ctl;
 
     if (this.actb_curr) {
@@ -67,6 +68,7 @@ function Actb(ca, value_ctl) {
 
     var keydown_handler = function(evt) {
         actb_checkkey(evt);
+        console.log("key-down")
     };
     var blur_handler = function(evt) {
         actb_clear(evt);

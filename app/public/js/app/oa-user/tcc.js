@@ -32,7 +32,7 @@ Tcc.UserChooser = function(args) {
     this.initUserChooser(args);
 };
 
-Tcc.RichEditor = function(args) {
+/*Tcc.RichEditor = function(args) {
     document.write('<input id="' + args.id + '" name="' + args.name + '" type="hidden" richeditor="true" value="" />');
     document.write('<link href="' + Tcc.base + 'js/tcc/qqmaileditor/editor.css" type="text/css" rel="stylesheet" />');
     if (!args.height)
@@ -50,9 +50,9 @@ Tcc.RichEditor = function(args) {
             _loadEditor();
         }
     });
-};
+};*/
 
-Tcc.QmEditor = function(args) {
+/*Tcc.QmEditor = function(args) {
     var value = args.value || '';
     args.editorId = args.editorId || args.id + 'Editor';
     args.editorAreaId = args.editorAreaId || args.id + 'EditorArea';
@@ -76,13 +76,13 @@ Tcc.QmEditor = function(args) {
             $('#' + args.id).val(qe.getContent());
         });
     });
-};
+};*/
 
 /*
  * lazy load rich editor
  * author : franky
  **/
-Tcc.LazyQMEditor = function(args, loader_element) {
+/*Tcc.LazyQMEditor = function(args, loader_element) {
     args.needFocus = 1;
     var value = args.value || '';
     args.editorId = args.editorId || args.id + 'Editor';
@@ -116,13 +116,13 @@ Tcc.LazyQMEditor = function(args, loader_element) {
         qe.initialize(value, true, 1);
         qe.focus();
     });
-}
+}*/
 
 /*
  * lazy load rich editor
  * author : franky
  **/
-Tcc.LazyRichEditor = function(args, loader_element) {
+/*Tcc.LazyRichEditor = function(args, loader_element) {
     args.needFocus = 1;
     if (!args.height)
         args.height = "260px";
@@ -154,25 +154,9 @@ Tcc.LazyRichEditor = function(args, loader_element) {
     } else {
         _loadEditor();
     }
-};
+};*/
 
 
-/*
-Tcc.WebPart = function(args) {
-  if (typeof window.setHeight == "undefined") {
-    document.write('<script type="text/javascript" src="' + Tcc.base + 'js/jquery.autoHeight.js' + '" />');
-  }
-  if (typeof jQuery.fn.offset == "undefined") {
-    document.write('<script type="text/javascript" src="' + Tcc.base + 'js/query.dimensions.js' + '" />');
-  }
-
-  document.write('<div id="webpart_' + args.id + '<iframe id="webpart_frame_' + args.id + 'src="' + args.url + '" width="0" height="0" class="autoHeight" frameborder="0" scrolling="no"></iframe>';
-  $('#webpart_frame_' + args.id).load(function() {
-      var part = this.contentDocument.find('#' + args.id);
-      $('#webpart_' + args.id).css('overflow', 'hidden').css('height', $(part).height()).css('margin-top', -$(part).offset().top);
-    });
-}
-*/
 
 Tcc.UserChooser.prototype = {
     //init a user chooser by given id
@@ -217,7 +201,7 @@ function _tcc_write_userscript(clientid, choosertype) {
     } else {
         sign[0] = 1;
     }
-    console.log("ee");
+    // console.log("ee");
 
     var chooserdata = 'users';
     switch (choosertype) {
