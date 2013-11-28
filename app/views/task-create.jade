@@ -61,8 +61,8 @@ block content
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                input#StoryDeveloper2(type='hidden', value='', userchooser='true', name='data[Story][developer]')
-                input.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用逗号隔开', onfocus='_tcc_write_userscript("StoryDeveloper2", "1");')
+                input#StoryDeveloper0(type='hidden', value='', userchooser='true', name='pp-temp')
+                input#StoryDeveloper0Value.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
               td
                 input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='0000-00-00')
               td
@@ -103,7 +103,9 @@ block content
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
+                //- input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
+                input#StoryDeveloper--x--(type='hidden', value='#{user.rtx}', userchooser='true', name='pp-temp')
+                input#StoryDeveloper--x--Value.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用逗号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
               td
                 input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', placeholder='0000-00-00')
               td
@@ -129,7 +131,7 @@ block content
 block pageScript
   script(src="/js/jquery/jquery.json-2.4.js")
   script(src="/js/app/comm/m-table-data.js")
-  //- 网站人员英文名自动完成js代码
+  //- 输入人员英文名自动完成js代码，参考itask.oa.com
   script(src="/js/app/oa-user/tcc.js")
   script.
     (function(){
@@ -174,11 +176,14 @@ block pageScript
 
         //- add one line form ------------------------
         $("#btnAppendTask").click(function(){
-          var $taskCreateTable = $("#taskCreateTable");
+          var $taskCreateTable = $("#taskCreateTable"),
+              randomNum = Math.floor((Math.random()*10000));
+              console.log(randomNum);
           //- var appendHtml = $("#taskCreateTable tbody tr:last-child(callback)").html(),
           var appendHtml = $("#insertTr").html(),
               appendHtmlModi = appendHtml.replace(/task--/g ,"task" ),
               appendHtmlModi = appendHtmlModi.replace(/date-picker-insert/g ,"date-picker-in" ),
+              appendHtmlModi = appendHtmlModi.replace(/--x--/g ,randomNum ),
               appendHtmlPro = "<tr class='data-line'>"+ appendHtmlModi +"</tr>";
           $("#taskCreateTable tbody").append(appendHtmlPro);
           //- console.log("inset one line");
@@ -200,33 +205,38 @@ block pageScript
         //- Submit func ------------------------
         $("#taskCreateForm").on('submit',function(e){
             checkCreateForm();
-            //- 提交前删除 tr模板代码;
-            if(isReturn){ $("#insertTr").remove();}
-
-            //- 表单数据处理成 [{},{},{}……] 的格式
-            var data = $(this).serializeArray(),
-                data2 = [],
-                trNum = $(this).find("tr.data-line").length,
-                //- 重要，慎改！设定1行tr有多少个表单值；
-                objectNum = 12;
-            for(var j = 1 ; j<=trNum; j++ ){
-              var dd = {},
-                  star = (j-1)*objectNum;
-              for( var i = star; i<j*objectNum; i++ ){
-                dd[data[i].name] = data[i].value;
+            
+            //- 提交前的表单数据处理
+            if(isReturn){ 
+              $("#insertTr").remove();              //- 删除 tr模板代码;
+              $("input[name='pp-temp']").remove();  //- 提交前删除 input[name="data-temp-pp"]
+            
+              //- 表单数据处理成 [{},{},{}……] 的格式
+              var data = $(this).serializeArray(),
+                  data2 = [],
+                  trNum = $(this).find("tr.data-line").length,
+                  //- 重要，慎改！设定1行tr有多少个表单值；
+                  objectNum = 12;
+              for(var j = 1 ; j<=trNum; j++ ){
+                var dd = {},
+                    star = (j-1)*objectNum;
+                for( var i = star; i<j*objectNum; i++ ){
+                  dd[data[i].name] = data[i].value;
+                }
+                data2.push(dd);
               }
-              data2.push(dd);
+              //- console.dir(data)
+              console.dir(data2);
+
+              //- 数据json化(使用jquery.json插件)
+              data2 = $.toJSON( data2 )
+
+              //- 数据存入textarea里
+              $("#outputTemp").val(data2);
             }
-            //- console.dir(data)
-            console.dir(data2);
-
-            //- 数据json化(使用jquery.json插件)
-            data2 = $.toJSON( data2 )
-
-            //- 数据存入textarea里
-            $("#outputTemp").val(data2);
+            
             return isReturn;
-
+            //- return false;
         });
       }
       $(onDomReady);

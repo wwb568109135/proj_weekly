@@ -164,7 +164,7 @@
       var _self = $(this),
           staffID = _self.parents("tr").find("span[data-name='_id']").html(),
           url = "/setting-staff/del/"+staffID,
-          answer = confirm("确认停用此用户?");
+          answer = confirm("确认删除此用户?");
       
       if(answer){
         $(location).attr("href",url);

@@ -2,160 +2,35 @@ var Tcc = window.Tcc = {};
 Tcc.base = 'http://top.oa.com/';
 Tcc.host = 'top.oa.com';
 //try{document.domain = 'oa.com';}catch(e){}
-jQuery.extend({
-    getScriptEx: function(jsurl, fCallback) {
-        var head = document.getElementsByTagName("head")[0];
-        var script = document.createElement("script");
-        script.src = jsurl;
-        script.charset = "utf-8";
+// jQuery.extend({
+//     getScriptEx: function(jsurl, fCallback) {
+//         var head = document.getElementsByTagName("head")[0];
+//         var script = document.createElement("script");
+//         script.src = jsurl;
+//         script.charset = "utf-8";
 
-        // Handle Script loading
-        var done = false;
+//         // Handle Script loading
+//         var done = false;
 
-        // Attach handlers for all browsers
-        script.onload = script.onreadystatechange = function() {
-            if (!done && (!this.readyState ||
-                this.readyState == "loaded" || this.readyState == "complete")) {
-                done = true;
-                fCallback();
-                head.removeChild(script);
-            }
-        };
+//         // Attach handlers for all browsers
+//         script.onload = script.onreadystatechange = function() {
+//             if (!done && (!this.readyState ||
+//                 this.readyState == "loaded" || this.readyState == "complete")) {
+//                 done = true;
+//                 fCallback();
+//                 head.removeChild(script);
+//             }
+//         };
 
-        head.appendChild(script);
-    }
-});
+//         head.appendChild(script);
+//     }
+// });
 
 Tcc.UserChooser = function(args) {
     args.choosertype = args.choosertype || 1;
     args.inputType = args.inputType || 1;
     this.initUserChooser(args);
 };
-
-/*Tcc.RichEditor = function(args) {
-    document.write('<input id="' + args.id + '" name="' + args.name + '" type="hidden" richeditor="true" value="" />');
-    document.write('<link href="' + Tcc.base + 'js/tcc/qqmaileditor/editor.css" type="text/css" rel="stylesheet" />');
-    if (!args.height)
-        args.height = "260px";
-    document.write('<div><iframe id="HtmlEditor" class="editor_frame" style="height:' + args.height + ';" frameBorder="0" marginHeight=0 marginWidth=0 src="' + Tcc.base + 'js/tcc/qqmaileditor/blank.html' + '?domain=' + document.domain + '"></iframe></div>');
-    $(document).ready(function() {
-        var _loadEditor = function() {
-            $.getScriptEx(Tcc.base + 'js/tcc/qqmaileditor.js?r=3', function() {
-                initRichEditor(args);
-            });
-        };
-        if (typeof window.jQuery.fn.offset == "undefined") {
-            $.getScriptEx(Tcc.base + 'js/jquery.dimensions.js', _loadEditor);
-        } else {
-            _loadEditor();
-        }
-    });
-};*/
-
-/*Tcc.QmEditor = function(args) {
-    var value = args.value || '';
-    args.editorId = args.editorId || args.id + 'Editor';
-    args.editorAreaId = args.editorAreaId || args.id + 'EditorArea';
-    args.height = args.height || '260px';
-    args.editorAreaWin = window;
-
-    document.write('<input id="' + args.id + '" name="' + args.name + '" type="hidden" richeditor="true" value="" />');
-    document.write('<div id="' + args.editorAreaId + '"></div>');
-    document.write('<link href="' + Tcc.base + 'js/tcc/qmeditor/style/comm.css" type="text/css" rel="stylesheet" />');
-
-    $.getScriptEx(Tcc.base + 'js/tcc/qmeditor/editor.js?r=6', function() {
-        var qe = new qmEditor(args);
-        if (args.initDelay) {
-            setTimeout(function() {
-                qe.initialize(value, true, 1)
-            }, 1);
-        } else {
-            qe.initialize(value, true, 1);
-        }
-        $('form').submit(function() {
-            $('#' + args.id).val(qe.getContent());
-        });
-    });
-};*/
-
-/*
- * lazy load rich editor
- * author : franky
- **/
-/*Tcc.LazyQMEditor = function(args, loader_element) {
-    args.needFocus = 1;
-    var value = args.value || '';
-    args.editorId = args.editorId || args.id + 'Editor';
-    args.editorAreaId = args.editorAreaId || args.id + 'EditorArea';
-    args.height = args.height || '260px';
-    args.editorAreaWin = window;
-    loader_element.parentNode.removeChild(loader_element);
-    var LazyQMEditorContainer = document.getElementById('LazyQMEditorContainer');
-    var fNewNode = document.createElement("INPUT");
-    fNewNode.setAttribute('type', 'hidden');
-    fNewNode.setAttribute('id', args.id);
-    fNewNode.setAttribute('name', args.name);
-    fNewNode.setAttribute('richeditor', true);
-    fNewNode.setAttribute('value', '');
-    LazyQMEditorContainer.appendChild(fNewNode);
-    fNewNode = document.createElement("DIV");
-    fNewNode.setAttribute('id', args.editorAreaId);
-    LazyQMEditorContainer.appendChild(fNewNode);
-    fNewNode = document.createElement("LINK");
-    fNewNode.setAttribute('href', Tcc.base + 'js/tcc/qmeditor/style/comm.css');
-    fNewNode.setAttribute('type', "text/css");
-    fNewNode.setAttribute('rel', "stylesheet");
-    LazyQMEditorContainer.appendChild(fNewNode);
-    //init
-    $.getScriptEx(Tcc.base + 'js/tcc/qmeditor/editor.js?r=6', function() {
-        var qe = new qmEditor(args);
-        //fix bug: can not bind submit on TT
-        $('form').submit(function() {
-            $('#' + args.id).val(qe.getContent());
-        });
-        qe.initialize(value, true, 1);
-        qe.focus();
-    });
-}*/
-
-/*
- * lazy load rich editor
- * author : franky
- **/
-/*Tcc.LazyRichEditor = function(args, loader_element) {
-    args.needFocus = 1;
-    if (!args.height)
-        args.height = "260px";
-    var LazyRichEditorContainer = document.getElementById('LazyRichEditorContainer');
-    var fNewNode = document.createElement("INPUT");
-    fNewNode.setAttribute('type', 'hidden');
-    fNewNode.setAttribute('id', args.id);
-    fNewNode.setAttribute('name', args.name);
-    fNewNode.setAttribute('richeditor', true);
-    fNewNode.setAttribute('value', '');
-    LazyRichEditorContainer.appendChild(fNewNode);
-    fNewNode = document.createElement("LINK");
-    fNewNode.setAttribute('href', Tcc.base + 'js/tcc/qqmaileditor/editor.css');
-    fNewNode.setAttribute('type', "text/css");
-    fNewNode.setAttribute('rel', "stylesheet");
-    LazyRichEditorContainer.appendChild(fNewNode);
-    fNewNode = document.createElement("DIV");
-    fNewNode.innerHTML = '<iframe id="HtmlEditor" class="editor_frame" style="height:' + args.height + ';" frameBorder="0" marginHeight=0 marginWidth=0 src="' + Tcc.base + 'js/tcc/qqmaileditor/blank.html' + '?domain=' + document.domain + '"></iframe>';
-    LazyRichEditorContainer.appendChild(fNewNode);
-    //init
-    var _loadEditor = function() {
-        $.getScriptEx(Tcc.base + 'js/tcc/qqmaileditor.js?r=3', function() {
-            initRichEditor(args);
-            loader_element.parentNode.removeChild(loader_element);
-        });
-    };
-    if (typeof window.jQuery.fn.offset == "undefined") {
-        $.getScriptEx(Tcc.base + 'js/jquery.dimensions.js', _loadEditor);
-    } else {
-        _loadEditor();
-    }
-};*/
-
 
 
 Tcc.UserChooser.prototype = {
@@ -193,8 +68,8 @@ function _tcc_write_userscript(clientid, choosertype) {
     tmp_ctl_val = ctl.val();
     if (typeof(Actb) == 'undefined') {
         disableCtl();
-        // $.getScriptEx('http://itask.oa.com/script/userchooser.js?r=20110331', function() {
-        $.getScriptEx('/js/app/oa-user/userchooser.js', function() {
+        // $.getScript('http://itask.oa.com/script/userchooser.js?r=20131128', function() {
+        $.getScript('/js/app/oa-user/userchooser.js', function() {
             sign[0] = 1;
             initChooser();
         });
@@ -219,7 +94,8 @@ function _tcc_write_userscript(clientid, choosertype) {
     if (typeof(eval('window._arr' + chooserdata)) == 'undefined') {
         disableCtl();
         if (arguments.length < 3) {
-            $.getScriptEx(Tcc.base + 'js/' + chooserdata + '.js', function() {
+            // $.getScript(Tcc.base + 'js/' + chooserdata + '.js', function() {
+            $.getScript('/js/app/oa-user/' + chooserdata + '.js', function() {
                 sign[1] = 1;
                 initChooser();
             });

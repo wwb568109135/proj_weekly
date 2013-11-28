@@ -1,13 +1,13 @@
 //var _userChoosers = [];
 
 function setChooser(ca, value_ctl) {
+
     var chooser = new Actb(ca, value_ctl);
     value_ctl._chooser = chooser;
     //_userChoosers.push(chooser);
 }
 
 function Actb(ca, value_ctl) {
-
     var actb_curr = null;
 
     /* ---- Public Variables ---- */
@@ -52,10 +52,8 @@ function Actb(ca, value_ctl) {
 
     var actb_self = this;
 
-    var actb_curr = "";
     this.actb_curr = $('#' + value_ctl.id + 'Value')[0];
-    console.log(actb_curr)
-    this.actb_curr.value_ctl = value_ctl;
+    // this.actb_curr.value_ctl = value_ctl;
 
     if (this.actb_curr) {
         $(this.actb_curr).focus(function() {
@@ -67,23 +65,33 @@ function Actb(ca, value_ctl) {
     }
 
     var keydown_handler = function(evt) {
+        // console.log("keydown_handler");
         actb_checkkey(evt);
-        console.log("key-down")
     };
     var blur_handler = function(evt) {
+        // console.log("blur");
         actb_clear(evt);
     };
     var keypress_handler = function(evt) {
+        // console.log("keypress");
         actb_keypress(evt);
     }
 
 
 
         function actb_setup(curr_ctl) {
+            // console.log("actb_setup")
             this.actb_curr = curr_ctl;
+            var inputName = this.actb_curr.getAttribute("name");
+            // console.log(inputName);
 
             $(this.actb_curr).keydown(keydown_handler);
             $(this.actb_curr).blur(blur_handler);
+            // $("table.m-table-data").off("keydown", "input[name="+inputName+"]", keydown_handler)
+            // $("table.m-table-data").off("blur", "input[name="+inputName+"]", blur_handler)
+            // $("table.m-table-data").on("keydown", "input[name="+inputName+"]", keydown_handler)
+            // $("table.m-table-data").on("blur", "input[name="+inputName+"]", blur_handler)
+            
             $(document).keypress(keypress_handler);
             if (this.actb_curr.createTextRange) {
                 var range = this.actb_curr.createTextRange();
@@ -250,11 +258,10 @@ function Actb(ca, value_ctl) {
                 a.id = 'tat_table';
                 a.className = "autofinish";
 
-                if (jQuery.browser.msie && (!document.documentMode || document.documentMode < 9)) {
+                if ($.browser.msie && (!document.documentMode || document.documentMode < 9)) {
                     var frame = document.createElement('<iframe src="javascript:false;document.write(\'\');" id="tat_frame" style="position:absolute;z-index:0;visibility:expression(this.nextSibling.visibility);width:expression(this.nextSibling.offsetWidth);height:expression(this.nextSibling.offsetHeight);top:expression(this.nextSibling.offsetTop);left:expression(this.nextSibling.offsetLeft);" frameborder="0">');
                     document.body.appendChild(frame);
                 }
-
                 document.body.appendChild(a);
             }
 
@@ -620,7 +627,6 @@ function Actb(ca, value_ctl) {
         }
 
         function actb_checkkey(evt) {
-
             if (!evt) evt = event;
             a = evt.keyCode;
             caret_pos_start = getCaretStart(this.actb_curr);
@@ -672,6 +678,7 @@ function Actb(ca, value_ctl) {
                 event.returnValue = false;
                 return false;
             }
+            console.log("-");
             var i;
             if (actb_display) {
                 var word = 0;
@@ -686,6 +693,7 @@ function Actb(ca, value_ctl) {
                 actb_removedisp();
                 return;
             }
+            console.log("--");
             if (actb_self.actb_delimiter.length > 0) {
                 caret_pos_start = getCaretStart(this.actb_curr);
                 caret_pos_end = getCaretEnd(this.actb_curr);
@@ -734,7 +742,6 @@ function Actb(ca, value_ctl) {
             } else {
                 var re = new RegExp(t, "i");
             }
-
             actb_total = 0;
             actb_tomake = false;
             actb_kwcount = 0;
@@ -758,8 +765,8 @@ function Actb(ca, value_ctl) {
                     if (actb_pre == i) actb_tomake = true;
                 }
             }
-
             if (actb_toid) clearTimeout(actb_toid);
+            
             if (actb_self.actb_timeOut > 0) actb_toid = setTimeout(function() {
                 actb_mouse_on_list = 0;
                 actb_removedisp();

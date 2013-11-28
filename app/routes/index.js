@@ -561,9 +561,9 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
 
@@ -602,9 +602,9 @@ exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
       // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
+      staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      staffName = "sonichuang",
+      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   if(staffName){
