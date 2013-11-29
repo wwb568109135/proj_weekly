@@ -41,6 +41,32 @@ block content
                   p
                     a(href='#') proA.rar
                   cite 2013-08-01
+                      .task-detail-side-hd
+            .tde-modify
+              .tde-modify-hd
+                h3 变更历史(#{taskHistory?taskHistory.modify.length:"0"})
+              .tde-modify-bd
+                ul.task-modify-history.task-modify-history-th
+                  li.m1 
+                    strong 修改者
+                  li.m2
+                    strong 字段名
+                  li.m3
+                    strong 修改后
+                  li.m4
+                    strong 变更时间
+                - var fieldName = {type:"所属项目", priority:"优先级", title:"需求标题", focus:"是否重点需求", pages:"页面数", pp:"网站人员", rb_star_date:"重构开始时间", rb_end_date:"重构结束时间", online_date:"上线时间", pm:"接口人", direction:"其它说明", status:"当前状态", progress:"需求总进度", hidden:"结束需求"}
+                if taskHistory
+                  div.task-modify-wrapper
+                    for hh in taskHistory.modify
+                      ul.task-modify-history
+                        li.m1= hh.editor
+                        li.m2= fieldName[hh.efield]
+                        li.m3= hh.evalue_after
+                        li.m4= hh.edate ? hh.edate.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
+
+
+
         //- task-detail-side
         .task-detail-side
           .task-detail-side-hd
@@ -104,27 +130,6 @@ block content
               li
                 label 页面数：
                 em= weekly.pages
-
-          .task-detail-side-hd
-            h3 需求修改历史：
-          .task-detail-side-bd
-            ul.task-modify-history.task-modify-history-th
-              li.m1 
-                strong 修改者
-              li.m2
-                strong 字段名
-              li.m3
-                strong 修改后
-              li.m4
-                strong 变更时间
-            - var fieldName = {type:"所属项目", priority:"优先级", title:"需求标题", focus:"是否重点需求", pages:"页面数", pp:"网站人员", rb_star_date:"重构开始时间", rb_end_date:"重构结束时间", online_date:"上线时间", pm:"接口人", direction:"其它说明", status:"当前状态", progress:"需求总进度", hidden:"结束需求"}
-            if taskHistory
-              for hh in taskHistory.modify
-                ul.task-modify-history
-                  li= hh.editor
-                  li= fieldName[hh.efield]
-                  li= hh.evalue_after
-                  li= hh.edate ? hh.edate.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
 
 
         //- task-detail-operate
