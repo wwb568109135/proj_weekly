@@ -68,7 +68,6 @@ function _tcc_write_userscript(clientid, choosertype) {
     tmp_ctl_val = ctl.val();
     if (typeof(Actb) == 'undefined') {
         disableCtl();
-        // $.getScript('http://itask.oa.com/script/userchooser.js?r=20131128', function() {
         $.getScript('/js/app/oa-user/userchooser.js', function() {
             sign[0] = 1;
             initChooser();
@@ -94,8 +93,9 @@ function _tcc_write_userscript(clientid, choosertype) {
     if (typeof(eval('window._arr' + chooserdata)) == 'undefined') {
         disableCtl();
         if (arguments.length < 3) {
-            // $.getScript(Tcc.base + 'js/' + chooserdata + '.js', function() {
-            $.getScript('/js/app/oa-user/' + chooserdata + '.js', function() {
+            // 获取OA的用户名列表
+            $.getScript(Tcc.base + 'js/' + chooserdata + '.js', function() {
+            // $.getScript('/js/app/oa-user/' + chooserdata + '.js', function() {
                 sign[1] = 1;
                 initChooser();
             });

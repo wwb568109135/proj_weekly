@@ -28,7 +28,7 @@ block content
     .c-box-bd
       if docs.length
         - var i = 1
-        table.m-table-data.rb-task-table
+        table.m-table-data.rb-task-table(data-collection="Weekly")
           colgroup
             col.c1
             col.c2
@@ -59,7 +59,8 @@ block content
                   span(data-name="_id")= weekly._id
                   if roles == 2
                     [
-                    a(href='/task/del/#{weekly.id}') 删
+                    //- a(href='/task/del/#{weekly.id}') 删
+                    a(href='/task/del/#{weekly.id}',onclick="var url='/task/del/#{weekly.id}';if(confirm('确认删除？')){$(location).attr('href',url)}else{return false}") 删
                     ]
                 td
                   【
@@ -102,3 +103,5 @@ block pageScript
   //- page javascript
   script(src="/js/app/comm/m-table-data.js")
   script(src="/js/app/task/task.js")
+  //- 人员英文名自动完成js
+  script(src="/js/app/oa-user/tcc.js")

@@ -36,7 +36,6 @@
 
       var cbHtml = '<input id="'+ inputId +'" type="txt" class="m-input editinput" value="'+ cbVal +'" onfocus="_tcc_write_userscript(this.id.replace(\'Value\',\'\'), \'1\');" />';
           cbHtml+= '<input id='+ inputId2 +' type="hidden" value="" class="editinput" userchooser="true" />';
-      console.log(cbHtml);
     }else{
       //- 设置其它表单项时反馈回的HTML
       var cbHtml = '<input type="txt" class="m-input editinput" value="'+ cbVal +'" />';

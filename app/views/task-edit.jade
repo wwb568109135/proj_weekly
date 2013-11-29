@@ -105,7 +105,9 @@ block content
             li
               .task-edit-part
                 label.lab(for='taskPartner') 网站负责人：
-                input#taskPartner.m-input.inp-txt(name='task[pp]', type='text', value=weekly.pp)
+                //- input#taskPartner.m-input.inp-txt(name='task[pp]', type='text', value=weekly.pp)
+                input#StoryDeveloper0(type='hidden', value='', userchooser='true')
+                input#StoryDeveloper0Value.m-input.inp-txt(type='text',value=weekly.pp, name='task[pp]', autocomplete="off", placeholder='rtx英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
               .task-edit-part
                 label.lab(for='taskCreator') 需求接口人：
                 input#taskCreator.m-input.inp-txt(name='task[pm]', type='text', value=weekly.pm)
@@ -133,6 +135,8 @@ block content
               input.m-btn.btn-skin-1(type='submit', value='确认修改')
 
 block pageScript
+  //- 人员英文名自动完成js
+  script(src="/js/app/oa-user/tcc.js")
   script.
     (function(){
       function onDomReady(){

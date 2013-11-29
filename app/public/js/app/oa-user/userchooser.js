@@ -15,7 +15,7 @@ function Actb(ca, value_ctl) {
     this.actb_lim = 4; // Number of elements autocomplete can show (-1: no limit)
     this.actb_firstText = true; // should the auto complete be limited to the beginning of keyword?
     this.actb_mouse = true; // Enable Mouse Support
-    this.actb_delimiter = new Array(';'); //new Array(';',',');  // Delimiter for multiple autocomplete. Set it to empty array for single autocomplete
+    this.actb_delimiter = new Array('、'); //new Array('、',',');  // Delimiter for multiple autocomplete. Set it to empty array for single autocomplete
     this.actb_startcheck = 1; // Show widget only after this number of characters is typed in.
     /* ---- Public Variables ---- */
 
@@ -98,8 +98,8 @@ function Actb(ca, value_ctl) {
                 range.collapse(false);
                 range.select();
             }
-            if (this.actb_curr.value.trim().length > 0 && this.actb_curr.value.lastIndexOf(';') != this.actb_curr.value.length - 1)
-                this.actb_curr.value = this.actb_curr.value + ';';
+            if (this.actb_curr.value.trim().length > 0 && this.actb_curr.value.lastIndexOf('、') != this.actb_curr.value.length - 1)
+                this.actb_curr.value = this.actb_curr.value + '、';
         }
 
         function actb_clear(evt) {
@@ -116,21 +116,22 @@ function Actb(ca, value_ctl) {
         }
 
         function actb_calcValues() { //$('#TicketSummary').val(new Date());
-            this.actb_curr.value = RTrim(this.actb_curr.value, ';');
-            var arr = this.actb_curr.value.replace(/\s/g, '').split(';');
+            this.actb_curr.value = RTrim(this.actb_curr.value, '、');
+            var arr = this.actb_curr.value.replace(/\s/g, '').split('、');
             var arr_result = new Array();
             var result = '';
             for (var i = 0; i < arr.length; i++) {
                 if (arr[i] == '') continue;
                 var find = binSearch(actb_self.actb_keywords, arr[i]);
                 if (find >= 0) {
-                    result += actb_self.actb_keywords[find][0] + ';';
-                    arr_result.push(actb_self.actb_keywords[find][1]);
+                    result += actb_self.actb_keywords[find][0] + '、';
+                    // inputValue blur 后只显示英文名 by sonic 2013-11-29
+                    arr_result.push(actb_self.actb_keywords[find][0]);
                 }
             }
             if (this.actb_curr.value_ctl)
                 this.actb_curr.value_ctl.value = result;
-            this.actb_curr.value = arr_result.join(';');
+            this.actb_curr.value = arr_result.join('、');
             delete arr_result;
             return this.actb_curr.result = result;
         }
@@ -597,11 +598,12 @@ function Actb(ca, value_ctl) {
             for (i = this.curpos; i < iEnd; i++) {
                 if (actb_bool[i]) c++;
                 if (c == actb_pos) {
-                    word = actb_self.actb_keywords[i][1];
+                    // 写入inputValue 的值为英文名不带中文,modify by sonic 2013-11-29
+                    word = actb_self.actb_keywords[i][0];
                     break;
                 }
             }
-            actb_insertword(word + ';');
+            actb_insertword(word + '、');
             l = getCaretStart(this.actb_curr);
         }
 
@@ -678,7 +680,7 @@ function Actb(ca, value_ctl) {
                 event.returnValue = false;
                 return false;
             }
-            console.log("-");
+            // console.log("-");
             var i;
             if (actb_display) {
                 var word = 0;
@@ -693,7 +695,7 @@ function Actb(ca, value_ctl) {
                 actb_removedisp();
                 return;
             }
-            console.log("--");
+            // console.log("--");
             if (actb_self.actb_delimiter.length > 0) {
                 caret_pos_start = getCaretStart(this.actb_curr);
                 caret_pos_end = getCaretEnd(this.actb_curr);
