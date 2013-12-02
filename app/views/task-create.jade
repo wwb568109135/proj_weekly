@@ -26,12 +26,11 @@ block content
             tr
               th 项目
               th 需求标题
-              th 优先级
-              th.tcenter 重点需求
-              th 网站人员
-              th 期望重构开始时间
-              th 期望重构完成时间
-              th 期望上线时间
+              th.tcenter 页面数
+              th.tcenter 需求类型/优先级
+              th 相关人员
+              th 需求时间
+              th 备注
               th 操作
           tbody
             tr.data-line
@@ -41,16 +40,20 @@ block content
                   if pj.length
                     for project in pj
                       option(value='#{project.id}')= project.name
+                p
+                  label 
+                    input(type='checkbox' name="isCP") 
+                    | CP需求?
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
+                input.m-input.inp-txt(type='number',name='pages', value='1')
+              td.tcenter
                 select#priorityLv-2(name='priority')
                   option(value='0', selected='selected') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
-                  option(value='4') P4
-              td.tcenter
                 //- input(type='checkbox',name='focus',value='false')
                 <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
                 if user
@@ -61,14 +64,25 @@ block content
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                input#StoryDeveloper0(type='hidden', value='', userchooser='true', name='pp-temp')
-                input#StoryDeveloper0Value.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                p
+                  //- label 网站人员
+                  input#SiteStaff0(type='hidden', value='', userchooser='true', name='pp-temp')
+                  input#SiteStaff0Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                p 
+                  //- label 接 口 人
+                  input#interface0(type='hidden', value='', userchooser='true', name='pp-temp')
+                  input#interface0Value.m-input.inp-txt.inp-staff2(type='text', name='pp', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='0000-00-00')
+                p
+                  //- label 重构开始
+                  input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='期望重构开始时间')
+                  //- label 重构结束
+                  input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', placeholder='期望重构结束时间') 
+                p
+                  //- label 期望上线
+                  input.m-input.inp-txt.date-picker(type='text', name='online_date', placeholder='期望上线时间')
               td
-                input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', placeholder='0000-00-00')
-              td
-                input.m-input.inp-txt.date-picker(type='text', name='online_date', placeholder='0000-00-00')
+                input.m-input.inp-txt(type='text',name='title', placeholder='备注说明')
               td
             //- 插入多一行数据的tr模板
             tr#insertTr.hidden
@@ -132,111 +146,4 @@ block pageScript
   script(src="/js/app/comm/m-table-data.js")
   //- 输入人员英文名自动完成js代码，参考itask.oa.com
   script(src="/js/app/oa-user/tcc.js")
-  script.
-    (function(){
-      var isReturn = false;
-
-      //- 表单非空检测
-      function checkCreateForm(){
-        var errorInput = 0;
-        var dataTD = $("#taskCreateForm .data-line input, #taskCreateForm .data-line select");
-        dataTD.each(function(index, el){
-          if(el.value == ""){
-            //- console.log(el);
-            $(this).parent("td").addClass("error");
-            errorInput += 1;
-          }else{
-            $(this).parent("td").removeClass("error");
-          }
-        })
-        console.log("errorInput:"+ errorInput);
-        if(errorInput == 0 ){  isReturn = true }
-      }
-
-      function onDomReady(){
-        //- datePicker init
-        //- $('<link rel="stylesheet" href="/css/jquery-ui.min.css">').appendTo($('head'));
-        //- $.getScript('/js/jquery/jquery-ui.min.js', function(){
-        //-   $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
-        //- });
-        //- current nav 
-        $(".nav-ul li").eq(1).addClass("current");
-
-        $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
-
-        //- Setting the value of checkbox to true or false
-        $( "#taskCreateForm" ).delegate( "input[name='focus']", "change", function() {
-          if($(this).attr('checked')){
-              $(this).val('true');
-           }else{
-              $(this).val('false');
-           }
-        });
-
-        //- add one line form ------------------------
-        $("#btnAppendTask").click(function(){
-          var $taskCreateTable = $("#taskCreateTable"),
-              randomNum = Math.floor((Math.random()*10000));
-              console.log(randomNum);
-          //- var appendHtml = $("#taskCreateTable tbody tr:last-child(callback)").html(),
-          var appendHtml = $("#insertTr").html(),
-              appendHtmlModi = appendHtml.replace(/task--/g ,"task" ),
-              appendHtmlModi = appendHtmlModi.replace(/date-picker-insert/g ,"date-picker-in" ),
-              appendHtmlModi = appendHtmlModi.replace(/--x--/g ,randomNum ),
-              appendHtmlPro = "<tr class='data-line'>"+ appendHtmlModi +"</tr>";
-          $("#taskCreateTable tbody").append(appendHtmlPro);
-          //- console.log("inset one line");
-          $('.date-picker-in').datepicker({ dateFormat: "yy-mm-dd" });
-
-          //- 插入条数记数
-          //- var $recordNum = $('#recordNum');
-          //- $recordNum.val(parseInt($recordNum.val())+1)
-          //- console.log($recordNum.val());
-        })
-
-        //- add one line form ------------------------
-        $(".task-create-table").delegate(".link-delete-task","click",function(){
-          var _self = $(this);
-              _selfTr = _self.parents("tr");
-              _selfTr.remove();
-        })
-
-        //- Submit func ------------------------
-        $("#taskCreateForm").on('submit',function(e){
-            checkCreateForm();
-            
-            //- 提交前的表单数据处理
-            if(isReturn){ 
-              $("#insertTr").remove();              //- 删除 tr模板代码;
-              $("input[name='pp-temp']").remove();  //- 提交前删除 input[name="data-temp-pp"]
-            
-              //- 表单数据处理成 [{},{},{}……] 的格式
-              var data = $(this).serializeArray(),
-                  data2 = [],
-                  trNum = $(this).find("tr.data-line").length,
-                  //- 重要，慎改！设定1行tr有多少个表单值；
-                  objectNum = 12;
-              for(var j = 1 ; j<=trNum; j++ ){
-                var dd = {},
-                    star = (j-1)*objectNum;
-                for( var i = star; i<j*objectNum; i++ ){
-                  dd[data[i].name] = data[i].value;
-                }
-                data2.push(dd);
-              }
-              //- console.dir(data)
-              console.dir(data2);
-
-              //- 数据json化(使用jquery.json插件)
-              data2 = $.toJSON( data2 )
-
-              //- 数据存入textarea里
-              $("#outputTemp").val(data2);
-            }
-            
-            return isReturn;
-            //- return false;
-        });
-      }
-      $(onDomReady);
-    })()
+  script(src="/js/app/task/create.js")
