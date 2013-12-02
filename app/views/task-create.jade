@@ -31,7 +31,7 @@ block content
               th 网站人员
               th 期望重构开始时间
               th 期望重构完成时间
-              th 上线时间
+              th 期望上线时间
               th 操作
           tbody
             tr.data-line
@@ -91,7 +91,6 @@ block content
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
-                  option(value='4') P4
               td.tcenter
                 <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
                 //- var today = new Date();
@@ -122,9 +121,9 @@ block content
             a(href='#') 需求详情页
             | ”进行编辑
         .task-create-btn
-          input.m-btn.btn-skin-1.btn-submit(type='submit', value='确认发布')
-          a.m-btn.btn-skin-2(href='#') 导入需求
-          a(href='#') （下载excal模板）
+          input.m-btn.btn-skin-1.btn-submit(type='submit', value='提交')
+          a.m-btn.btn-skin-2(href='javascript:alert("功能开发中，敬请期待")') 导入需求
+          a(href='javascript:alert("功能开发中，敬请期待")') （下载excal模板）
         div
           textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="160")
 

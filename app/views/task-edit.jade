@@ -41,21 +41,21 @@ block content
                   //-   else
                   //-     option(value=i) TT
                   - if (weekly.priority == 0)
-                     option(value='0', selected='selected') T0
+                     option(value='0', selected='selected') P0
                   - else
-                    option(value='0',) T0
+                    option(value='0',) P0
                   - if (weekly.priority == 1)
-                     option(value='1', selected='selected') T1
+                     option(value='1', selected='selected') P1
                   - else
-                    option(value='1',) T1
-                   - if (weekly.priority == 2)
-                     option(value='2', selected='selected') T2
+                    option(value='1',) P1
+                  - if (weekly.priority == 2)
+                     option(value='2', selected='selected') P2
                   - else
-                    option(value='2',) T2
+                    option(value='2',) P2
                   - if (weekly.priority == 3)
-                     option(value='3', selected='selected') T3
+                     option(value='3', selected='selected') P3
                   - else
-                    option(value='3',) T3
+                    option(value='3',) P3
             li
               .task-edit-excerpt
                 label.lab(for='taskTitle') 标题： 
