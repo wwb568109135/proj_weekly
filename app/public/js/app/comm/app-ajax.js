@@ -169,6 +169,7 @@ var appAjax = (function(){
           for(var i = 0; i < dir.length; i++){
             insertHTML+= "<option value='"+ dir[i].name +"'>"+ dir[i].name +"</option>";
           }
+          insertHTML+= "<option value='其它'>其它</option>";
           // console.log("插入option");
           e.append(insertHTML);
         }

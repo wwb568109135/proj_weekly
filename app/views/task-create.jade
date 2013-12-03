@@ -20,14 +20,11 @@ block content
             col.c5
             col.c6
             col.c7
-            col.c8
-            col.c9
           thead
             tr
               th 项目
               th 需求标题
               th.tcenter 页面数
-              th.tcenter 需求类型/优先级
               th 相关人员
               th 需求时间
               th 备注
@@ -36,95 +33,77 @@ block content
             tr.data-line
               td
                 select#taskTitle-1(name='type')
-                  option(value='', selected='selected') 选择项目
+                  option(value="",selected='selected') 选择项目
                   if pj.length
                     for project in pj
                       option(value='#{project.id}')= project.name
-                p
-                  label 
-                    input(type='checkbox' name="isCP") 
-                    | CP需求?
+                select#priorityLv-2(name='priority')
+                  option(value='') 优先级
+                  option(value='0') P0
+                  option(value='1') P1
+                  option(value='2') P2
+                  option(value='3') P3
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
                 input.m-input.inp-txt(type='number',name='pages', value='1')
-              td.tcenter
-                select#priorityLv-2(name='priority')
-                  option(value='0', selected='selected') P0
-                  option(value='1') P1
-                  option(value='2') P2
-                  option(value='3') P3
-                //- input(type='checkbox',name='focus',value='false')
-                <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
-                if user
-                  input(type='hidden', name="author", value='#{user.rtx}')
-                else
-                  input(type='hidden', name="author", value='')
                 input(type='hidden', name="create_date", value='#{Date()}')
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                p
-                  //- label 网站人员
-                  input#SiteStaff0(type='hidden', value='', userchooser='true', name='pp-temp')
-                  input#SiteStaff0Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
-                p 
-                  //- label 接 口 人
-                  input#interface0(type='hidden', value='', userchooser='true', name='pp-temp')
-                  input#interface0Value.m-input.inp-txt.inp-staff2(type='text', name='pp', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                input#SiteStaff0(type='hidden', name='pp-tmp', disabled="disabled", userchooser='true', value="")
+                input#SiteStaff0Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                input#interface0(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value="")
+                input#interface0Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                label 
+                  input(type='checkbox' name="isCP") 
+                  | CP需求?
               td
-                p
-                  //- label 重构开始
-                  input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', placeholder='期望重构开始时间')
-                  //- label 重构结束
-                  input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', placeholder='期望重构结束时间') 
-                p
-                  //- label 期望上线
-                  input.m-input.inp-txt.date-picker(type='text', name='online_date', placeholder='期望上线时间')
+                input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
+                input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
+                input.m-input.inp-txt.date-picker(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
               td
-                input.m-input.inp-txt(type='text',name='title', placeholder='备注说明')
+                select#directionSelect.select-direction.editinput(data-name='direction')
+                  option(value='',selected='selected') 选择备注说明
+                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction', value='其它备注说明')
               td
             //- 插入多一行数据的tr模板
             tr#insertTr.hidden
-              //- - console.log(pj);
               td
-                select#taskTitle-nnn(name='type')
+                select(name='type')
                   option(value='', selected='selected') 选择项目
                   if pj.length
                     for project in pj
                       option(value='#{project.id}')= project.name
-                  //- option(value='TGP') TGP
-                  //- option(value='TGA') TGA
-                  //- option(value='lol') 英雄联盟
-                  //- option(value='speed') QQ飞车
-              td
-                input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
-              td
-                select#priorityLv-nnn(name='priority')
-                  option(value='0', selected='selected') P0
+                select(name='priority')
+                  option(value='') 优先级
+                  option(value='0') P0
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
-              td.tcenter
-                <select name="focus"><option value="false" selected>否</option><option value="true">是</option></select>
-                //- var today = new Date();
-                input(type='hidden', name="create_date", value='#{Date()} ')
-                if user
-                  input(type='hidden', name="author", value='#{user.rtx}')
-                else
-                  input(type='hidden', name="author", value='')
+                input(type='hidden', name="create_date", value='#{Date()}')
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
-                //- input.m-input.inp-txt(type='text', name='pp', placeholder='rtx英文名，多个请用逗号隔开')
-                input#StoryDeveloper--x--(type='hidden', value='#{user.rtx}', userchooser='true', name='pp-temp')
-                input#StoryDeveloper--x--Value.m-input.inp-txt(type='text', name='pp', autocomplete="off", placeholder='rtx英文名，多个请用逗号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', placeholder='0000-00-00')
+                input.m-input.inp-txt(type='number',name='pages', value='1')
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', placeholder='0000-00-00')
+                input#SiteStaff--x--(type='hidden', name='pp-tmp', disabled="disabled", userchooser='true', value=' ')
+                input#SiteStaff--x--Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                input#interface--x--(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value=' ')
+                input#interface--x--Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                label 
+                  input(type='checkbox' name="isCP") 
+                  | CP需求?
               td
-                input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', placeholder='0000-00-00')
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
+              td
+                select.select-direction.editinput(name='direction',data-name='direction')
+                  option(value='',selected='selected') 选择备注说明
+                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction', value='其它备注说明')
               td
                 a.link-delete-task(href="javascript:;") 删除
        

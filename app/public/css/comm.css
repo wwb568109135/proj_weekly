@@ -1,4 +1,4 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 /*a*/
 html{color:#000;background:#fff;-webkit-text-size-adjust:none;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
@@ -384,17 +384,18 @@ body > .contnet{height: auto; min-height: 100%;}
 /* task-create-table
 ---------------------------------------------------------------------------------------*/
 .task-create-table{}
+	.task-create-table td{vertical-align: top;}
 	.task-create-table .c1{width:8%;}
-	.task-create-table .c2{width:22%;}
-	.task-create-table .c3{width:4%;}
-	.task-create-table .c4{width:10%;}
-	.task-create-table .c5{width:22%;}
-	.task-create-table .c6{width:22%;}
-	.task-create-table .c7{width:10%;}
-	.task-create-table .c8{width:5%;}
-	.task-create-table .date-picker{width:110px;}
-	.task-create-table .inp-staff{width:90%;}
-	.task-create-table .inp-staff2{width:40%;}
+	.task-create-table .c2{width:26%;}
+	.task-create-table .c3{width:5%;}
+	.task-create-table .c4{width:20%;}
+	.task-create-table .c5{width:20%;}
+	.task-create-table .c6{width:17%;}
+	.task-create-table .c7{width:6%;}
+	/*.task-create-table .c8{width:6%;}*/
+	.task-create-table .date-picker,.task-create-table .date-picker-in{width:42%;}
+	.task-create-table .inp-staff{width:95%;}
+	.task-create-table .inp-staff2{width:50%;}
 	.task-create-table p{padding:4px 0;}
 	.task-create-table p label{margin:0 8px 0 0;}
 .task-create-status{margin-bottom:2em;}
