@@ -348,12 +348,27 @@ exports.task_detail = function(req, res) {
               if(err){console.log(err)}else{
                 res.locals.taskHistory = doc;
                 
-                  // 3.按id取出需求
-                  Weekly.findById(id, function(err, docs){
-                    if(err){console.log(err);}else{
-                      res.render('task-detail', {docs:docs});
+                  // 3.把ProjectName全部取出来
+                  Project.find({},function(err,docs){
+                    if(err){console.error(err);
+                    }else{
+                      var pj_array = new Array();
+                      for(var i=0; i <docs.length;i++){
+                        pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+                        pj_array[docs[i]._id] = docs[i].name
+                      }
+                      res.locals.projectName = pj_array;
+
+                        // 4.按id取出需求
+                        Weekly.findById(id, function(err, docs){
+                          if(err){console.log(err);}else{
+                            res.render('task-detail', {docs:docs});
+                          }
+                        });
+
                     }
                   });
+
               }
             })
         }

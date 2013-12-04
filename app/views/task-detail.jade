@@ -104,8 +104,11 @@ block content
                 label 创建时间：
                 cite= weekly.create_date ? weekly.create_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) + weekly.create_date.toLocaleTimeString() : N/A
               li
-                label 需求类型：
-                em= weekly.type
+                label 项目类别：
+                if projectName
+                  em= projectName[weekly.type]
+                else
+                  em= weekly.type
               li
                 label 优先级别：
                 em #{'P'+ weekly.priority}
