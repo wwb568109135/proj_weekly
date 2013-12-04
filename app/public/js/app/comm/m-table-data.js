@@ -26,10 +26,15 @@
 
     //- select.editinput 选择事件 ----
     $("table.m-table-data").delegate("select.editinput","change",function(){
-      //- 让它所在的td执行一次双击事件
       var _self = $(this);
-      _self.parent().find("input[type='hidden']").val(_self.val());
-      _self.parent().trigger('dblclick');
+      if( _self.attr("name") == "editDirection" && _self.val() == "其它" ){
+        // 备注下拉选项，选中其它说明时，单独处理
+        _self.siblings('input').removeClass('hidden').addClass('block');
+      }else{
+        _self.parent().find("input[type='hidden']").val(_self.val());
+        _self.parent().trigger('dblclick');//- 让它所在的td执行一次双击事件
+      }
+
     })
 
     //- select.editinput 回车事件 ----

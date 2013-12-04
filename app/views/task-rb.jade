@@ -83,7 +83,7 @@ block content
           input.btn-search(type='submit', value='搜索')
       .c-box-hd-extra
         div#directionSelectDiv.hidden
-          select#directionSelect.editinput(data-name='direction')
+          select#directionSelect.editinput(name='editDirection')
             option(value='0') 选择当前说明
         //- 管理视图不出现此快捷筛选
         if roles != 2

@@ -23,9 +23,24 @@
           cbHtml += '<option value="3">已上线</option>';
           cbHtml += '</select>';
     }else if(o.attr("data-name") == "direction" ){
-      // - 设置其它说明时反馈回的HTML
-      var cbHtml = $("#directionSelectDiv").html();
-
+      // - 设置其它说明时反馈回的HTML;
+      var cbOtherHtml = '<input type="text" name="editDirection" value="'+ cbVal +'" class="m-input inp-txt editinput block">',
+          cbNoOtherHtml = '<input type="text" name="editDirection" placeholder="其它备注说明" class="m-input inp-txt editinput hidden">',
+          snn = 0;
+      $("#directionSelectDiv option").each(function(){
+        var el = $(this);
+        el.attr("selected",false)
+        if(el.val() == cbVal){ el.attr("selected",true); snn+=1; }
+        if(el.val() == "其它" && cbVal != "" && snn ==0 ){el.attr("selected",true);}
+      })
+      var cbSelectHtml = $("#directionSelectDiv").html();
+      if( cbVal !="" && snn == 0 ){
+        // console.log('其它');
+        var cbHtml = cbSelectHtml + cbOtherHtml;
+      }else{
+         var cbHtml = cbSelectHtml + cbNoOtherHtml;
+      }
+     
     }else if(o.attr("data-name") == "online_date" || o.attr("data-name") == "rb_star_date" || o.attr("data-name") == "rb_end_date"){
       //- 设置日期input 反馈回的HTML
       var cbHtml = '<input type="txt" class="m-input date-picker editinput" value="'+ cbVal +'" />';
@@ -46,12 +61,17 @@
   //- 取回暂存的.editinput的值，因为有可能是select,要做下数值处理
   function callEditInputVal(o){
     if (!o) { return false }
-    if(o.attr("name") == "editStatus"){
-      //- 需求状态的Select框时，设定数组，取回相对应的值；
+    if(o.attr("name") == "editStatus"){ //- 需求状态的Select框时，设定数组，取回相对应的值；
       var statusText = ["排期中", "重构中", "联调中", "已上线"],
           returnVal = statusText[o.val()];
-    }else{
-      //- 正常input时，直接取回value值
+    }else if(o.attr("name") == "editDirection"){ //- 备注说明Select框时的处理；如果是Select值是其它，取input里的值，否值取Select的值;
+      if(o.val() == "其它"){
+        var returnVal = o[1].value;
+      }else{
+        var returnVal = o.val();
+      }
+      // console.log(returnVal);
+    }else{ //- 正常input时，直接取回value值
       var returnVal = o.val();
     }
     return returnVal;

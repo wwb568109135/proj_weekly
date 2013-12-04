@@ -27,6 +27,7 @@ button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0;margin:0;}
 :focus{outline:0}
 /* 隐藏, 通常用来与 JS 配合 */
 body .hidden,body .shady{display:none}
+body .block{display:block;}
 .invisible{visibility:hidden;}
 /*input,select{vertical-align:middle;}*/
 .fleft,.fright{display:inline;}
@@ -173,7 +174,6 @@ body > .contnet{height: auto; min-height: 100%;}
 	.table-modify td{background-color: #ffffcc;}
 	.m-table-data .hide td{background-color: #fafafa;color: #999;}
 	.m-table-data .error{background-color: #ffcc66;}
-
 
 /*-- m-tabs --*/
 .m-tabs{}
