@@ -47,6 +47,7 @@ block content
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
                 input.m-input.inp-txt(type='number',name='pages', value='1')
+                input(type='hidden', name="author", value='#{user.rtx}')
                 input(type='hidden', name="create_date", value='#{Date()}')
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
@@ -81,6 +82,7 @@ block content
                   option(value='1') P1
                   option(value='2') P2
                   option(value='3') P3
+                input(type='hidden', name="author", value='#{user.rtx}')
                 input(type='hidden', name="create_date", value='#{Date()}')
                 input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')

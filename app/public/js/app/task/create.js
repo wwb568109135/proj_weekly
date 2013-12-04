@@ -143,7 +143,7 @@
                   data2 = [],
                   trNum = $(this).find("tr.data-line").length,
                   //- 重要，慎改！设定1行tr有多少个表单值；
-                  objectNum = 13;
+                  objectNum = 14;
               for(var j = 1 ; j<=trNum; j++ ){
                 var dd = {},
                     star = (j-1)*objectNum;
