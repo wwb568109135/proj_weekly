@@ -115,6 +115,9 @@ block content
               .task-edit-part
                 label.lab(for='taskProgress') 当前进度：
                 input#taskProgress.m-input.inp-txt(name='task[progress]', type='number', value=weekly.progress)
+              .task-edit-part
+                label.lab(for='taskDirection') 备注说明：
+                input#taskDirection.m-input.inp-txt(name='task[direction]', type='text', value=weekly.direction)
             li
               .task-edit-excerpt
                 label.lab(for='rbStarDate') 当前状态：

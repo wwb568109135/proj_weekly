@@ -456,7 +456,8 @@ exports.task_update = function(req, res) {
         pp : task.pp,
         pm : task.pm,
         status : task.status,
-        progress : task.progress
+        progress : task.progress,
+        direction : task.direction,
       }
     }, 
     { upsert : true },
