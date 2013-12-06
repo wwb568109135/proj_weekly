@@ -9,7 +9,6 @@ block content
       .c-box-hd-extra
         a.m-btn.btn-skin-1(href='#') 返回需求列表
     .c-box-bd
-      //- - form#taskCreateForm(method="POST")
       form#taskCreateForm(method="POST",action="/task/created")
         table#taskCreateTable.m-table-data.task-create-table
           colgroup
@@ -57,7 +56,7 @@ block content
                 input#interface0(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value="")
                 input#interface0Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
                 label 
-                  input(type='checkbox' name="isCP") 
+                  input(type='checkbox', name="isCP") 
                   | CP需求?
               td
                 input.m-input.inp-txt.date-picker(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
@@ -96,7 +95,7 @@ block content
                 input#interface--x--(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value=' ')
                 input#interface--x--Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
                 label 
-                  input(type='checkbox' name="isCP") 
+                  input(type='checkbox', name="isCP") 
                   | CP需求?
               td
                   input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
