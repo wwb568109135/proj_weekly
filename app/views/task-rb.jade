@@ -19,6 +19,7 @@ block content
                           option(value='#{nn}',selected="selected")= nn
                         else
                           option(value='#{nn}')= nn
+                          option(value="CP") CP
               li
                 label(for='advFilterProject') 项目筛选：
                   select#advFilterProject(data-o="#{formData?formData.advFilterProject:''}",name='advFilterProject')

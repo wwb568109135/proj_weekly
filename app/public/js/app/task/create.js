@@ -87,12 +87,15 @@
           var _selfCheck = $(this).attr("checked");
               _selfTr = $(this).parents("tr.data-line");
           if(_selfCheck){  //选中时
-            _selfTr.find('input[name="pp"]').attr("disabled",true).val("CP");
+            // _selfTr.find('input[name="pp"]').attr("disabled",true).val("CP");
+            _selfTr.find('input[name="pp"]').val("CP");
             // _selfTr.find('input[name="pm"]').attr("disabled",true).val("CP");
 
           }else{            //未选中时
-            _selfTr.find('input[name="pp"]').attr("disabled",false).val("");
-            _selfTr.find('input[name="pm"]').attr("disabled",false).val("");
+            var v = _selfTr.find('input[name="pp"]').val(),
+                v = v.replace(/CP;?/,"");
+            _selfTr.find('input[name="pp"]').val(v);
+            // _selfTr.find('input[name="pm"]').attr("disabled",false).val("");
           }
         })
 
