@@ -750,14 +750,28 @@ exports.setting_project_created = function(req, res){
 
   var pj = new Project(req.body.project);
   console.log(pj);
-  
-  pj.save(function(err){
-    if(!err) {
-      res.redirect('/setting-project');
-    } else {
-      res.send(404, '写入失败');
-      res.redirect('/setting-project');
+  Project.find({"name":pj.name},function(err,doc){
+    if(err){
+      console.log(err);
+    }else{
+      if(doc[0]){ //记录新项目名
+        // console.log('记录新项目名');
+        res.send(404, "此项目名称已存在，请输入新的项目");
+      }else{       //已存在项目名
+        // console.log('已存在的项目名');
+
+          pj.save(function(err){
+            if(!err) {
+              res.redirect('/setting-project');
+            } else {
+              res.send(404, '写入失败');
+              res.redirect('/setting-project');
+            }
+          });
+
+      }
     }
+
   });
 };
 
