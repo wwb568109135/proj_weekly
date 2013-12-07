@@ -70,7 +70,7 @@ function Actb(ca, value_ctl) {
     };
     var blur_handler = function(evt) {
         // console.log("blur");
-        actb_clear(evt);
+        actb_clear(evt);   
     };
     var keypress_handler = function(evt) {
         // console.log("keypress");
@@ -108,11 +108,13 @@ function Actb(ca, value_ctl) {
                 $(this.actb_curr).unbind("keydown", keydown_handler);
                 $(this.actb_curr).unbind("blur", blur_handler);
                 $(document).unbind("keypress", keypress_handler);
+                
                 setTimeout(function() {
                     actb_removedisp();
                 }, 100);
             } catch (e) {}
-            actb_calcValues();
+            // 暂时屏蔽blur时的用户名检测 by sonic 2013-12-07
+            // actb_calcValues();
         }
 
         function actb_calcValues() { //$('#TicketSummary').val(new Date());
@@ -132,7 +134,7 @@ function Actb(ca, value_ctl) {
             if (this.actb_curr.value_ctl)
                 this.actb_curr.value_ctl.value = result;
             this.actb_curr.value = arr_result.join(';');
-            delete arr_result;
+            // delete arr_result;
             return this.actb_curr.result = result;
         }
 
