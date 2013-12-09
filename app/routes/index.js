@@ -95,7 +95,7 @@ exports.task_pd = function(req, res){
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
-  Project.find({},function(err,docs){
+  Project.find().sort({name: 1}).exec(function(err,docs){
     if(err){console.error(err);
     }else{
       var pj_array = new Array();
@@ -135,7 +135,7 @@ exports.task_rb = function(req, res){
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
-  Project.find({},function(err,docs){
+  Project.find().sort({name: 1}).exec(function(err,docs){
     if(err){console.error(err);
     }else{
       var pj_array = new Array();
@@ -190,7 +190,7 @@ exports.task_ld = function(req, res, group){
       res.locals.staffName = staff_array;
 
       // 2.把ProjectName全部取出来
-      Project.find({},function(err,docs){
+      Project.find().sort({name: 1}).exec(function(err,docs){
         if(err){console.error(err);
         }else{
           var pj_array = new Array();
@@ -248,7 +248,7 @@ exports.task_ld_adv = function(req, res){
       res.locals.staffName = staff_array;
 
         // 2.把ProjectName全部取出来
-        Project.find({},function(err,docs){
+        Project.find().sort({name: 1}).exec(function(err,docs){
           if(err){console.error(err);
           }else{
             var pj_array = new Array();
@@ -349,7 +349,7 @@ exports.task_detail = function(req, res) {
                 res.locals.taskHistory = doc;
                 
                   // 3.把ProjectName全部取出来
-                  Project.find({},function(err,docs){
+                  Project.find().sort({name: 1}).exec(function(err,docs){
                     if(err){console.error(err);
                     }else{
                       var pj_array = new Array();
@@ -1106,7 +1106,7 @@ exports.comm_ajaxGetRoles = function(req, res) {
  * Comm : Ajax Get Projects
  */
 exports.comm_ajaxGetProjects = function(req, res) {
-  Project.find({},function(err,docs){
+  Project.find().sort({name: 1}).exec(function(err,docs){
     if(err){
       console.error(err);
     }else{
