@@ -136,7 +136,7 @@ block content
 
 
         //- task-detail-operate
-        .task-detail-operate
+        .task-detail-operate(data-collection="Weekly")
           fieldset
             form(action='')
               ul.tdo-list
@@ -155,11 +155,11 @@ block content
                     label(for='taskStatus-3')
                       input#taskStatus-3(type='radio', name='taskStatus')
                       | 已上线
-                    input(id='taskStatus', name='task[status]', type='hidden', value='#{weekly.status}')
+                    input(id='taskStatus', name='task[status]', type='hidden', data-name='status', value='#{weekly.status}', data-id='#{weekly.id}')
                 li
                   textarea.m-input.inp-textarea(name='', cols='40', rows='6',disabled='disabled') 评论功能开发中
                 li.btn
-                    input.m-btn.btn-skin-1(type='submit', value='确认修改')
+                    input.m-btn.btn-skin-3(type='submit', value='确认修改',disabled="disabled")
   else
     p error,没有获取到数据
 
@@ -173,17 +173,30 @@ block pageScript
 
         //- alert("hello");
         //- console.log(weekly.status)
-        var $taskStatus = $("#taskStatus")
-            $inputStatus = $('input[name="taskStatus"]')
-            statusVal = $("#taskStatus").val(),
-            statusRadioID = "#taskStatus-"+ statusVal
+        var $taskStatus = $("#taskStatus"),
+              taskDataId = $taskStatus.attr("data-id"),
+              fieldName = $taskStatus.attr("data-name"),
+              dbCollection = $('.task-detail-operate').attr("data-collection"),
+            $inputStatus = $('input[name="taskStatus"]'),
+              statusVal = $("#taskStatus").val(),
+              statusRadioID = "#taskStatus-"+ statusVal,
             $taskDelBtn = $("#taskDelBtn");
+
         $(statusRadioID).attr("checked","checked");
 
+        //- 修改需求状态事件 ------------------------
         $inputStatus.click(function(){
-            var index = $inputStatus.index($(this))
-            console.log(index);
-            $taskStatus.val(index)
+            var index = $inputStatus.index($(this));
+            $taskStatus.val(index);
+
+            var postData = {};
+                postData.id = taskDataId,
+                postData.dbCollection = dbCollection,
+                postData[fieldName] = $taskStatus.val();
+            // 数据送ajax保存
+            //- console.log(postData);
+            appAjax.updateSet(postData);
+
         })
 
         //- 删除需求事件 ------------------------

@@ -44,7 +44,7 @@
     }else if(o.attr("data-name") == "online_date" || o.attr("data-name") == "rb_star_date" || o.attr("data-name") == "rb_end_date"){
       //- 设置日期input 反馈回的HTML
       var cbHtml = '<input type="txt" class="m-input date-picker editinput" value="'+ cbVal +'" />';
-    }else if(o.attr("data-name") == "pp"){
+    }else if(o.attr("data-name") == "pp" || o.attr("data-name") == "pm"){
       var randomNum = Math.floor((Math.random()*10000)),
           inputId = "pp" + randomNum + "Value",
           inputId2 = "pp" + randomNum;
@@ -80,7 +80,6 @@
 
   // - 日历插件初始化代码(含需求数据获取展示、拖动后AJAX保存)
   function calendarInit(){
-    
     // 把projectName全部取出来赋在一个变量里
     var projectName = {};
     $.ajax({
@@ -88,7 +87,6 @@
       url: "/comm-ajaxGetProjects"
     }).done(function( pj ) {
       if(pj){
-        // projectName = pj;
         // 取回的数组处理
         $.each(pj,function(i){
           var a = pj[i].id,
@@ -96,17 +94,19 @@
           projectName[a] = b;
         })
         // console.dir(projectName);
+        calendarInitFunc(projectName);   // 执行日历插件函数
       }
     }).fail(function(jqXHR, textStatus) {
       projectName = "";
     });
+  }
 
-
-
+  function calendarInitFunc(pj){
     // 通过#calendar上的记录，组合不同的 calendar请求地址
     var roles = $("#calendar").attr("data-roles"),
         filterStaff = $("#calendar").attr("data-staff"),
         ajaxUrl = "/task/callJSON?roles="+roles+'&filterStaff='+filterStaff;
+        projectName = pj || "";
 
     // console.log("filterStaff: "+filterStaff);
     var arrayOfEvents = [];

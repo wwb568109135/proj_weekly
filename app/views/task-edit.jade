@@ -148,8 +148,8 @@ block pageScript
 
         //- alert("hello");
         //- console.log(weekly.status)
-        var $taskStatus = $("#taskStatus")
-            $inputStatus = $('input[name="taskStatus"]')
+        var $taskStatus = $("#taskStatus"),
+            $inputStatus = $('input[name="taskStatus"]'),
             statusVal = $("#taskStatus").val(),
             statusRadioID = "#taskStatus-"+ statusVal;
         $(statusRadioID).attr("checked","checked");
