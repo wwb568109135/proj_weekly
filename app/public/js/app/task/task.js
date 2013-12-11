@@ -1,13 +1,5 @@
 // Task all func
 (function(){
-  //- 具体更新操作(未完成)
-  function checkAndUpdate(){
-    var tds = $("table.m-table-data td.td-editing");
-    //- console.log(tds.length);
-    if (tds.length>0){
-
-    }
-  }
 
   //- 根据当前td,反馈回编辑代码，
   function callEditInputHtml(o,s){
@@ -203,6 +195,35 @@
     }
   }
 
+  //- 检测是否存在其它编辑中的表单,并按编辑中的值进行保存
+  function checkAndUpdate(self){
+    var tds = $("table.m-table-data td.td-editing").not(self);
+    if (tds.length>0){
+      // console.log(tds);
+      var _self = tds,
+          editShow = _self.find(".editable"),
+          editInput = _self.find(".editinput"),
+          dbCollection = _self.parents("table").attr("data-collection");
+
+          returnHtml = callEditInputVal(editInput);
+          editShow.html(returnHtml).show();
+          editInput.remove();
+      _self.removeClass("td-editing");
+
+      // 拼装准备ajax发送的数据
+      var recordId = _self.parent("tr").find("span[data-name='_id']").html(),
+          fieldName = _self.find(".editable").attr("data-name"),
+          fieldValue = _self.find(".editableval").val() || _self.find(".editable").html();
+      var postData = {};
+          postData.id = recordId,
+          postData.dbCollection = dbCollection,
+          postData[fieldName] = fieldValue;
+      // 数据送ajax保存
+      appAjax.updateSet(postData);
+
+    }
+  }
+
   //- 初始化
   function initDomReady(){
     // current nav
@@ -216,7 +237,7 @@
           editInput = _self.find(".editinput"),
           dbCollection = _self.parents("table").attr("data-collection");
       
-      checkAndUpdate(); //- 检测是否存在其它编辑中的表单项
+      checkAndUpdate(_self); //- 检测是否存在其它编辑中的表单项
 
       if(_self.hasClass('td-editing')){ //- 打开编辑时
         var returnHtml = callEditInputVal(editInput);
