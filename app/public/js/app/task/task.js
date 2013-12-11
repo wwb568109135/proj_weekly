@@ -123,6 +123,9 @@
         o.id = msg[i]._id;
         o.title = "【"+projectName[msg[i].type]+"】"+msg[i].title;
         o.url = "/task/" + msg[i]._id;
+        if (msg[i].status == 3 ){
+          o.className = "fc-label-finish"
+        }
         
         var oStart = msg[i].rb_star_date,
             oEnd = msg[i].rb_end_date;
