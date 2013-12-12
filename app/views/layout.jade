@@ -45,28 +45,28 @@ html(lang="zh-CN")
     div.m-dialog.dialog-select-roles
       .m-dialog-box
         .m-dialog-hd
-          h3 请选择您的角色
+          h3 第一次来？请选择您的角色
         .m-dialog-bd
           form#selectRolesForm.select-roles-form(action='')
-            p.tcenter.user-select-rtx
+            p.tcenter.user-enname
               span 英文名 
-              input#userRtxName(value='#{user.rtx}',readonly='true')
+              input#userRtxName.inp-txt(value='#{user.rtx}',readonly='true')
               input#userRolesSet(name='roles',type='hidden',value='0')
               input#userCreateDate(name="create_date",type='hidden',value="#{Date()}")
             ul.user-select-roles
               li
-                h4 产品经理
                 label(for='userRolesPD')
-                  img(src='../img/role-pm.png', alt='我是产品经理', width='120', height='120')
+                  img(src='../img/role-pm.png', alt='我是产品经理', width='142', height='170')
+                h4 产品经理
                 p.tcenter
                   input#userRolesPD(type='radio', value='1', name='userRolesSelect')
                 p.tcenter
                   select#userProject(name='project')
                     option(value='0', selected='selected') 请选项您负责的项目
               li
-                h4 网页重构师
                 label(for='userRolesRB')
-                  img(src='../img/role-rb.png', alt='我是网页重构', width='120', height='120')
+                  img(src='../img/role-web.png', alt='我是网页重构', width='142', height='170')
+                h4 网页重构师
                 p.tcenter
                   input#userRolesRB(type='radio', value='3', name='userRolesSelect')
                 p.tcenter
@@ -75,8 +75,14 @@ html(lang="zh-CN")
                     option(value='1') 重构一组
                     option(value='2') 重构二组
                     option(value='3') 重构三组
-            p.user-select-roles-btn
-              input.m-btn.btn-skin-2(type='submit', value='确认确色')
+              li(style='opacity:0.4')
+                label(for='userRolesDN')
+                  img(src='../img/role-ps.png', alt='我是网页重构', width='142', height='170')
+                h4 网页设计师
+                p.tcenter 角色功能开发中
+        .m-dialog-ft
+          p.user-select-roles-btn
+            input.m-btn.btn-skin-1(type='submit', value='确认确色')
 
     .footer
       p.copyright
