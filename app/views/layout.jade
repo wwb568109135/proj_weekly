@@ -44,10 +44,10 @@ html(lang="zh-CN")
     //- m-dialog (角色选择弹层)
     div.m-dialog.dialog-select-roles
       .m-dialog-box
-        .m-dialog-hd
-          h3 第一次来？请选择您的角色
-        .m-dialog-bd
-          form#selectRolesForm.select-roles-form(action='')
+        form#selectRolesForm.select-roles-form(action='')
+          .m-dialog-hd
+            h3 第一次来？请选择您的角色
+          .m-dialog-bd
             p.tcenter.user-enname
               span 英文名 
               input#userRtxName.inp-txt(value='#{user.rtx}',readonly='true')
@@ -80,9 +80,9 @@ html(lang="zh-CN")
                   img(src='../img/role-ps.png', alt='我是网页重构', width='142', height='170')
                 h4 网页设计师
                 p.tcenter 角色功能开发中
-        .m-dialog-ft
-          p.user-select-roles-btn
-            input.m-btn.btn-skin-1(type='submit', value='确认确色')
+          .m-dialog-ft
+            p.user-select-roles-btn
+              input.m-btn.btn-skin-1(type='submit', value='确认确色')
 
     .footer
       p.copyright

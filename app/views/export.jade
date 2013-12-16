@@ -30,7 +30,6 @@ block content
           table.m-table-data.export-task-table
             colgroup
               col.c2
-              col.c3
               col.c4
               col.c5
               col.c6
@@ -41,7 +40,6 @@ block content
             thead
               tr
                 th 需求名称
-                th.tcenter 当前状态
                 th.tcenter 页面数
                 th.tcenter 开始时间
                 th.tcenter 完成时间
@@ -68,16 +66,11 @@ block content
                     span
                   td
                     span
-                  td
-                    span
                 for weekly in docs
-                  if weekly.type == ppp.id   
-                    tr
+                  if weekly.type == ppp.id
+                    tr(class="#{weekly.progress == 100 ? 'finish':''}")
                       td
                         span= weekly.title
-                      td.tcenter
-                        - var statusText = ["排期中", "重构中", "联调中", "已上线"];
-                        span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
                       td.tcenter
                         span.editable(data-name="pages")= weekly.pages
                       td.tcenter
@@ -85,7 +78,8 @@ block content
                       td.tcenter
                         span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
                       td.tcenter
-                        span.editable(data-name="progress")= weekly.progress ? weekly.progress+'%' : 'N/A'
+                        //- span.editable(data-name="progress")= weekly.progress ? weekly.progress+'%' : 'N/A'
+                        span.editable(data-name="progress")= weekly.progress != 0 ? weekly.progress+'%' : '---'
                         //- span %
                       //- td.tcenter= weekly.online_date.toISOString()
                       td

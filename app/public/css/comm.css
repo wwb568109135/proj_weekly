@@ -301,7 +301,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.user-select-roles li h4{text-align: center;font-size:1.25em;margin:0 0 0.5em;color: #032651;}
 	.user-select-roles li img{display: block;margin:0 0 0.5em;cursor:pointer;}
 	.user-select-rtx{padding-bottom:20px;}
-	.m-dialog-ft{background: #FFF;padding:1.5em;}
+	.m-dialog-ft{background: #FFF;padding:1.5em;border-bottom-left-radius:12px;border-bottom-right-radius:12px;}
     .user-select-roles-btn{text-align: center;}
     .user-select-roles-btn .m-btn{height: 2.8em;line-height: 2.6em;padding:0 3em; }
 
@@ -546,11 +546,12 @@ body > .contnet{height: auto; min-height: 100%;}
 		.export-data-form span{padding:0 4px;}
 .export-task-table{}
 	.export-task-table,.export-task-table th,.export-task-table td{border-color:#333;}
-	.export-task-table th{height: 48px;line-height: 48px;tac}
+	.export-task-table th{height: 48px;line-height: 48px;}
 	.export-task-table td{white-space:nowrap;height: 20px;line-height: 20px;}
+	.export-task-table .finish td{background-color: #ccffcc;}
 	/*.export-task-table .c1{width:10%;}*/
-	.export-task-table .c2{width:32%;}
-	.export-task-table .c3{width:6%;}
+	.export-task-table .c2{width:38%;}
+	/*.export-task-table .c3{width:6%;}*/
 	.export-task-table .c4{width:5%;}
 	.export-task-table .c5{width:6%;}
 	.export-task-table .c6{width:6%;}
