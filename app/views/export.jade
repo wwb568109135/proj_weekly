@@ -29,7 +29,6 @@ block content
         form#taskExportForm(method="POST",action="/excel")
           table.m-table-data.export-task-table
             colgroup
-              col.c1
               col.c2
               col.c3
               col.c4
@@ -41,7 +40,6 @@ block content
               col.c10
             thead
               tr
-                th 需求ID
                 th 需求名称
                 th.tcenter 当前状态
                 th.tcenter 页面数
@@ -72,13 +70,9 @@ block content
                     span
                   td
                     span
-                  td
-                    span
                 for weekly in docs
                   if weekly.type == ppp.id   
                     tr
-                      td.readonly
-                        span(data-name="_id")= weekly._id
                       td
                         span= weekly.title
                       td.tcenter

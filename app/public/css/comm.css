@@ -548,8 +548,8 @@ body > .contnet{height: auto; min-height: 100%;}
 	.export-task-table,.export-task-table th,.export-task-table td{border-color:#333;}
 	.export-task-table th{height: 48px;line-height: 48px;tac}
 	.export-task-table td{white-space:nowrap;height: 20px;line-height: 20px;}
-	.export-task-table .c1{width:10%;}
-	.export-task-table .c2{width:22%;}
+	/*.export-task-table .c1{width:10%;}*/
+	.export-task-table .c2{width:32%;}
 	.export-task-table .c3{width:6%;}
 	.export-task-table .c4{width:5%;}
 	.export-task-table .c5{width:6%;}
