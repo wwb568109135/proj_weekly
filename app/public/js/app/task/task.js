@@ -5,14 +5,17 @@
   function callEditInputHtml(o,s){
     var cbVal = s || "";
     if(o.attr("data-name") == "status" ){
+      var hb = o.siblings(".editableval").val(),
+          selectHtml = "selected='selected'";
+          console.log(hb);
+
       //- 设置需求状态时反馈回的HTML
       var cbHtml = '';
           cbHtml += '<select class="editinput" name="editStatus">';
-          //- cbHtml += '<option value="' + cbVal +'">' + cbVal +'</option>';
-          cbHtml += '<option value="0">排期中</option>';
-          cbHtml += '<option value="1">重构中</option>';
-          cbHtml += '<option value="2">联调中</option>';
-          cbHtml += '<option value="3">已上线</option>';
+          cbHtml += '<option value="0" '+((hb==0)?selectHtml:"")+'>排期中</option>';
+          cbHtml += '<option value="1" '+((hb==1)?selectHtml:"")+'>重构中</option>';
+          cbHtml += '<option value="2" '+((hb==2)?selectHtml:"")+'>联调中</option>';
+          cbHtml += '<option value="3" '+((hb==3)?selectHtml:"")+'>已上线</option>';
           cbHtml += '</select>';
     }else if(o.attr("data-name") == "direction" ){
       // - 设置其它说明时反馈回的HTML;
@@ -21,7 +24,7 @@
           snn = 0;
       $("#directionSelectDiv option").each(function(){
         var el = $(this);
-        el.attr("selected",false)
+        el.attr("selected",false);2013-12-17
         if(el.val() == cbVal){ el.attr("selected",true); snn+=1; }
         if(el.val() == "其它" && cbVal != "" && snn ==0 ){el.attr("selected",true);}
       })

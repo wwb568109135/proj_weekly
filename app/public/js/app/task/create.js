@@ -88,7 +88,9 @@
               _selfTr = $(this).parents("tr.data-line");
           if(_selfCheck){  //选中时
             // _selfTr.find('input[name="pp"]').attr("disabled",true).val("CP");
-            _selfTr.find('input[name="pp"]').val("CP");
+            var v = _selfTr.find('input[name="pp"]').val(),
+                v = "CP;" + v.replace(/CP;?/,"");
+            _selfTr.find('input[name="pp"]').val(v);
             // _selfTr.find('input[name="pm"]').attr("disabled",true).val("CP");
 
           }else{            //未选中时
