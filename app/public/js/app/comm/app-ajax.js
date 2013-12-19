@@ -22,7 +22,7 @@ var appAjax = (function(){
   /**
    * Ajax修改需求单,记录进修改历史
    * @param  {object} o ajaxupdata object
-   * @param  {function} callback Callback Function
+   * @param  {function} Callback Function
    * @return {funcion}
    */
   function tasksModifyRecord(o){
@@ -56,31 +56,67 @@ var appAjax = (function(){
 
 
   /**
+   * Ajax修改当前状态,联动修改百分比 2013-12-19
+   * @param  {object} o ajaxupdata object
+   * @param  {function} Callback Function
+   * @return {funcion}
+   */
+  function syncProgress(o){
+    if( o && o.status ){
+      var pp = "";
+      switch(parseInt(o.status)){
+        case 0:
+          pp = "0";
+          break;
+        case 1:
+          pp = "40";
+          break;
+        case 2:
+          pp = "90";
+          break;
+        case 3:
+          pp = "100";
+          break;
+      }
+      o.progress = pp;
+    }
+    return o;
+  };
+
+
+  /**
    * AJAX更新内容
    * @param  {object} o ajaxupdata object
-   * @param  {function} callback Callback Function
+   * @param  {function} Callback Function
    * @return {funcion}
    */
   function updateSet(o,callback){
     if( o && o.dbCollection ){
+      
+      // 如果是修改状态的，要同步更新进度
+      if(o.status){  
+        o = syncProgress(o);
+        if(o.wrap){
+          var objWrap = o.wrap,
+              callback2 = function(){objWrap.parent("tr").find("span[data-name='progress']").html(o.progress);}
+          delete o.wrap;   
+        }
+      }
+      console.log(o);
+      
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",
         data : o
       }).done(function( msg ) {
-        if(callback){
-          callbackMsg(msg);
-          (callback)();
-        }else{
-          callbackMsg(msg);
-        }
+        callbackMsg(msg);
+        if (callback){ (callback)(); }
+        if (callback2){ (callback2)(); }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
 
-      if(o.dbCollection === "Weekly"){
-        // console.log("is Weekly");
-        // 记录进需求修改历史
+      if(o.dbCollection === "Weekly"){  // 如果是需求的修改，记录进需求修改历历
         tasksModifyRecord(o);
       }
     }

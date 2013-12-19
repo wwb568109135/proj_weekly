@@ -255,11 +255,13 @@
             fieldValue = _self.find(".editableval").val() || _self.find(".editable").html();
         var postData = {};
             postData.id = recordId,
+            postData.wrap = _self,
             postData.dbCollection = dbCollection,
             postData[fieldName] = fieldValue;
+        
         // 数据送ajax保存
         appAjax.updateSet(postData);
-
+        
       }else{                            //- 未编辑时
         var editShowHtml = editShow.html();
         var editInputHtml = callEditInputHtml(editShow,editShowHtml);
