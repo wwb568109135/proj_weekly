@@ -29,18 +29,20 @@ var appAjax = (function(){
     if( o ){
       var editObj = {};
           editObj.task = o.id,
-          editObj.modify = [],
-          editObj.modify[0] = {},
-          editObj.modify[0].edate = new Date(),
-          editObj.modify[0].editor = $("#userRtx").html();
+          editObj.modify = [];
+          
       delete o.id;
       delete o.dbCollection;
       for( prop in o ){
-        editObj.modify[0].efield = prop;
-        editObj.modify[0].evalue_after = o[prop];
+        var mm = {};
+            mm.edate = new Date(),
+            mm.editor = $("#userRtx").html(),
+            mm.efield = prop,
+            mm.evalue_after = o[prop];
+        editObj.modify.push(mm);
       }
 
-      // console.dir(editObj);
+      console.dir(editObj);
 
       $.ajax({
         type: "POST",

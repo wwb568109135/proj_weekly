@@ -63,7 +63,7 @@ block content
                         li.m1= hh.editor
                         li.m2= fieldName[hh.efield]
                         li.m3= hh.evalue_after
-                        li.m4= hh.edate ? hh.edate.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
+                        li.m4= hh.edate ? hh.edate.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) + hh.edate.toLocaleTimeString() : 'N/A'
 
 
 

@@ -149,6 +149,7 @@ block pageScript
         //- alert("hello");
         //- console.log(weekly.status)
         var $taskStatus = $("#taskStatus"),
+            $taskProgress = $("#taskProgress"),
             $inputStatus = $('input[name="taskStatus"]'),
             statusVal = $("#taskStatus").val(),
             statusRadioID = "#taskStatus-"+ statusVal;
@@ -156,8 +157,24 @@ block pageScript
 
         $inputStatus.click(function(){
             var index = $inputStatus.index($(this))
-            console.log(index);
-            $taskStatus.val(index)
+            $taskStatus.val(index);
+            // 状态修改同步到进度百分比
+            var progressSync = "";
+            switch (index){
+              case 0:
+                var progressSync = 0;
+                break;
+              case 1:
+                var progressSync = 40;
+                break;
+              case 2:
+                var progressSync = 90;
+                break;
+              case 3:
+                var progressSync = 100;
+                break;
+            }
+            $taskProgress.val(progressSync);
         })
       }
       $(onDomReady);

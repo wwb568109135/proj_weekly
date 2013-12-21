@@ -56,6 +56,7 @@
         }
         $("#taskCreateForm" ).delegate("select.select-direction", "change", function() {
           var _self = $(this),
+              _selfTr = $(this).parents("tr.data-line"),
               _selfInput = _self.siblings("input.input-direction");
           if(_self.val() =="其它" ){
             _selfInput.removeClass('hidden');
@@ -63,9 +64,25 @@
             _self.attr("name","")
           }else{
             _selfInput.addClass('hidden');
-            _selfInput.attr("name","")
-            _self.attr("name","direction")
+            _selfInput.attr("name","").val(" ");
+            _self.attr("name","direction");
+            // 选中排期中/重构中/联调中/已上线时。当前状态与进度百分比的联动 2013-12-21
+            if(_self.val() =="重构中"){
+              _selfTr.find("input[name='status']").val(1);
+              _selfTr.find("input[name='progress']").val(40);
+            }
+            if(_self.val() =="联调中"){
+              _selfTr.find("input[name='status']").val(2);
+              _selfTr.find("input[name='progress']").val(90);
+            }
+            if(_self.val() =="已上线"){
+              _selfTr.find("input[name='status']").val(3);
+              _selfTr.find("input[name='progress']").val(100);
+            }
           }
+          
+
+
         });
 
 

@@ -65,7 +65,7 @@ block content
               td
                 select#directionSelect.select-direction.editinput(data-name='direction')
                   option(value='',selected='selected') 选择备注说明
-                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction', value='其它备注说明')
+                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
               td
             //- 插入多一行数据的tr模板
             tr#insertTr.hidden
@@ -104,12 +104,12 @@ block content
               td
                 select.select-direction.editinput(name='direction',data-name='direction')
                   option(value='',selected='selected') 选择备注说明
-                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction', value='其它备注说明')
+                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
               td
                 a.link-delete-task(href="javascript:;") 删除
        
         .task-create-status
-          a#btnAppendTask.m-btn.btn-append-task(href='javascript:;') (+)增加1行需求
+          a#btnAppendTask.m-btn.btn-skin-3.btn-append-task(href='javascript:;') (+)增加1行需求
           p.red.tips
             | Tip:如果需求细节修改，请在完成发布后进入“
             a(href='#') 需求详情页

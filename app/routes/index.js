@@ -47,9 +47,9 @@ exports.logout = function(req, res){
  */
 exports.task = function(req, res){
   // 公司环境，直接取OA用户名
-  var staffName = req.cookies.user.rtx;
+  // var staffName = req.cookies.user.rtx;
   // 在家环境，模拟用户名
-  // var staffName = "sonichuang";
+  var staffName = "sonichuang";
 
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -89,9 +89,9 @@ exports.task_pd = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -129,9 +129,9 @@ exports.task_rb = function(req, res){
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -332,9 +332,9 @@ exports.task_detail = function(req, res) {
   } else {
       
     // 公司环境，直接取OA用户名
-    var staffName = req.cookies.user.rtx;
+    // var staffName = req.cookies.user.rtx;
     // 在家环境，模拟用户名
-    // var staffName = "sonichuang";
+    var staffName = "sonichuang";
     if(staffName){
       // 1.取出角色名
       Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -578,9 +578,9 @@ exports.task_callJSON = function(req, res){
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
 
@@ -619,9 +619,9 @@ exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
       // 公司环境，直接取OA用户名
-      staffName = req.cookies.user.rtx,
+      // staffName = req.cookies.user.rtx,
       // 在家环境，模拟用户名
-      // staffName = "sonichuang",
+      staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   if(staffName){
@@ -965,18 +965,14 @@ exports.setting_staff_del = function(req, res) {
 exports.tasksHistory_create = function(req, res) {
   var data = req.body;
   console.dir("tasksHistory_create" + data);
-
   if (data.task){
-
 
     TasksHistory.find({"task":data.task}, function (err, docs) {
       if (err) {
         console.log(err);
       } else {
-
-
         if(docs.length == 0){    // 没记录，新创建1个记录
-          console.error("没记录");
+          // console.error("没记录");
           TasksHistory.create(data, function (err) {
             if (err){
               res.send(404, "格式错误，需求历史记录失败");
@@ -985,34 +981,20 @@ exports.tasksHistory_create = function(req, res) {
             }
           })
         }else{                  // 有记录，在原记录上修改
-          console.error("有记录");
+          // console.error("有记录");
           TasksHistory.findOne({task:data.task}, function (err, doc) {
             if (err){
               console.log(error);
               res.send(404, "格式错误，需求历史记录失败");
             }else{
-              doc.name = 'jason borne';
-              doc.modify.push(data.modify[0]);
+              // doc.name = 'jason borne';
+              for(var i=0; i<data.modify.length; i++){
+                doc.modify.push(data.modify[i]);
+              }
               doc.save();
               res.send(200, "需求历史记录成功");
             }
           })
-
-          // 把 新增的记录push到docs上并进行保存
-          /*var newDataModify = docs[0].modify;
-              newDataModify.push(data.modify[0]);
-          console.log(newDataModify)    
-          TasksHistory.findOneAndUpdate({"task":data.task}, 
-            {$set: newDataModify}, 
-            {upsert : true},
-            function (err) {
-              if (err){
-                res.send(404, "格式错误，需求历史记录失败");
-              }else {
-                res.send(200, "需求历史记录成功");
-              }
-            }
-          );*/
 
         }
 
