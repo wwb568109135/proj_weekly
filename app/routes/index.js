@@ -84,7 +84,7 @@ exports.task = function(req, res){
  * product task View 
  */
 exports.task_pd = function(req, res){
-  var pageShowNum = 10,  //当前一页显示多少个
+  var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
@@ -124,7 +124,7 @@ exports.task_pd = function(req, res){
  * webRebuild task View 
  */
 exports.task_rb = function(req, res){
-  var pageShowNum = 10,  //当前一页显示多少个
+  var pageShowNum = 20,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},

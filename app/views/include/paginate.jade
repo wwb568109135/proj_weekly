@@ -2,7 +2,8 @@
 - pageCur = pageCur || 1
 //- 正则去掉所有的 ?page= 或 &page=
 - originalUrl = originalUrl.replace(/[\?\&]page[^&]+$/,"")
-- paramPage = (originalUrl.indexOf("?")=="-1") ? originalUrl + '?page=' : originalUrl + '&page='
+- paramPage = (originalUrl.indexOf("?")=="-1") ? originalUrl + '?page=' : originalUrl + '&page=';
+- anchor = '#taskListTable';
 //- div= path
 //- div= paramPage
 //- div= originalUrl
@@ -15,24 +16,24 @@ if pages >1
       if pageCur < 2
         span.m-page-pn-current #{pageCur}
         if pageCur < pages
-          a(href = paramPage + (pageCur+1)+'') #{pageCur+1}
+          a(href = paramPage + (pageCur+1)+anchor) #{pageCur+1}
           if (pages - pageCur) > 1
-            a(href = paramPage + (pageCur+2)+'') #{pageCur+2}
+            a(href = paramPage + (pageCur+2)+anchor) #{pageCur+2}
           if (pages - pageCur) > 2
-            a(href = paramPage + (pageCur+3)+'') #{pageCur+3}
+            a(href = paramPage + (pageCur+3)+anchor) #{pageCur+3}
           span.m-page-pn-ellipsis ...
       else
         if pageCur >3
-          a(href = paramPage + (pageCur-3)+'') #{pageCur-3}
+          a(href = paramPage + (pageCur-3)+anchor) #{pageCur-3}
         if pageCur >2
-          a(href = paramPage + (pageCur-2)+'') #{pageCur-2}
-        a(href = paramPage + (pageCur-1)+'') #{pageCur-1}
+          a(href = paramPage + (pageCur-2)+anchor) #{pageCur-2}
+        a(href = paramPage + (pageCur-1)+anchor) #{pageCur-1}
         span.m-page-pn-current #{pageCur}
         if pageCur < pages
-          a(href = paramPage + (pageCur+1)+'') #{pageCur+1}
+          a(href = paramPage + (pageCur+1)+anchor) #{pageCur+1}
           if (pages - pageCur) > 1
-            a(href = paramPage + (pageCur+2)+'') #{pageCur+2}
+            a(href = paramPage + (pageCur+2)+anchor) #{pageCur+2}
           if (pages - pageCur) > 2
-            a(href = paramPage + (pageCur+3)+'') #{pageCur+3}
+            a(href = paramPage + (pageCur+3)+anchor) #{pageCur+3}
           span.m-page-pn-ellipsis ...
       a(href = paramPage + pages+'') 尾页
