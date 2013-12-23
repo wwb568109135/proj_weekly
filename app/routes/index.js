@@ -84,7 +84,7 @@ exports.task = function(req, res){
  * product task View 
  */
 exports.task_pd = function(req, res){
-  var pageShowNum = 5,  //当前一页显示多少个
+  var pageShowNum = 10,  //当前一页显示多少个
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
@@ -106,7 +106,7 @@ exports.task_pd = function(req, res){
       res.locals.projectName = pj_array;
 
         // 2.把符合筛选的需求取出来
-        Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, 'author':ppQuery, $or:[{'pm':ppQuery} }, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        Weekly.paginate({$nor:[{hidden: true}], 'status':status, 'priority':priority, $or:[{'author':ppQuery},{'pm':ppQuery}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
           if (error) {
             console.error(error);
           } else {
