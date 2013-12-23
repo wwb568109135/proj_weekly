@@ -153,7 +153,9 @@
           events: ev,
           // 日期块拖动后 ajax保存
           eventDrop: function (event, dayDelta, minuteDelta) {
+            if(!event.end){ event.end = event.start }
             var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+            // console.log(postAjaxUrl);
             $.ajax({
               type: "POST",
               url : postAjaxUrl
@@ -164,7 +166,9 @@
           },
           // 日期块修改结束时间长度后 ajax保存
           eventResize:function(event, dayDelta, minuteDelta){
+            if(!event.end){ event.end = event.start }
             var postAjaxUrl = "/task/ajaxUpdateCalendar?id="+event.id+"&start="+event.start+"&end="+event.end;
+            // console.log(postAjaxUrl);
             $.ajax({
               type: "POST",
               url : postAjaxUrl
@@ -258,7 +262,7 @@
             postData.wrap = _self,
             postData.dbCollection = dbCollection,
             postData[fieldName] = fieldValue;
-        
+        // console.dir(postData);
         // 数据送ajax保存
         appAjax.updateSet(postData);
         

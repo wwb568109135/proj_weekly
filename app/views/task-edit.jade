@@ -91,17 +91,17 @@ block content
             li
               .task-edit-part
                 label.lab(for='hopeOnlineDate') 期望上线时间：
-                input#hopeOnlineDate.m-input.inp-txt(name='task[online_date]', type='text', value=weekly.online_date ? weekly.online_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
+                input#hopeOnlineDate.m-input.date-picker.inp-txt(name='task[online_date]', type='text', value=weekly.online_date ? weekly.online_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
               .task-edit-part
                 label.lab(for='pageQuantity') 页面数：
                 input#pageQuantity.m-input.inp-txt(name='task[pages]', type='number', value=weekly.pages)
             li
               .task-edit-part
                 label.lab(for='rbStarDate') 重构开始时间：
-                input#rbStarDate.m-input.inp-txt(name='task[rb_star_date]', type='text', value=weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
+                input#rbStarDate.m-input.date-picker.inp-txt(name='task[rb_star_date]', type='text', value=weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
               .task-edit-part
                 label.lab(for='rbFinishDate') 重构完成时间：
-                input#rbFinishDate.m-input.inp-txt(name='task[rb_end_date]', type='text', value=weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
+                input#rbFinishDate.m-input.date-picker.inp-txt(name='task[rb_end_date]', type='text', value=weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '未设置')
             li
               .task-edit-part
                 label.lab(for='taskPartner') 网站负责人：
@@ -145,6 +145,9 @@ block pageScript
       function onDomReady(){
         //- current nav 
         $(".nav-ul li").eq(1).addClass("current");
+
+        //- datePicker
+        $('input.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
 
         //- alert("hello");
         //- console.log(weekly.status)

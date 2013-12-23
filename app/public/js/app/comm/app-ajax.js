@@ -101,11 +101,12 @@ var appAjax = (function(){
         if(o.wrap){
           var objWrap = o.wrap,
               callback2 = function(){objWrap.parent("tr").find("span[data-name='progress']").html(o.progress);}
-          delete o.wrap;   
+          delete o.wrap;
         }
       }
-      console.log(o);
       
+      if(o.wrap){delete o.wrap;}
+      // console.log(o);
       $.ajax({
         type: "POST",
         url: "/comm-ajaxUpdateSet",

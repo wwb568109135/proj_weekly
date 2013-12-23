@@ -440,11 +440,11 @@ exports.task_search = function(req, res) {
           Weekly.find(queryParm).sort({create_date: -1}).exec(function(err,docs){
             if(err){
               console.error(err);
-              res.send(404, "查询异常");
+              res.send(404, "暂时不支持模糊查找，本次查换异常");
             }else if(docs.length){
               res.render('task-search', {docs:docs})
             }else{
-              res.send(404, "查不到数据");
+              res.send(404, "查询不到数据");
             }
           });
       }
