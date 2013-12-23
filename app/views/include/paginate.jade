@@ -12,28 +12,28 @@ if pages >1
     .m-page-total
       span.m-page-total-page 共#{pages}页
     .m-page-pn
-      a.m-page-pn_disabled(href= paramPage+'1') 首页
+      a.m-page-pn_disabled(href= paramPage+'1' + anchor) 首页
       if pageCur < 2
         span.m-page-pn-current #{pageCur}
         if pageCur < pages
-          a(href = paramPage + (pageCur+1)+anchor) #{pageCur+1}
+          a(href = paramPage + (pageCur+1) + anchor) #{pageCur+1}
           if (pages - pageCur) > 1
-            a(href = paramPage + (pageCur+2)+anchor) #{pageCur+2}
+            a(href = paramPage + (pageCur+2) + anchor) #{pageCur+2}
           if (pages - pageCur) > 2
-            a(href = paramPage + (pageCur+3)+anchor) #{pageCur+3}
+            a(href = paramPage + (pageCur+3) + anchor) #{pageCur+3}
           span.m-page-pn-ellipsis ...
       else
         if pageCur >3
-          a(href = paramPage + (pageCur-3)+anchor) #{pageCur-3}
+          a(href = paramPage + (pageCur-3) + anchor) #{pageCur-3}
         if pageCur >2
-          a(href = paramPage + (pageCur-2)+anchor) #{pageCur-2}
-        a(href = paramPage + (pageCur-1)+anchor) #{pageCur-1}
+          a(href = paramPage + (pageCur-2) + anchor) #{pageCur-2}
+        a(href = paramPage + (pageCur-1) + anchor) #{pageCur-1}
         span.m-page-pn-current #{pageCur}
         if pageCur < pages
-          a(href = paramPage + (pageCur+1)+anchor) #{pageCur+1}
+          a(href = paramPage + (pageCur+1) + anchor) #{pageCur+1}
           if (pages - pageCur) > 1
-            a(href = paramPage + (pageCur+2)+anchor) #{pageCur+2}
+            a(href = paramPage + (pageCur+2) + anchor) #{pageCur+2}
           if (pages - pageCur) > 2
-            a(href = paramPage + (pageCur+3)+anchor) #{pageCur+3}
+            a(href = paramPage + (pageCur+3) + anchor) #{pageCur+3}
           span.m-page-pn-ellipsis ...
-      a(href = paramPage + pages+'') 尾页
+      a(href = paramPage + pages + anchor) 尾页
