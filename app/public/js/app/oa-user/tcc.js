@@ -94,8 +94,8 @@ function _tcc_write_userscript(clientid, choosertype) {
         disableCtl();
         if (arguments.length < 3) {
             // 获取OA的用户名列表
-            $.getScript(Tcc.base + 'js/' + chooserdata + '.js', function() {
-            // $.getScript('/js/app/oa-user/' + chooserdata + '.js', function() {
+            // $.getScript(Tcc.base + 'js/' + chooserdata + '.js', function() {
+            $.getScript('/js/app/oa-user/' + chooserdata + '.js', function() {
                 sign[1] = 1;
                 initChooser();
             });

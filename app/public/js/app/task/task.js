@@ -24,7 +24,7 @@
           snn = 0;
       $("#directionSelectDiv option").each(function(){
         var el = $(this);
-        el.attr("selected",false);2013-12-17
+        el.attr("selected",false);
         if(el.val() == cbVal){ el.attr("selected",true); snn+=1; }
         if(el.val() == "其它" && cbVal != "" && snn ==0 ){el.attr("selected",true);}
       })
@@ -118,6 +118,11 @@
         o.id = msg[i]._id;
         o.title = "【"+projectName[msg[i].type]+"】"+msg[i].title;
         o.url = "/task/" + msg[i]._id;
+        // CP的颜色处理
+        if (/CP;?/i.test(msg[i].pp) && msg[i].status != 3 ){
+          o.className = "fc-label-cp"
+        }
+        // 进度100%的处理
         if (msg[i].status == 3 ){
           o.className = "fc-label-finish"
         }
