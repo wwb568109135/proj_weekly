@@ -320,8 +320,8 @@ body > .contnet{height: auto; min-height: 100%;}
 
 	.dialog-change-browser{top:25%;}
 		.dialog-change-browser .m-dialog-hd{position: relative;}
-		.dialog-change-browser .m-dialog-hd .close{position: absolute;text-decoration: none;right:16px;top:12px;font-family:tahoma;font-size:2.5em;color: #fff;}
-		.dialog-change-browser .m-dialog-bd{background-color: #fff;padding-bottom:4em;}
+		.dialog-change-browser .m-dialog-hd .close{position: absolute;text-decoration: none;right:16px;top:12px;font-family:tahoma;line-height:1em;font-size:2.5em;color: #fff;}
+		.dialog-change-browser .m-dialog-bd{background-color: #fff;padding-bottom:4em;border-bottom-left-radius:12px;border-bottom-right-radius:12px;}
 		.change-browser{font-size:1.2em;line-height: 2em;text-indent: 2em;}
 		.change-browser p{margin: 0 0 2em;}
 		.change-browser-list{overflow: hidden;*zoom:1;margin:0 auto;text-align: center;}
