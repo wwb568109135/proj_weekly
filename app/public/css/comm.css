@@ -126,8 +126,9 @@ body > .contnet{height: auto; min-height: 100%;}
 #calendar {width: 940px; /*width:90%;*/}
 .fc-event:link,.fc-event:visited,.fc-event:hover{color: #fff;}
 /* task finish bgcolor */
-.fc-content .fc-label-cp{background-color: #ffab00;border-color:#ffab00;}
-.fc-content .fc-label-finish{background-color:#00b04f;border-color:#00b04f;}
+.cth-task{background-color: #3d8ed5;border-color:#3d8ed5;}
+.cth-cp,.fc-content .fc-label-cp{background-color: #ffab00;border-color:#ffab00;}
+.cth-finish,.fc-content .fc-label-finish{background-color:#00b04f;border-color:#00b04f;}
 .callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em 1em;background-color: #ff0000;
 	-webkit-transition: all 0.5s;
 	-moz-transition: all 0.5s;
@@ -158,7 +159,7 @@ body > .contnet{height: auto; min-height: 100%;}
 
 	.c-box-hd-extra{float: right;}
 	.c-box-hd-extra .tips{color: #ff6600;}
-	.c-box-bd{background-color: #fff;padding:12px;min-height:100px;color: #032651;
+	.c-box-bd{position: relative;background-color: #fff;padding:12px;min-height:100px;color: #032651;
 		/* css3 box-shadow */
 		-webkit-box-shadow:0px 1px 2px #d9dbe0;
 		   -moz-box-shadow:0px 1px 2px #d9dbe0;
@@ -357,6 +358,14 @@ body > .contnet{height: auto; min-height: 100%;}
 	.autofinish td{padding:5px;color:#666666;min-width:140px;}
 	.autofinish .hover td{color:#FFFFFF;background:-webkit-gradient(linear,left top,left bottom,from(#148AE5),to(#0F6EAD));background:-moz-linear-gradient(top,#148AE5,#0F6EAD);background-color:#0F6EAD;}
 	.autofinish td font{font-weight:700;}
+
+/*-- .calendar-task-hint --*/
+.calendar-task-hint{/*position: absolute;left:980px;top:50px;*/width:920px;margin:0 0 2em;padding:10px;background-color: #fafafa;border: 1px solid #ddd;border-radius:0.5em;}
+	.cth-title{color: #999;}
+	.cth-list{overflow: hidden;*zoom:1;}
+	.cth-list li{float:left;min-width:150px;white-space:nowrap;margin:0 1em 0 0;}
+	.cth-list li span{display: block;color: #fff;line-height:2em;height:2em;padding:0 0.5em;border-radius:0.4em;}
+
 
 
 /* Css3 Amination

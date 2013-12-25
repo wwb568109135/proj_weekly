@@ -67,6 +67,16 @@ block content
       .c-box-hd-extra
         a.m-btn.btn-skin-1.btn-new-task(href='/export') 导出本周周报
     .c-box-bd
+      fieldset.calendar-task-hint
+        legend.cth-title 需求示例
+        ul.cth-list
+          li
+            span.cth-task 内部需求
+          li
+            span.cth-cp CP需求
+          li
+            span.cth-finish 已上线需求（内部、CP）
+
       #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
 
   //-[c-box:重构需求列表]
