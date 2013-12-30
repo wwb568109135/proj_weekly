@@ -600,13 +600,16 @@ body > .contnet{height: auto; min-height: 100%;}
 	
 
 /*-- .staff-manage-table --*/
-.staff-manage-table{width: 780px;}
+.staff-manage-table{width: 900px;}
 	.staff-manage-table th{text-align: center;}
 	.staff-manage-table .c1{width: 15%;}
-	.staff-manage-table .c2{width: 20%;}
-	.staff-manage-table .c3{width: 35%;}
-	.staff-manage-table .c4{width: 15%;}
+	.staff-manage-table .c2{width: 15%;}
+	.staff-manage-table .c3{width: 15%;}
+	
+	.staff-manage-table .c4{width: 25%;}
 	.staff-manage-table .c5{width: 15%;}
+	.staff-manage-table .c6{width: 10%;}
+	.staff-manage-table .c7{width: 15%;}
 	.staff-manage-table td a{padding:0 4px;}
 
 /*-- .project-manage-table{} --*/

@@ -30,11 +30,12 @@ block content
               option(value='1') 产品角色
               option(value='2') 管理角色
               option(value='3') 重构角色
-            select.sub-select.sub-select-project(class='hidden',name='project')
-              option(value='0') 请选择负责的产品
-              if pj_array.length
-                for pj in pj_array
-                  option(value='#{pj.id}')= pj.name
+            span.sub-span-project
+              select.sub-select.sub-select-project(class='hidden',name='project')
+                option(value='0') 请选择负责的产品
+                if pj_array.length
+                  for pj in pj_array
+                    option(value='#{pj.id}')= pj.name
             select.sub-select.sub-select-group(class='hidden',name='group')
               option(value='0', selected='selected') 请选择组别
               option(value='1') 重构1组
@@ -50,10 +51,12 @@ block content
                 col.c3
                 col.c4
                 col.c5
+                col.c6
               thead
                 tr
                   th 人员名字
                   th 角色
+                  th 负责项目
                   th 备注
                   th 开通时间
                   th 操作
@@ -78,6 +81,10 @@ block content
                       input(type="hidden", data-name="roles", value="#{staff.roles}")
                       input(type="hidden", data-name="project", value="#{staff.project}")
                       input(type="hidden", data-name="group", value="#{staff.group}")
+                    td
+                      span.editable(data-name="launch")= staff.launch
+                      p
+                        button.launch-project 添加项目
                     td
                       span.editable(data-name="remark")= staff.remark
                     td.tcenter.readonly= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'

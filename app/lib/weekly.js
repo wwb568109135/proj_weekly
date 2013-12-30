@@ -35,6 +35,7 @@ var StaffSchema = new Schema({
 	roles: {type:Number, defaults: 0},				//角色
 	project: {type:String},							//项目id
 	group: {type:Number, defaults: 0},				//组别
+	launch: [{pj:String}],							//开通的项目
 	remark: {type: String, requierd: false},		//备注信息
 	create_date: {type:Date, requierd: true},		//创建时间
 	hidden: {type:Boolean, defaults: false}			//停用的用户

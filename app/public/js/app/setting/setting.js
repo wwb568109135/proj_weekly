@@ -81,6 +81,16 @@
         _self.find(".editinput").focus();
       }
     })
+  
+    //- launch project button Func ------------------------
+    $("button.launch-project").bind("click",function(){
+      console.log("button launch")
+      var _self = $(this),
+          projectSelectHtml = $("#staffRoleSelectBox .sub-span-project").html();
+      _self.hide();
+      _self.parents("td").append(projectSelectHtml);
+      _self.parents("td").find(".sub-select-project").removeClass("hidden");
+    })
 
     //- Role Select Func ------------------------
     $("div.system-settings-box").delegate("select.main-select","change",function(){
