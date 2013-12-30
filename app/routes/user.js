@@ -13,8 +13,9 @@ exports.hi = function(req, res){
 };
 
 exports.isLogin = function(req, res){
+  var user = exports.returnStaffUser(req,res);
   // 公司环境，直接取OA用户名
-  var user = req.cookies.user;
+  // var user = req.cookies.user;
   // 在家环境，模拟用户名
   // var user = { uid:123, nick:"黄文杰", rtx:"sonichuang" }
   // console.log(user);
@@ -34,12 +35,13 @@ exports.isWhiteListUser = function(req, res){
   if(isLogin){
     // 设置可通行白名单列表
     var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo"],
+        user = exports.returnStaffUser(req,res);
         // 公司环境，直接取OA用户名
-        u = req.cookies.user;
+        // user = req.cookies.user;
         // 在家环境，模拟用户名
-        // u = { uid:123, nick:"黄文杰", rtx:"sonichuang" };
-    if(u){
-      var enName = u.rtx;
+        // user = { uid:123, nick:"黄文杰", rtx:"sonichuang" };
+    if(user){
+      var enName = user.rtx;
       for(var i=0;i<userWhiteList.length;i++){
         if( enName == userWhiteList[i] ){
           return true;
@@ -49,6 +51,16 @@ exports.isWhiteListUser = function(req, res){
   }
   return false;
 };
+
+// 返回Cookie user name
+exports.returnStaffUser = function(req,res){
+  // 办公网络环境，直接取OA用户名
+  var returnUser = req.cookies.user;
+  // 非办公网络环境，取OA用户名
+  // var returnUser = { uid:123, nick:"黄文杰", rtx:"sonichuang" }
+  
+  return returnUser;
+}
 
 exports.tofLogin = function(req, res){
   var url = req.protocol || 'http';
