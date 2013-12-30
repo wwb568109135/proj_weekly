@@ -8,10 +8,21 @@ block content
   div.c-box.system-intro
     .c-box-hd
       .c-box-hd-title
-        h3 系统介绍
+        h3 本周需求情况
     .c-box-bd
-      p
+      //- p
         | 互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍。
+      fieldset.calendar-task-hint
+        legend.cth-title 需求示例
+        ul.cth-list
+          li
+            span.cth-task 内部需求
+          li
+            span.cth-cp CP需求
+          li
+            span.cth-finish 已上线需求（内部、CP）
+      #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
+
 
   //- [c-box:快速导航]
   div.c-box
@@ -35,13 +46,9 @@ block content
             i.icon.icon-eye
             | 查看需求列表
           i.heightlight
-block pageScript
-  script.
-    (function(){
-      $(".nav-ul li").eq(0).addClass("current");
-    })()
 
-//- <li><a href="#"><i class="icon icon-bulb"></i>新建需求</a><i class="heightlight"></i></li>
-//- <li><a href="#"><i class="icon icon-bulb"></i>新建CP需求</a><i class="heightlight"></i></li>
-//- <li><a href="#"><i class="icon icon-eye"></i>查看需求</a><i class="heightlight"></i></li>
-//- <li><a href="#"><i class="icon icon-eye"></i>查看需求列表</a><i class="heightlight"></i></li>
+
+block pageScript
+  link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.css')
+  script(src="/js/fullcalendar/fullcalendar.js")
+  script(src="/js/app/index/index.js")

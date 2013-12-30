@@ -32,8 +32,21 @@ MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
  * index View
  */
 exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
-};
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+      if(err){
+        res.send(404, "参数错误");
+      }else{
+        var roles = docs[0] ? docs[0].roles : 0;
+
+         res.locals.roles = roles;
+         res.render('index', { title: '系统首页' });
+      }
+    });
+  }
+}
 
 /*
  * logout View

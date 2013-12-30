@@ -62,7 +62,7 @@ var defaults = {
 	isRTL: false,
 	firstDay: 0,
 	monthNames: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
-	monthNamesShort: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+	monthNamesShort: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
 	dayNames: ['周日','周一','周二','周三','周四','周五','周六'],
 	dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
 	buttonText: {
@@ -70,10 +70,10 @@ var defaults = {
 		next: "<span class='fc-text-arrow'>&rsaquo;</span>",
 		prevYear: "<span class='fc-text-arrow'>&laquo;</span>",
 		nextYear: "<span class='fc-text-arrow'>&raquo;</span>",
-		today: 'today',
-		month: 'month',
-		week: 'week',
-		day: 'day'
+		today: '今天',
+		month: '月视图',
+		week: '周视图',
+		day: '日'
 	},
 	
 	// jquery-ui theming
