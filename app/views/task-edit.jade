@@ -71,7 +71,8 @@ block content
             li
               .task-edit-excerpt
                 label.lab(for='taskDescription') 需求描述： 
-                textarea#taskDescription.m-input.inp-textarea(name='task[content]', cols='80', rows='10')= weekly.content
+                textarea#taskDescription(name='task[content]')= weekly.content
+                //textarea#taskDescription.m-input.inp-textarea(name='task[content]', cols='80', rows='10')= weekly.content
             li
               .task-edit-excerpt
                 label.lab(for='taskAttachment') 附件： 
@@ -182,3 +183,19 @@ block pageScript
       }
       $(onDomReady);
     })()
+  
+  script.
+    var tfl_path = 'http://tdl.oa.com/tfl/';
+    var tfl_tag = '20131225';
+
+  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/tab.css?v=20131225')
+  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
+  style(type='text/css')
+    #editor-taskDescription{float:left;}
+    .task-edit-form .btn{ border:none;}
+    .editor-popup-image .tab{ border-bottom:1px solid #999;}
+    .editor-popup-image .tab #tab-upload-image,.editor-popup-image .tab #tab-net-image{ margin-bottom:2px; cursor:pointer;}
+  
+  script(type='text/javascript', src='http://tdl.oa.com/tfl/js/tfl-core.js')
+  script(src="http://tdl.oa.com/tfl/js/tfl-editor.js?v=20131225")
+  script(src="/js/editor/editor.js")
