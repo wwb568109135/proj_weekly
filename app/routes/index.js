@@ -46,11 +46,8 @@ exports.logout = function(req, res){
  * Switch role and goto View
  */
 exports.task = function(req, res){
+  // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
-  // 公司环境，直接取OA用户名
-  // var staffName = req.cookies.user.rtx;
-  // 在家环境，模拟用户名
-  // var staffName = "sonichuang";
 
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -89,11 +86,8 @@ exports.task_pd = function(req, res){
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      // 取登录用户名
       staffName = User.returnStaffUser(req,res).rtx,
-      // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
-      // 在家环境，模拟用户名
-      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -130,11 +124,8 @@ exports.task_rb = function(req, res){
       pageCur = parseInt(req.query.page) || 1,
       status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
       priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      // 取登录用户名
       staffName = User.returnStaffUser(req,res).rtx,
-      // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
-      // 在家环境，模拟用户名
-      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   // 1.把ProjectName全部取出来
@@ -333,12 +324,8 @@ exports.task_detail = function(req, res) {
     error = "warning";
     msg = '必须指定要显示的任务ID。';
   } else {
-    
+    // 取登录用户名
     var staffName = User.returnStaffUser(req,res).rtx;
-    // 公司环境，直接取OA用户名
-    // var staffName = req.cookies.user.rtx;
-    // 在家环境，模拟用户名
-    // var staffName = "sonichuang";
     if(staffName){
       // 1.取出角色名
       Staff.find({name:staffName}).limit(1).exec(function(err,docs){
@@ -581,11 +568,8 @@ exports.task_callJSON = function(req, res){
 
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
+      // 取登录用户名
       staffName = User.returnStaffUser(req,res).rtx,
-      // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
-      // 在家环境，模拟用户名
-      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
 
@@ -623,11 +607,8 @@ exports.task_callJSON = function(req, res){
 exports.task_export = function(req, res){
   var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
       taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
+      // 取登录用户名
       staffName = User.returnStaffUser(req,res).rtx,
-      // 公司环境，直接取OA用户名
-      // staffName = req.cookies.user.rtx,
-      // 在家环境，模拟用户名
-      // staffName = "sonichuang",
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
   if(staffName){

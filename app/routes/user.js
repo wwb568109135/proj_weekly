@@ -13,6 +13,7 @@ exports.hi = function(req, res){
 };
 
 exports.isLogin = function(req, res){
+  // 取登录用户名
   var user = exports.returnStaffUser(req,res);
   // 公司环境，直接取OA用户名
   // var user = req.cookies.user;
@@ -35,11 +36,9 @@ exports.isWhiteListUser = function(req, res){
   if(isLogin){
     // 设置可通行白名单列表
     var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo"],
+        // 取登录用户名
         user = exports.returnStaffUser(req,res);
-        // 公司环境，直接取OA用户名
-        // user = req.cookies.user;
-        // 在家环境，模拟用户名
-        // user = { uid:123, nick:"黄文杰", rtx:"sonichuang" };
+
     if(user){
       var enName = user.rtx;
       for(var i=0;i<userWhiteList.length;i++){
