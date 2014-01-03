@@ -1,4 +1,4 @@
-var myeditor = TFL.editor({"id":"taskDescription","width":"630px","height":"300px","name":"task[content]"});
+var myeditor = TFL.editor({"id":"taskDescription","width":"630px","height":"300px","name":"task[content]","showRelativePath":false});
 
 //附件添加按钮
 /*
