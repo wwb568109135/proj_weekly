@@ -29,9 +29,17 @@ MyModel.paginate({}, 2, 10, function(error, pageCount, paginatedResults) {
 */
 
 /*
- * index View
+ * index View (login success redirect to /home)
  */
 exports.index = function(req, res){
+  res.redirect('/home');
+}
+
+/*
+ * home View
+ */
+exports.home = function(req, res){
+  // res.render('index', { title: '系统首页' });
   // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
   if(staffName){
@@ -46,7 +54,7 @@ exports.index = function(req, res){
       }
     });
   }
-}
+};
 
 /*
  * logout View
@@ -917,7 +925,7 @@ exports.setting_staff = function(req, res) {
   var pj_array = new Array(),
       // 大小写不敏感的正则搜索
       query = (req.query.staffName) ? { $regex: new RegExp("^" + req.query.staffName.toLowerCase(), "i") } : {'$exists': true};
-  console.log(query);
+  // console.log(query);
 
   Project.find({},function(err,docs){
     if(err){
@@ -930,7 +938,7 @@ exports.setting_staff = function(req, res) {
     }
     res.locals.pj_array = pj_array;
     /*-----*/
-    Staff.find( {"name" : query }, function (err, docs) {
+    Staff.find({"name" : query }).sort({create_date: 1}).exec(function(err,docs){
       if (err) {
         console.error(err);
       } else {

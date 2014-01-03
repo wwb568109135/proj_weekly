@@ -84,24 +84,38 @@
   
     //- launch project button Func @todo ------------------------
     $("button.launch-project").bind("click",function(){
-      console.log("button launch");
-
+      // console.log("button launch");
       var _self = $(this),
           $lauchForm = _self.parents("td").find(".launch-form");
-      
+      _self.hide();
+
       if( $lauchForm.find('.select-wrap').html()){
-        console.log("b");
         var $lastSelect =  $lauchForm.find('.select-wrap').last();
         $lastSelect.after($lastSelect.clone());
       }else{
         // _self.hide();
         var projectSelectHtml = $("#staffRoleSelectBox .sub-select-project").clone();
-        
         $lauchForm.prepend(projectSelectHtml);
         $lauchForm.removeClass("hidden");
         $lauchForm.find(".sub-select-project").removeClass("hidden").wrap('<span class="select-wrap" />').after('<a href="javascript:;" class="launch-project-del">X</a>')
-        // $lauchForm.find(".sub-select-project")
       }
+
+      var $editable = _self.parents("td").find(".editable");
+      $editable.each(function(){
+        var p = $(this).html();
+        if(p){
+          var $lastSelect =  $lauchForm.find('.select-wrap').last();
+          $lastSelect.after($lastSelect.clone());
+          $lastSelect.find("select option").each(function(){
+            // console.log($(this).html())
+            if($(this).html() == p ){
+              $(this).attr("selected","selected");
+            }
+          })
+        }
+      })
+
+
     })
 
     //- launch form button Func @todo ------------------------
@@ -111,13 +125,42 @@
       $launchProjectSelect.each(function(){
         var __self = $(this);
         if(__self.val() != 0){
-          vv.push(__self.val());
+          var a = {pj:__self.val()}
+          vv.push(a);
         }
       });
-      console.log(vv);
+      // console.log(vv);
+
+      // 拼装准备ajax发送的数据
+      var _self = $(this),
+          dbCollection = _self.parents("table").attr("data-collection"),
+          recordId = _self.parents("tr").find("span[data-name='_id']").html(),
+          fieldName = _self.parents("td").find(".editable").attr("data-name"),
+          fieldValue = vv;
+      var postData = {};
+          postData.id = recordId,
+          postData.dbCollection = dbCollection,
+          postData[fieldName] = fieldValue;
+      // console.log(postData);
+      // 数据送ajax保存
+      if(fieldName && fieldValue != ""){
+        console.log("准备提交");
+        var fb = function(){setTimeout(function() { window.location.reload() }, 800)};
+        appAjax.updateSet(postData,fb);
+      }
+
     //- a.launch-project-del Func  --
     }).delegate("a.launch-project-del","click",function(){
-      $(this).parent().remove()
+      if($(this).parent().siblings(".select-wrap").length > 0){
+        $(this).parent().remove()
+      }else{
+        alert("至少要选择1个项目！")
+      }
+    }).delegate("a.launch-project-add","click",function(){
+        var _self = $(this),
+            $lauchForm = _self.parents("td").find(".launch-form"),
+            $lastSelect =  $lauchForm.find('.select-wrap').last();
+        $lastSelect.after($lastSelect.clone());
     })
 
 

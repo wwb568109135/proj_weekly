@@ -65,6 +65,7 @@ exports.tofLogin = function(req, res){
   var url = req.protocol || 'http';
   url += "://";
   url += req.get('host');
+  // url += "loginsuc"; 
   // url += req.originalUrl; 
   res.redirect('http://passport.oa.com/modules/passport/signin.ashx?url='+encodeURIComponent(url));
 };

@@ -81,12 +81,17 @@ block content
                       input(type="hidden", data-name="project", value="#{staff.project}")
                       input(type="hidden", data-name="group", value="#{staff.group}")
                     td.readonly
-                      span.editable(data-name="launch")= staff.launch
+                      if staff.launch
+                        for launchPj in staff.launch
+                          span.editable.tag(data-name="launch")= pj_array[launchPj.pj]
+                        span.editable(data-name="launch")
                       p
-                        button.launch-project +项目
+                        button.launch-project 编辑项目
                       div.launch-form.hidden
+                        p.launch-form-opt
+                          a(href="javascript:;", class="launch-project-add") +项目
                         p.launch-form-btn
-                          button.launch-form-comfirm 确认添加
+                          button.launch-form-comfirm 确认修改
                     td
                       span.editable(data-name="remark")= staff.remark
                     td.tcenter.readonly= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
