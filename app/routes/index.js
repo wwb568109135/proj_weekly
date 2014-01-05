@@ -302,13 +302,28 @@ exports.task_ld_adv = function(req, res){
  * task create 
  */
 exports.task_create = function(req, res) {
-  Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
+
+  // 1.取当前用户信息(负责了哪些项目)
+  Staff.find({"name":staffName}).exec(function(err,docs){
     if(err){
-      console.error(err)
+      console.log(err)
     }else{
-      res.render('task-create', {pj:docs}); 
+      res.locals.staff = docs[0];
+
+      // 2.取所有的项目出来
+      Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
+        if(err){
+          console.error(err)
+        }else{
+          res.render('task-create', {pj:docs}); 
+        }
+      });
+
     }
-  });
+  })
+
 };
 
 /*

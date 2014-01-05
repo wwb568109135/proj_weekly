@@ -33,9 +33,17 @@ block content
               td
                 select#taskTitle-1(name='type')
                   option(value="",selected='selected') 选择项目
-                  if pj.length
+                  //- 有设置过开通项目的，显示开通的那几个项目
+                  if pj.length && staff.launch
                     for project in pj
-                      option(value='#{project.id}')= project.name
+                        for launchPJ in staff.launch
+                          if launchPJ.pj == project.id
+                            option(value='#{project.id}')= project.name
+                  //- 没设置过开通项目的，全部显示出来
+                  eles 
+                    if pj.leangth
+                      for project in pj
+                        option(value='#{project.id}')= project.name
                 select#priorityLv-2(name='priority')
                   option(value='0') 优先级
                   option(value='0') P0
@@ -72,9 +80,17 @@ block content
               td
                 select(name='type')
                   option(value='', selected='selected') 选择项目
-                  if pj.length
+                  //- 有设置过开通项目的，显示开通的那几个项目
+                  if pj.length && staff.launch
                     for project in pj
-                      option(value='#{project.id}')= project.name
+                        for launchPJ in staff.launch
+                          if launchPJ.pj == project.id
+                            option(value='#{project.id}')= project.name
+                  //- 没设置过开通项目的，全部显示出来
+                  eles 
+                    if pj.leangth
+                      for project in pj
+                        option(value='#{project.id}')= project.name
                 select(name='priority')
                   option(value='0') 优先级
                   option(value='0') P0

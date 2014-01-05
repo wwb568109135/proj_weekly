@@ -49,23 +49,29 @@ block content
                 th 其它说明
             tbody
               for ppp in projectName
-                tr.project-line
-                  td
-                    span= ppp.name
-                  td
-                    span
-                  td
-                    span
-                  td
-                    span
-                  td
-                    span
-                  td
-                    span
-                  td
-                    span
-                  td
-                    span
+                each val,i in docs
+                  //- li #{val.type} : #{i}
+                  if ppp.id == val.type
+                    - var temp
+                    if temp != val.type
+                      tr.project-line
+                        td
+                          span= ppp.name
+                        td
+                          span
+                        td
+                          span
+                        td
+                          span
+                        td
+                          span
+                        td
+                          span
+                        td
+                          span
+                        td
+                          span
+                      - var temp = val.type
                 for weekly in docs
                   if weekly.type == ppp.id
                     tr(class="#{weekly.progress == 100 ? 'finish':''}")

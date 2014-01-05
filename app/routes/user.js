@@ -54,9 +54,9 @@ exports.isWhiteListUser = function(req, res){
 // 返回Cookie user name
 exports.returnStaffUser = function(req,res){
   // 办公网络环境，直接取OA用户名
-  var returnUser = req.cookies.user;
+  // var returnUser = req.cookies.user;
   // 非办公网络环境，取OA用户名
-  // var returnUser = { uid:123, nick:"黄文杰", rtx:"sonichuang" }
+  var returnUser = { uid:123, nick:"黄文杰", rtx:"sonichuang" }
   
   return returnUser;
 }
