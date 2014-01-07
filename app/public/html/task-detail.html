@@ -42,6 +42,47 @@
 					<li><a href="#" class="m-btn btn-skin-1">编辑需求</a></li>
 					<li><a href="#" class="m-btn btn-skin-1">删除需求</a></li>
 				</ul>
+				<!-- 需求未完成框
+				<div id="tackDoneDiv" class="task-done-div">
+					<a id="taskDoneBtn" href="javascript:;" class="m-btn btn-skin-0">结束需求</a>
+					<p id="taskDoneTips" class="tips">注：如果需求已完成，请结束需求</p>
+				</div> -->
+				<!-- 需求完成，未打分框 -->
+				<div id="tackReDoneDiv" class="task-redone-div">
+					<a id="taskVoteBtn" href="javascript:alert('打分功能开发中，敬请期待!');" class="m-btn btn-skin-2">请为本次需求打分</a>
+					<p id="taskDoneTips" class="tips"> </p>若需求未结束？<a id="taskReDoneBtn" href="javascript:;">重启动此需求</a>
+				</div>
+				<!-- 需求完成，已打分框 -->
+				<!-- 
+				<div class="task-scored-div">
+					<h4>此需求已经完成！评分 <strong>5</strong>分</h4>
+					<p>评论的文字这里,评论的文字这里</p>
+				</div> -->
+
+				<!-- dialog-task-score（打分评论弹出层） -->
+				<div class="dialog-task-score">
+					<div class="dts-hd">
+						<h3>需求打分与评论</h3>
+						<a class="close" href="javascript:" onclick="this.parentNode.parentNode.style.display='none'">&times;</a>
+					</div>	
+					<div class="dts-bd">
+						<form action="#">
+							<h4>请您为本次需求服务评论</h4>
+							<ul class="score-list">
+								<li><input id="scoreSet1" type="radio" name="scoreSet" /><label for="scoreSet1">5分（及时响应，准时上线，主动沟通并提出见解）</label></li>
+								<li><input id="scoreSet2" type="radio" name="scoreSet" /><label for="scoreSet2">4分（沟通反馈及时，准时上线，少BUG）</label></li>
+								<li><input id="scoreSet3" type="radio" name="scoreSet" /><label for="scoreSet3">3分（准时上线，但反馈不及时，后续BUG多）</label></li>
+								<li><input id="scoreSet4" type="radio" name="scoreSet" /><label for="scoreSet4">2分（准时上线，但反馈不及时，后续BUG多）</label></li>
+								<li><input id="scoreSet5" type="radio" name="scoreSet" /><label for="scoreSet5">1分（服务不给力，响及不及时，上线问题多多）</label></li>
+							</ul>
+							<h4>请告诉我们如何做得更好？</h4>
+							<textarea id="xx" name="" rows="4" cols="20" class="inp-textarea"></textarea>
+						</form>
+					</div>	
+				</div>
+
+
+
 			</div>
 			<div class="c-box-bd">
 				<!--= task-detail-main -->
