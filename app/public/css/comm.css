@@ -242,6 +242,20 @@ body > .contnet{height: auto; min-height: 100%;}
 	        box-shadow:inset 0px 1px 1px #ccc;
 }
 
+.btn-skin-4{
+ 	background-color: #F78B00;
+	-webkit-box-shadow:inset 0px -2px 0px #ccc;
+	   -moz-box-shadow:inset 0px -2px 0px #ccc;
+	        box-shadow:inset 0px -2px 0px #ccc;
+}
+.btn-skin-4:active{
+ 	background-color: #F78B00;
+	-webkit-box-shadow:inset 0px 1px 1px #ccc;
+	   -moz-box-shadow:inset 0px 1px 1px #ccc;
+	        box-shadow:inset 0px 1px 1px #ccc;
+}
+
+
 /*-- m-input --*/
 .m-input{line-height: 16px;height: 16px;margin-right:4px;padding:4px;border:1px solid #ccc;width: 95%;
 	border-radius:4px;
@@ -563,7 +577,8 @@ body > .contnet{height: auto; min-height: 100%;}
 /* task-edit
 ---------------------------------------------------------------------------------------*/
 .task-edit-form{margin:1em 0;}
-	.task-edit-form .btn{padding:1em 0;border-top: 1px solid #eee;padding-left:150px;}
+	.task-edit-form .updatebtn{padding:1em 0;border-top: 1px solid #eee;padding-left:150px;}
+	.task-edit-form .btn input,.task-edit-form .btn span{ border:1px solid #bbb;}
 	.task-edit-form li{overflow: hidden;*zoom:1;margin:0 0 1.2em;line-height: 2em;}
 	.task-edit-part{float:left;width:400px;}
 	.task-edit-excerpt{width: 800px;}

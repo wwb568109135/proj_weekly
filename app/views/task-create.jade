@@ -129,11 +129,14 @@ block content
             a(href='#') 需求详情页
             | ”进行编辑
         .task-create-btn
-          input.m-btn.btn-skin-1.btn-submit(type='submit', value='提交')
-          a.m-btn.btn-skin-2(href='javascript:alert("功能开发中，敬请期待")') 导入需求
-          a(href='javascript:alert("功能开发中，敬请期待")') （下载excel模板）
+          input.m-btn.btn-skin-1.btn-submit(type='submit', value='提交') 
+          a.m-btn.btn-skin-2#uploadxlsx(href='javascript:') 导入需求
+          a(href='http://127.0.0.1:7001/excelmodel/model-tpl.xlsx') （下载excel模板）
         div
           textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="160")
+
+      form(method="post" name='upxlsxform' id='upxlsxform' enctype="multipart/form-data" action="/task/upexcel")
+        input#fileinput(type='file' name="fileuplod")
 
 block pageScript
   script(src="/js/jquery/jquery.json-2.4.js")
@@ -141,3 +144,13 @@ block pageScript
   //- 输入人员英文名自动完成js代码，参考itask.oa.com
   script(src="/js/app/oa-user/tcc.js")
   script(src="/js/app/task/create.js")
+  
+  style(type='text/css').
+    #fileinput{width:0; height:0;}
+  script.    
+    $('#uploadxlsx').click(function(){
+      $('#fileinput').click();
+    })
+    $('#fileinput').change(function(){
+      document.getElementById('upxlsxform').submit();
+    })

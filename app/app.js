@@ -23,6 +23,7 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(__dirname,"excelmodel"));
 
   // 本地测试时数据库连接地址
   app.set('mongourl', 'mongodb://localhost/weekly_dev');
@@ -70,12 +71,19 @@ app.get('/task-ld', routes.task_ld);
 app.get('/task-ld-adv', routes.task_ld_adv);
 app.post('/task-ld-adv', routes.task_ld_adv);
 app.get('/task/create', routes.task_create);
+
+app.post('/task/upexcel', routes.task_upexcel);
+
 app.post('/task/created', routes.task_created);
 app.get('/task/search', routes.task_search);
 app.get('/task/:id', routes.task_detail);
 app.get('/task/del/:id', routes.task_del);
 app.get('/task/edit/:id', routes.task_edit);
 app.post('/task/update/:id', routes.task_update);
+
+app.post('/task/comment/:id', routes.task_comment);
+app.post('/task/taskscore/:id', routes.task_score);
+
 // app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
 app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
 app.post('/task/callJSON', routes.task_callJSON);

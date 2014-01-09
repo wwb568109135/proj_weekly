@@ -11,7 +11,7 @@ block content
         .c-box-hd-extra
           a.m-btn.btn-skin-1.btn-task-list(href='/task') 返回需求列表
       .c-box-bd
-        form(method="POST", action='/task/update/'+weekly.id)
+        form(method="POST",enctype="multipart/form-data",action='/task/update/'+weekly.id)
           ul.task-edit-form
             li
               .task-edit-part
@@ -78,17 +78,17 @@ block content
                 label.lab(for='taskAttachment') 附件： 
                 ul.task-attachment-form
                   li
-                    input.inp-file(type='file')
+                    input.inp-file(type='file',name='accessory1')
                     label.inline 附件说明：
-                    input.m-input.inp-txt(type='text')
-                    a(href='#') 删除
+                    input.m-input.inp-txt(type='text',name='accessoryditail1')
+                    a.dela(href='javascript:') 删除
                   li
-                    input.inp-file(type='file')
+                    input.inp-file(type='file',name='accessory2')
                     label.inline 附件说明：
-                    input.m-input.inp-txt(type='text')
-                    a(href='#') 删除
+                    input.m-input.inp-txt(type='text',name='accessoryditail2')
+                    a.dela(href='javascript:') 删除
                   li.add
-                    a(href='#') 添加
+                    a(href='javascript:') 添加
             li
               .task-edit-part
                 label.lab(for='hopeOnlineDate') 期望上线时间：
@@ -184,18 +184,20 @@ block pageScript
       $(onDomReady);
     })()
   
-  script.
-    var tfl_path = 'http://tdl.oa.com/tfl/';
-    var tfl_tag = '20131225';
+  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/base|topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
 
-  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/tab.css?v=20131225')
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
-  style(type='text/css')
+  style(type='text/css').
     #editor-taskDescription{float:left;}
     .task-edit-form .btn{ border:none;}
     .editor-popup-image .tab{ border-bottom:1px solid #999;}
     .editor-popup-image .tab #tab-upload-image,.editor-popup-image .tab #tab-net-image{ margin-bottom:2px; cursor:pointer;}
   
+  
+  script.
+    var tfl_path = 'http://tdl.oa.com/tfl/';
+    var tfl_tag = '20131225';
+
   script(type='text/javascript', src='http://tdl.oa.com/tfl/js/tfl-core.js')
   script(src="http://tdl.oa.com/tfl/js/tfl-editor.js?v=20131225")
   script(src="/js/editor/editor.js")

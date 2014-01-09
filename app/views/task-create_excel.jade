@@ -1,0 +1,171 @@
+extends layout
+
+block content
+  //- [c-box:产品需求列表]
+  .c-box
+    .c-box-hd.task-list
+      .c-box-hd-title
+        h3 新建需求
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1(href='#') 返回需求列表
+    .c-box-bd
+      form#taskCreateForm(method="POST", action="/task/created")
+        table#taskCreateTable.m-table-data.task-create-table
+          colgroup
+            col.c1
+            col.c2
+            col.c3
+            col.c4
+            col.c5
+            col.c6
+            col.c7
+          thead
+                tr
+                  th 项目
+                  th 需求标题
+                  th.tcenter 页面数
+                  th 相关人员
+                  th 需求时间
+                  th 备注
+                  th 操作
+          tbody
+            - each cti in rct[1]
+               tr.data-line
+                td
+                  select#taskTitle-1(name='type')
+                     if rct[0].length
+                       for project in rct[0]
+                         if(cti[0].value == project.name)
+                           option(value='#{project.id}',selected='selected')= project.name
+                         else
+                           option(value='#{project.id}')= project.name
+
+                  select#priorityLv-2(name='priority')  
+                    if(cti[1].value == "P0") 
+                      option(value='0') 优先级
+                      option(value='0',selected='selected') P0
+                      option(value='1') P1
+                      option(value='2') P2
+                    else if(cti[1].value == "P1")
+                      option(value='0') 优先级
+                      option(value='0') P0
+                      option(value='1',selected='selected') P1
+                      option(value='2') P2
+                    else if(cti[1].value == "P2")
+                      option(value='0') 优先级
+                      option(value='0') P0
+                      option(value='1') P1
+                      option(value='2',selected='selected') P2
+                    else
+                      option(value='0') 优先级
+                      option(value='0') P0
+                      option(value='1') P1
+                      option(value='2') P2
+
+                td
+                  input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里' value='#{cti[2].value}' )
+                td
+                  input.m-input.inp-txt(type='number',name='pages', value='#{cti[4].value}')
+                  input(type='hidden', name="author", value='#{user.rtx}')
+                  input(type='hidden', name="create_date", value='#{Date()}')
+                  input(type='hidden', name="status", value='0')
+                  input(type='hidden', name="progress", value='0')
+
+                td
+                  input#SiteStaff--x--(type='hidden', name='pp-tmp', disabled="disabled", userchooser='true', value='#{cti[5].value}')
+                  input#SiteStaff--x--Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', value='#{cti[5].value}', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                  input#interface--x--(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value='#{cti[6].value}')
+                  input#interface--x--Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', value='#{cti[6].value}', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                  label 
+                    input(type='checkbox', name="isCP") 
+                    | CP需求?
+                td
+                  label 期望重构开始时间
+                    input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", value='#{cti[7].value}', placeholder='期望重构开始时间')
+                  label 期望重构结束时间
+                    input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", value='#{cti[8].value}', placeholder='期望重构结束时间')
+                  label 期望上线时间
+                    input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", value='#{cti[9].value}', placeholder='期望上线时间')
+                td
+                  - if(!!cti[10].value)
+                      input.m-input.inp-txt.input-direction(type='text',name='direction',placeholder='其它备注说明',value='#{cti[10].value}')
+                  - else
+                      input.m-input.inp-txt.input-direction(type='text',name='direction',placeholder='其它备注说明',value=' ')
+                td
+                  a.link-delete-task(href="javascript:;") 删除
+
+              //- 插入多一行数据的tr模板
+            tr#insertTr.hidden
+              td
+                select(name='type')
+                  option(value='', selected='selected') 选择项目
+                  if rct[0].length
+                    for project in rct[0]
+                      option(value='#{project.id}')= project.name
+                select(name='priority')
+                  option(value='0') 优先级
+                  option(value='0') P0
+                  option(value='1') P1
+                  option(value='2') P2
+              td
+                  input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
+              td
+                  input.m-input.inp-txt(type='number',name='pages', value='1')
+                  input(type='hidden', name="author", value='#{user.rtx}')
+                  input(type='hidden', name="create_date", value='#{Date()}')
+                  input(type='hidden', name="status", value='0')
+                  input(type='hidden', name="progress", value='0')
+              td
+                  input#SiteStaff--x--(type='hidden', name='pp-tmp', disabled="disabled", userchooser='true', value=' ')
+                  input#SiteStaff--x--Value.m-input.inp-txt.inp-staff(type='text', name='pp', autocomplete="off", placeholder='网站人员RTX英文名，多个请用分号隔开', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                  input#interface--x--(type='hidden', name='pm-tmp', disabled="disabled", userchooser='true', value=' ')
+                  input#interface--x--Value.m-input.inp-txt.inp-staff2(type='text', name='pm', autocomplete="off", placeholder='接口人RTX英文名', onfocus='_tcc_write_userscript(this.id.replace("Value",""), "1");')
+                  label 
+                    input(type='checkbox', name="isCP") 
+                    | CP需求?
+              td
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
+                  input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
+              td
+                select.select-direction.editinput(name='direction',data-name='direction')
+                  option(value='',selected='selected') 选择备注说明
+                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
+              td
+                a.link-delete-task(href="javascript:;") 删除
+
+
+            
+       
+        .task-create-status
+          a#btnAppendTask.m-btn.btn-skin-3.btn-append-task(href='javascript:;') (+)增加1行需求
+          p.red.tips
+            | Tip:如果需求细节修改，请在完成发布后进入“
+            a(href='/task') 需求详情页
+            | ”进行编辑
+        .task-create-btn
+          input.m-btn.btn-skin-1.btn-submit(type='submit', value='提交') 
+          a.m-btn.btn-skin-2#uploadxlsx(href='javascript:') 导入需求
+          a(href='http://127.0.0.1:7001/excelmodel/model-tpl.xlsx') （下载excel模板）
+        div
+          textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="160")
+
+      form(method="post" name='upxlsxform' id='upxlsxform' enctype="multipart/form-data" action="/task/upexcel")
+        input#fileinput(type='file' name="fileuplod")
+
+block pageScript
+  script(src="/js/jquery/jquery.json-2.4.js")
+  script(src="/js/app/comm/m-table-data.js")
+  //- 输入人员英文名自动完成js代码，参考itask.oa.com
+  script(src="/js/app/oa-user/tcc.js")
+  script(src="/js/app/task/create.js")
+
+  style(type='text/css').
+    #fileinput{width:0; height:0;}
+  script.    
+    $('#uploadxlsx').click(function(){
+      $('#fileinput').click();
+    })
+    $('#fileinput').change(function(){
+      document.getElementById('upxlsxform').submit();
+    })

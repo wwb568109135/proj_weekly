@@ -10,6 +10,8 @@ var Weekly = require('../lib/weekly').Weekly,
     TasksHistory = require('../lib/weekly').TasksHistory;
 
 var nodeExcel = require('excel-export');
+var xlsx = require('node-xlsx');
+var fs = require('fs');
 
 var User = require('../routes/user');
 /**
@@ -326,6 +328,58 @@ exports.task_create = function(req, res) {
 
 };
 
+
+/*
+ * tasks-excel upload
+ */
+exports.task_upexcel = function(req, res) {
+    // 取登录用户名
+    var staffName = User.returnStaffUser(req,res).rtx;
+    // 在家环境，模拟用户名
+
+  var rct = []; 
+  
+  //记录所有项目名 
+  Project.find({}).sort({name: 1}).exec(function(err,docs){  //结果倒叙排列
+      if(err){
+        console.error(err)
+      }else{
+        //res.render('task-create', {pj:docs}); 
+        rct[0]= docs; //rct[0]记录所有项目名
+      }
+    });
+  
+  var tmp_path = req.files.fileuplod.path;
+  var target_path = './upfiles/' + staffName + '__' + req.files.fileuplod.name;
+  fs.rename(tmp_path, target_path, function(err) {
+      //if (err) throw err;
+      // 删除临时文件夹文件, 
+      fs.unlink(tmp_path, function() {
+         //if (err) throw err;
+         //res.send('File uploaded to: ' + target_path + ' - ' + req.files.fileuplod.size + ' bytes');
+     var obj = xlsx.parse(target_path).worksheets[0]['data'];
+     //console.log(obj[0]);
+     obj.shift();
+     var newArr = [];
+     for(var i=0; i<obj.length; i++){
+      if(!!obj[i][0].value){
+        vton(i);
+      }else{ break;}
+     }
+     //console.log(newArr.length);
+  
+     function vton(n){
+      newArr[n]=obj[n];
+     }
+
+     rct[1] = newArr;
+     //console.log(rct[1]);
+     res.render('task-create_excel', {rct:rct}); 
+      });
+    });
+};
+
+
 /*
  * task created 
  */
@@ -479,9 +533,110 @@ exports.task_search = function(req, res) {
   }
 };
 
-exports.task_update = function(req, res) {
+//需求打分
+exports.task_score = function(req, res) {
+  var id = req.params.id;
+  var task = new Weekly(req.body.task); 
+  
+  Weekly.findByIdAndUpdate(id, 
+    { 
+      $set: { 
+        score:req.body.scoreSet,
+    suggestion:req.body.suggestion
+      },
+    }, 
+    { upsert : true },
+    function (err) {
+      if (err){
+        res.send(404, err.message);
+      }else {
+        res.redirect('/task/'+id);
+      }
+    }
+  );
+}
+
+//用户评论
+exports.task_comment = function(req, res) {
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
   var id = req.params.id;
   var task = new Weekly(req.body.task);
+  
+  var date = new Date(),
+      d = date.getDate(),
+      m = date.getMonth()+1,
+      y = date.getFullYear();
+    
+  m = (m<10) ? "0"+m : m;
+  d = (d<10) ? "0"+d : d;
+  var timestr = y + '-' + m + '-' + d;
+  
+  var newcomment = {commentname:staffName,commenttime:timestr, commentcontent:req.body.commenttext};
+  
+  Weekly.findByIdAndUpdate(id, 
+    { 
+      $set: { 
+        status:req.body.task.status,
+      },
+      $push:{
+        comments:newcomment,
+      }
+    }, 
+    { upsert : true },
+    function (err) {
+      if (err){
+        res.send(404, err.message);
+      }else {
+        res.redirect('/task/'+id);
+      }
+    }
+  );
+};
+
+
+exports.task_update = function(req, res) {
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
+  
+  var id = req.params.id;
+  var task = new Weekly(req.body.task);
+  var tmp_txtArr = [];
+  var tmp_Arr =[];
+   
+  //遍历用于取出有用的input值
+  for(var i=0; i<100; i++){
+    if(!!req.files['accessory'+i]){
+      if(!!(req.files['accessory'+i].size)){
+      tmp_Arr[tmp_Arr.length] = req.files['accessory'+i];
+      tmp_txtArr[tmp_txtArr.length] = (!!req.body['accessoryditail'+i])? req.body['accessoryditail'+i] : ' ';
+      }
+    }
+  }
+
+  var L = tmp_Arr.length;
+  var tmpObjArr=[];
+
+  //attachment: [{attpath: String, attdetail: String}]
+  //存储多个文件到指定文件夹
+  for(var i=0; i<L; i++){
+    var tmp_path = tmp_Arr[i].path;
+    var target_path = './upfiles/' + staffName + '_' + tmp_Arr[i].name;
+    //'attpath'为附件路径； 'attdetail'为附件说明
+    var tmpObj = {attpath: target_path, attdetail: tmp_txtArr[i]};
+    tmpObjArr.push(tmpObj);
+
+    fs.rename(tmp_path, target_path, function(err) {
+      if (err) throw err;
+      // 删除临时文件夹文件, 
+      fs.unlink(tmp_path, function() {
+         if (err) throw err;
+      });
+    });
+  }
+  
+  console.log(tmpObjArr);
+
   // var task = req.body.task;
   console.log(task);
   Weekly.findByIdAndUpdate(id, 
@@ -492,6 +647,7 @@ exports.task_update = function(req, res) {
         priority : task.priority,
         focus : task.focus,
         content : task.content,
+        attachment: tmpObjArr,
         pages : task.pages,
         online_date : task.online_date,
         rb_star_date : task.rb_star_date,

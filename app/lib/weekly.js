@@ -10,7 +10,7 @@ var WeeklySchema = new Schema({
 	title: {type: String, requierd: true},			//需求标题
 	focus: {type:Boolean, defaults: false},			//是否重点需求
 	content: {type: String, requierd: false},		//需求内容
-	attachment: {type: String, requierd: false},	//需求附件
+	attachment: [{attpath: String, attdetail: String}],	//需求附件
 	pages: {type: String, defaults: 1},				//页面数
 	online_date: {type:Date},						//上线时间
 	rb_star_date: {type:Date},						//重构开始时间
@@ -20,7 +20,10 @@ var WeeklySchema = new Schema({
 	direction: {type: String, requierd: false},		//需求其它说明
 	status: {type: Number, defaults: 0},			//需求当前状态
 	progress: {type: String, requierd: false},		//需求总进度
-	hidden: {type:Boolean, defaults: false}			//结束的需求
+	hidden: {type:Boolean, defaults: false},			//结束的需求
+	comments:[{commentname:String, commenttime: Date, commentcontent: String}], //评论
+	score: {type:Number, defaults: 0}, //需求评分
+	suggestion: {type: String, requierd: false} //改进建议
 });
 
 // 项目表集合
