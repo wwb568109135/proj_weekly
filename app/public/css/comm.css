@@ -499,10 +499,12 @@ body > .contnet{height: auto; min-height: 100%;}
 	.task-detail-title h2{font-size: 1.8em;line-height:2em;font-weight:normal;}
 	.task-meta-btn{}
 		 .task-meta-btn li{display: inline;margin-right:0.5em;}
-	.task-done-div,.task-redone-div,.task-scored-div{text-align: center;position: absolute;right:0;top:6px;width:200px;height:50px;padding:10px;background-color: #ccc;border-radius:0.5em;}
+	.task-done-div,.task-redone-div,.task-scored-div{text-align: center;position: absolute;right:0;top:0;width:200px;height:50px;padding:10px;background-color: #ccc;border-radius:0.5em;}
 		.task-done-div .m-btn,.task-redone-div .m-btn{margin:0 0 0.5em;}
 	.task-redone-div{background-color: #feffce;}
-	.task-scored-div{text-align:left;width:400px;background-color: #feffce;}
+	.task-scored-div{text-align:left;width:320px;background-color: #feffce;}
+	.task-scored-div h4{color: #ff6600;font-size:14px;}
+	.task-scored-div p{line-height: 1.8em;}
 
 	/*- .task-detail-main -*/
 	.task-detail-main{float: left;width:68%;min-height:400px;padding-right:2%;}
@@ -545,6 +547,16 @@ body > .contnet{height: auto; min-height: 100%;}
 
 	/*- .task-detail-operate -*/
 	.task-detail-operate{clear: both;}
+		.tdo-comment{width:65%;margin:0 0 1em;padding:10px;background-color: #eee;}
+			.tdo-comment-ul{overflow: hidden;*zoom:1;vertical-align: top;}
+			.tdo-comment-item{position: relative;overflow: hidden;*zoom:1;margin:-2px 0 0 0;padding:10px 0;border-top: 1px dotted #ccc;}
+			.tdo-comment-hd{margin:0 0 8px;}
+			.tdo-comment-item h5{color: #333;display: inline-block;margin-right:10px;}
+			.tdo-comment-item .role{color: #999;}
+			.tdo-comment-item cite{display: inline-block;color: #999;}
+			.tdo-comment-bd{line-height: 1.8em;padding:0 24px;}
+
+
 		.tdo-list li{margin:0 0 1em;}
 		.tdo-static-title{}
 		.tdo-static-group{display: inline;}
@@ -578,7 +590,7 @@ body > .contnet{height: auto; min-height: 100%;}
 ---------------------------------------------------------------------------------------*/
 .task-edit-form{margin:1em 0;}
 	.task-edit-form .updatebtn{padding:1em 0;border-top: 1px solid #eee;padding-left:150px;}
-	.task-edit-form .btn input,.task-edit-form .btn span{ border:1px solid #bbb;}
+	.task-edit-form .ftbtn{padding-left:150px;}
 	.task-edit-form li{overflow: hidden;*zoom:1;margin:0 0 1.2em;line-height: 2em;}
 	.task-edit-part{float:left;width:400px;}
 	.task-edit-excerpt{width: 800px;}

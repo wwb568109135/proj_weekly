@@ -635,7 +635,7 @@ exports.task_update = function(req, res) {
     });
   }
   
-  console.log(tmpObjArr);
+  //console.log(tmpObjArr);
 
   // var task = req.body.task;
   console.log(task);
