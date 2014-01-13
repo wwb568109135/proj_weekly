@@ -87,11 +87,14 @@
 							<div class="task-edit-excerpt">
 								<label for="taskAttachment" class="lab">附件： </label>
 								<ul class="task-attachment-form">
-									<li>
-										<input type="file" class="inp-file" />
-										<label class="inline">附件说明：</label>
-										<input type="text" class="m-input inp-txt">
-										<a href="#">删除</a>
+									<li class="uploaded">
+										<a href="/file/xxx.psd" target="_blank">XXXX.psd</a>
+										<span>(858.84 KB)</span>
+										<cite>sonichuang</cite>
+										<cite>2014-01-11 23:16:55</cite>
+										<!-- 附件描述，没有的话，本行不输出 -->
+										<cite class="desc">附件描述文字显示在这里</cite>
+										<a href="/ajax/del" class="close">X</a>
 									</li>
 									<li>
 										<input type="file" class="inp-file" />
@@ -142,7 +145,7 @@
 								<label for="taskStatus-1" class="inline"><input id="taskStatus-1" name="taskStatus" type="radio" /> 已上线</label>
 							</div>
 						</li>
-						<li class="btn">
+						<li class="ftbtn">
 							<input type="submit" value="确认修改" class="m-btn btn-skin-1" />
 						</li>
 					</ul>
