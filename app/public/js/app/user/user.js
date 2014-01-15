@@ -69,7 +69,8 @@ var appUser = (function(){
             postData.roles = r,
             postData.project = p,
             postData.group = g,
-            postData.create_date = d;
+            postData.create_date = d,
+            postData.launch = [{"pj":p}];
         console.dir(postData);
         var callbackFunc = function(){
           $(".user-select-roles-btn").html("<span class='red'>保存中...</span>");
