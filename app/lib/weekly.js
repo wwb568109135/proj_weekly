@@ -10,7 +10,7 @@ var WeeklySchema = new Schema({
 	title: {type: String, requierd: true},			//需求标题
 	focus: {type:Boolean, defaults: false},			//是否重点需求
 	content: {type: String, requierd: false},		//需求内容
-	attachment: [{attpath: String, attdetail: String}],	//需求附件
+	attachment: [{attpath: String, attdetail: String, attsize:Number}],	//需求附件
 	pages: {type: String, defaults: 1},				//页面数
 	online_date: {type:Date},						//上线时间
 	rb_star_date: {type:Date},						//重构开始时间

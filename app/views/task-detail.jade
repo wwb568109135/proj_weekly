@@ -249,7 +249,7 @@ block pageScript
         $("#taskDoneBtn").bind("click",function(){
           var postData = {};
               postData.id = $(location).attr("pathname").replace("/task/","");
-              postData.dbCollection = "Weekly",
+              postData.dbCollection = "Weekly";
               postData.hidden = true;
           console.log(postData);
           var callBackFunction = function(){
@@ -264,7 +264,7 @@ block pageScript
         $("#taskReDoneBtn").bind("click",function(){
           var postData = {};
               postData.id = $(location).attr("pathname").replace("/task/","");
-              postData.dbCollection = "Weekly",
+              postData.dbCollection = "Weekly";
               postData.hidden = false;
           console.log(postData);
           var callBackFunction = function(){
@@ -279,7 +279,7 @@ block pageScript
       $(onDomReady);
     })()
 
-
+  //- Add by v_xhshen 2014-01-10---------------------------------------------------start
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/base|topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-tips.css?v=20131225')
@@ -350,3 +350,5 @@ block pageScript
     });
 
     var myeditor2 = TFL.editor({"id":"commentarea","width":"65%","height":"128px","name":"task[content]","showRelativePath":false,"mode":1});  
+
+  //- Add by v_xhshen 2014-01-10---------------------------------------------------end
