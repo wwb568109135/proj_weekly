@@ -841,6 +841,54 @@ exports.task_export = function(req, res){
 
 };
 
+/*
+ * export Weekly Data [debug]
+ */
+exports.task_export_debug = function(req, res){
+  var taskStarDate = (req.query.taskStarDate) ? req.query.taskStarDate : {'$exists': true},
+      taskEndDate = (req.query.taskEndDate) ? req.query.taskEndDate : {'$exists': true},
+      // 取登录用户名
+      staffName = User.returnStaffUser(req,res).rtx,
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+
+  if(staffName){
+    // 1.把用户角色取出
+    Staff.find({name:staffName}).limit(1).exec(function(err,uu){
+      if(err){
+        res.send(404, "查询异常");
+      }else{
+        if(uu[0] && uu[0].roles == 2){
+          ppQuery = {'$exists': true}
+        }
+        res.locals.roles = uu[0].roles;
+
+          // 2.把ProjectName全部取出来
+          Project.find({},function(err,docs){
+            if(err){console.error(err);
+            }else{
+              var pj_array = new Array();
+              for(var i=0; i <docs.length;i++){
+                pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+                pj_array[docs[i]._id] = docs[i].name
+              }
+              res.locals.projectName = pj_array;
+
+                // 3.需求筛选
+                Weekly.find({
+                  //$nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate} ,$or:[{ "rb_end_date": { $gt: taskStarDate, $lt: taskEndDate } }] 
+                  $nor:[{hidden: true}], "pp":ppQuery ,$or:[{ "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate, "$lte": taskEndDate } }] 
+                }).sort({status: -1}).exec(function(err,docs){  //结果倒叙排列
+                  res.render('export0', {docs:docs})
+                })
+
+            }
+          })
+      }
+    });
+  }
+
+};
+
 
 /*
  * export Excel File
