@@ -75,20 +75,64 @@ block content
                 //textarea#taskDescription.m-input.inp-textarea(name='task[content]', cols='80', rows='10')= weekly.content
             li
               .task-edit-excerpt
+
                 label.lab(for='taskAttachment') 附件： 
-                ul.task-attachment-form
-                  li
-                    input.inp-file(type='file',name='accessory1')
-                    label.inline 附件说明：
-                    input.m-input.inp-txt(type='text',name='accessoryditail1')
-                    a.dela(href='javascript:') 删除
-                  li
-                    input.inp-file(type='file',name='accessory2')
-                    label.inline 附件说明：
-                    input.m-input.inp-txt(type='text',name='accessoryditail2')
-                    a.dela(href='javascript:') 删除
-                  li.add
-                    a(href='javascript:') 添加
+                div.attachmentbox
+                  if weekly.attachment.length
+                    .attachfiles
+                      h4 已上传附件(#{weekly.attachment.length})
+                      table(cellspacing=0)
+                        tr
+                          th 文件名
+                          th 文件大小
+                          th 上传人
+                          th 上传时间
+                          th(style='text-align:center') 说明
+                          th 文件下载
+                          th 
+
+                        for num in weekly.attachment
+                          tr
+                            td.attfilename #{num.attfilename}
+                            - var sizenum = num.attsize-0, sizestr='';
+                            - if(sizenum>1024*1024*1024)
+                                sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
+                            - else if(sizenum>1024*1024)
+                                sizestr = (sizenum/(1024*1024)).toFixed(2) + 'M';
+                            - else if(sizenum>1024)
+                                sizestr = (sizenum/1024).toFixed(2) + 'KB';
+                            - else
+                                sizestr = sizenum + 'B';
+                            td.attsize #{sizestr}
+                            td.attperson #{num.attperson}
+                            - if(!!num.attuptime)
+                               - var atttime=num.attuptime
+                               - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
+                            - else
+                               - var nowtimestr='';
+                            td.attuptime #{nowtimestr}
+                            td.attdetail #{num.attdetail}
+                            td.attpath
+                              a(href='http://127.0.0.1:7001/'+'#{num.attpath}',target='_blank')下载附件
+                            td
+                              a.attdel(href='javascript:')删除
+                              span.attid #{num._id}
+                              span.attpathhidden #{num.attpath}
+
+
+                  ul.task-attachment-form
+                    li
+                      input.inp-file(type='file',name='accessory1')
+                      label.inline 附件说明：
+                      input.m-input.inp-txt(type='text',name='accessoryditail1')
+                      a.dela(href='javascript:') 删除
+                    li
+                      input.inp-file(type='file',name='accessory2')
+                      label.inline 附件说明：
+                      input.m-input.inp-txt(type='text',name='accessoryditail2')
+                      a.dela(href='javascript:') 删除
+                    li.add
+                      a(href='javascript:') 添加
             li
               .task-edit-part
                 label.lab(for='hopeOnlineDate') 期望上线时间：
@@ -184,6 +228,7 @@ block pageScript
       $(onDomReady);
     })()
   
+  //- Add by v_xhshen 2014-01-14---------------------------------------------------start
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/base|topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
 
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
@@ -195,9 +240,33 @@ block pageScript
   
   
   script.
+    $.each($('.attdel'),function(key){
+      $(this).click(function(){
+        vthis = $(this);
+        var postData = {};
+            postData.id = $(location).attr("pathname").replace("/task/edit/","");
+            postData.id2 = $(this).next().text();
+            postData.filepath = $(this).next().next().text();
+        
+        var callBackFunction = function(){
+            vthis.parent().parent().remove();
+          }
+
+        if(confirm('确认删除？')){
+          // 数据送ajax删除数据库中记录
+          appAjax.updateDel(postData,callBackFunction);
+        }
+      });
+    })
+
+
     var tfl_path = 'http://tdl.oa.com/tfl/';
     var tfl_tag = '20131225';
+
+
+
 
   script(type='text/javascript', src='http://tdl.oa.com/tfl/js/tfl-core.js')
   script(src="http://tdl.oa.com/tfl/js/tfl-editor.js?v=20131225")
   script(src="/js/editor/editor.js")
+  //- Add by v_xhshen 2014-01-14---------------------------------------------------end

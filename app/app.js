@@ -13,6 +13,7 @@ var app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 7001);
+  app.set('trust proxy', true);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon());
@@ -63,6 +64,8 @@ app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);
 app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
+
+app.post('/comm-ajaxUpdateDel', routes.comm_ajaxUpdateDel);
 
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);

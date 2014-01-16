@@ -84,6 +84,29 @@ var appAjax = (function(){
     }
     return o;
   };
+  
+
+  /**
+   * AJAX删除附件 
+   * author：v_xhshen
+   * time: 2014-01-14
+   */
+  function updateDel(o,callback){
+    if( o ){
+
+      console.log(o);
+      $.ajax({
+        type: "POST",
+        url: "/comm-ajaxUpdateDel",
+        data : o
+      }).done(function( msg ) {
+        callbackMsg(msg);
+    if (callback){ (callback)(); }
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+    }
+  };
 
 
   /**
@@ -116,7 +139,8 @@ var appAjax = (function(){
         if (callback){ (callback)(); }
         if (callback2){ (callback2)(); }
       }).fail(function(jqXHR, textStatus) {
-        alert( "Request failed: " + textStatus );
+        // alert( "Request failed: " + textStatus );
+        console.log( "Request failed: " + textStatus );
       });
 
       if(o.dbCollection === "Weekly"){  // 如果是需求的修改，记录进需求修改历历
@@ -150,7 +174,8 @@ var appAjax = (function(){
         }
 
       }).fail(function(jqXHR, textStatus) {
-        alert( "Request failed: " + textStatus );
+        // alert( "Request failed: " + textStatus );
+        console.log( "Request failed: " + textStatus );
       });
     }
   };
@@ -183,7 +208,8 @@ var appAjax = (function(){
           (callback)();
         }
       }).fail(function(jqXHR, textStatus) {
-        alert( "Request failed: " + textStatus );
+        // alert( "Request failed: " + textStatus );
+        console.log( "Request failed: " + textStatus );
       });
     }
   };
@@ -213,7 +239,8 @@ var appAjax = (function(){
           e.append(insertHTML);
         }
       }).fail(function(jqXHR, textStatus) {
-        alert( "Request failed: " + textStatus );
+        // alert( "Request failed: " + textStatus );
+        console.log( "Request failed: " + textStatus );
       });
     }
   };
@@ -226,7 +253,8 @@ var appAjax = (function(){
     updateSet : function(o,callback){ updateSet(o,callback) },
     getRoles : function(e,staffName){ getRoles(e,staffName) },
     getProjects : function(e,callback){ getProjects(e,callback) },
-    getDirections : function(e){ getDirections(e) }
+    getDirections : function(e){ getDirections(e) },
+    updateDel : function(o,callback){ updateDel(o,callback) }
   }
 
 })()

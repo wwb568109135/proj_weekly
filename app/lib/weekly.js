@@ -10,7 +10,7 @@ var WeeklySchema = new Schema({
 	title: {type: String, requierd: true},			//需求标题
 	focus: {type:Boolean, defaults: false},			//是否重点需求
 	content: {type: String, requierd: false},		//需求内容
-	attachment: [{attpath: String, attdetail: String, attsize:Number}],	//需求附件
+	attachment: [{attfilename:String, attpath: String, attdetail: String, attsize:Number, attperson: String, attuptime:Date}],	//需求附件
 	pages: {type: String, defaults: 1},				//页面数
 	online_date: {type:Date},						//上线时间
 	rb_star_date: {type:Date},						//重构开始时间
@@ -21,7 +21,7 @@ var WeeklySchema = new Schema({
 	status: {type: Number, defaults: 0},			//需求当前状态
 	progress: {type: String, requierd: false},		//需求总进度
 	hidden: {type:Boolean, defaults: false},			//结束的需求
-	comments:[{commentname:String, commenttime: Date, commentcontent: String}], //评论
+	comments:[{commentname:String, commentrole:String, commenttime: Date, commentcontent: String}], //评论
 	score: {type:Number, defaults: 0}, //需求评分
 	suggestion: {type: String, requierd: false} //改进建议
 });
@@ -43,6 +43,12 @@ var StaffSchema = new Schema({
 	create_date: {type:Date, requierd: true},		//创建时间
 	hidden: {type:Boolean, defaults: false}			//停用的用户
 });
+
+// Add by v_xhshen 2014-01-15
+//findByName 方法
+StaffSchema.statics.findByName = function(name,cb){
+    this.find({name:new RegExp(name,'i')},cb);
+}
 
 // 其化说明集合
 var DirectionSchema = new Schema({

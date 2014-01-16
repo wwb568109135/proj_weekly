@@ -80,12 +80,37 @@ block content
                     input(type='checkbox', name="isCP") 
                     | CP需求?
                 td
-                  label 期望重构开始时间
-                    input.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", value='#{cti[7].value}', placeholder='期望重构开始时间')
-                  label 期望重构结束时间
-                    input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", value='#{cti[8].value}', placeholder='期望重构结束时间')
-                  label 期望上线时间
-                    input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", value='#{cti[9].value}', placeholder='期望上线时间')
+                  if(!!cti[7].value)
+                   -var dt1 = new Date(cti[7].value)
+                   -var dt1s =(!!dt1.getFullYear()) ? (dt1.getFullYear() + '-' + ((dt1.getMonth()+1)<10 ? '0'+(dt1.getMonth()+1) : (dt1.getMonth()+1)) + '-' +  ((dt1.getDate()+1)<10 ? '0'+(dt1.getDate()+1) : (dt1.getDate()+1))) : ''
+
+                  if(!!cti[8].value)
+                   -var dt2 = new Date(cti[8].value)
+                   -var dt2s =(!!dt2.getFullYear()) ? (dt2.getFullYear() + '-' + ((dt2.getMonth()+1)<10 ? '0'+(dt2.getMonth()+1) : (dt2.getMonth()+1)) + '-' +  ((dt2.getDate()+1)<10 ? '0'+(dt2.getDate()+1) : (dt2.getDate()+1))) : ''
+
+                  if(!!cti[9].value)
+                   -var dt3 = new Date(cti[9].value)
+                   -var dt3s = (!!dt3.getFullYear()) ? (dt3.getFullYear() + '-' + ((dt3.getMonth()+1)<10 ? '0'+(dt3.getMonth()+1) : (dt3.getMonth()+1)) + '-' +  ((dt3.getDate()+1)<10 ? '0'+(dt3.getDate()+1) : (dt3.getDate()+1))) : ''
+
+                  
+                  label.timelabel 期望重构开始时间
+                  if dt1s
+                      input.date-inputi.m-input.inp-txt.date-picker-insert(type='text', name='rb_star_date', autocomplete="off", value='#{dt1s}', placeholder='期望重构开始时间')
+                  else
+                      input.date-inputi.m-input.inp-txt.date-picker(type='text', name='rb_star_date', autocomplete="off", placeholder='期望重构开始时间')
+
+                  label.timelabel 期望重构结束时间
+                  if dt2s
+                      input.date-inputi.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", value='#{dt2s}', placeholder='期望重构结束时间')
+                  else
+                      input.date-inputi.m-input.inp-txt.date-picker(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
+
+                  label.timelabel 期望上线时间
+                  if dt3s
+                      input.date-inputi.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", value='#{dt3s}', placeholder='期望上线时间')
+                  else
+                      input.date-inputi.m-input.inp-txt.date-picker(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
+
                 td
                   - if(!!cti[10].value)
                       input.m-input.inp-txt.input-direction(type='text',name='direction',placeholder='其它备注说明',value='#{cti[10].value}')
@@ -160,8 +185,13 @@ block pageScript
   script(src="/js/app/oa-user/tcc.js")
   script(src="/js/app/task/create.js")
 
+  // Add by v_xhshen 2014-01-13--------------------------------------start
   style(type='text/css').
     #fileinput{width:0; height:0;}
+    .timelabel{display:block; width:100px; float:left; clear:left;}
+    input.date-inputi{ display:block; width:42%; float:left; clear:right;}
+
+
   script.    
     $('#uploadxlsx').click(function(){
       $('#fileinput').click();
@@ -169,3 +199,4 @@ block pageScript
     $('#fileinput').change(function(){
       document.getElementById('upxlsxform').submit();
     })
+  // Add by v_xhshen 2014-01-13--------------------------------------end

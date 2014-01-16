@@ -610,8 +610,35 @@ body > .contnet{height: auto; min-height: 100%;}
 	.task-edit-part .inp-txt{width: 230px;}
 	.task-edit-excerpt .inp-txt{width:630px;}
 	.task-edit-excerpt .inp-textarea{width: 630px;}
-
-	.task-attachment-form{overflow: hidden;*zoom:1;width:610px;border: 1px solid #b2c8f3;background-color: #f4f8ff;padding:1em 1em 0 1em;border-radius:4px;}
+    
+    /*Add & edit by v_xhshen 2014-01-13--------------------------start*/
+	.attachmentbox{width:610px; padding:1em 1em 0 1em; float:left; border: 1px solid #b2c8f3;background-color: #f4f8ff; border-radius:4px;}
+	.attachfiles{margin-bottom: 12px; border-bottom: 1px solid #ccc; padding-bottom: 1em;}
+    .attachfiles table,.task-detail-attachment table{ width:100%;}
+    .attachfiles table .attid,.attachfiles table .attpathhidden,.task-detail-attachment table .attid,.task-detail-attachment table .attpathhidden{ width: 0; height: 0; display:none;}
+    
+    .attachfiles table td,.attachfiles table th,.task-detail-attachment table td,.task-detail-attachment table th{padding:0.5em; line-height: 1.2em;}
+    .attachfiles table td.attdetail{ width: 25%; overflow: hidden; word-break:break-all;}
+	.attachfiles table td.attfilename{ max-width: 20%; overflow: hidden; word-break:break-all;}
+	.attachfiles table td.attpath a,.task-detail-attachment table td.attpath a,.attachfiles table td .attdel{ white-space:nowrap;}
+    .task-detail-attachment table td.attdetail{ width: 30%; overflow: hidden; word-break: break-all;}
+	.task-detail-attachment table td.attfilename{max-width: 20%; overflow: hidden; word-break: break-all;}
+    .task-detail-attachment{margin-bottom: 1.2em;}
+    .task-detail-attachment h4,.tdo-comment-suggestion h4{ font-size: 1.2em; margin-bottom: 1em;}
+    .task-detail-attachment table{}
+    .task-detail-attachment table thead tr{background-color: #cccccc;}
+    .task-detail-attachment table tbody tr:nth-child(2n+1){background-color: #dddddd;}
+    .task-detail-attachment table tbody tr:nth-child(2n){background-color: #eeeeee;}
+    
+    .tdo-comment-suggestion{width: 68%; margin-bottom:1.2em; }
+    .tdo-comment-suggestion ul{ padding: 1em; background: #eeeeee;}
+    .tdo-comment-suggestion ul li div{height:2em; border-bottom: 1px solid #bbbbbb;}
+    .tdo-comment-suggestion ul li .idnum{ display: none;}
+    .tdo-comment-suggestion ul li span,.tdo-comment-suggestion ul li a{ margin-right: 2em;}
+    .tdo-comment-suggestion ul li iframe{ width: 100%;}
+    
+    /*Add by v_xhshen 2014-01-13--------------------------end*/
+	.task-attachment-form{overflow: hidden;*zoom:1;}
 		.task-attachment-form li{}
 		.task-attachment-form .inp-file{width: 240px;}
 		.task-attachment-form .inp-txt{width: 220px;margin:0 0.5em 0 0;}

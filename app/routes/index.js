@@ -443,8 +443,11 @@ exports.task_detail = function(req, res) {
 
                         // 4.按id取出需求
                         Weekly.findById(id, function(err, docs){
+                          var newdocs={}
+                          newdocs.dobj = docs;
+                          newdocs.person = staffName;
                           if(err){console.log(err);}else{
-                            res.render('task-detail', {docs:docs});
+                            res.render('task-detail', {docs:newdocs});
                           }
                         });
 
@@ -563,35 +566,55 @@ exports.task_comment = function(req, res) {
   var id = req.params.id;
   var task = new Weekly(req.body.task);
   
-  var date = new Date(),
-      d = date.getDate(),
-      m = date.getMonth()+1,
-      y = date.getFullYear();
+  var date = new Date();
+  
+  var newcomment;
+
+  Staff.findByName(staffName,function(err,person){
+    if(err){
+    throw err;
+  } else{
+    var role = person[0].roles;
     
-  m = (m<10) ? "0"+m : m;
-  d = (d<10) ? "0"+d : d;
-  var timestr = y + '-' + m + '-' + d;
-  
-  var newcomment = {commentname:staffName,commenttime:timestr, commentcontent:req.body.commenttext};
-  
-  Weekly.findByIdAndUpdate(id, 
+    var rolestr;
+    switch(role){
+          case 0:                  //未定义角色
+            rolestr='';
+            break;
+          case 1:                  //产品角色
+            rolestr='产品';
+            break;
+          case 2:                  //管理角色
+            rolestr='管理';
+            break;
+          case 3:                  //重构角色
+            rolestr='重构';
+            break;
+      }
+    newcomment = {commentname:staffName,commentrole:rolestr, commenttime:date, commentcontent:req.body.commenttext};
+    
+    //console.log(newcomment);
+    
+    Weekly.findByIdAndUpdate(id, 
     { 
       $set: { 
-        status:req.body.task.status,
+      status:req.body.task.status,
       },
       $push:{
-        comments:newcomment,
+      comments:newcomment,
       }
     }, 
     { upsert : true },
     function (err) {
       if (err){
-        res.send(404, err.message);
+      res.send(404, err.message);
       }else {
-        res.redirect('/task/'+id);
+      res.redirect('/task/'+id);
       }
     }
-  );
+    );
+  }
+  })
 };
 
 
@@ -603,28 +626,44 @@ exports.task_update = function(req, res) {
   var task = new Weekly(req.body.task);
   var tmp_txtArr = [];
   var tmp_Arr =[];
+  var tmp_size = [];
    
-  //遍历用于取出有用的input值
+  //console.log(req.files);
+  //遍历用于取出有用的input值 by v_xhshen
   for(var i=0; i<100; i++){
-    if(!!req.files['accessory'+i]){
-      if(!!(req.files['accessory'+i].size)){
-      tmp_Arr[tmp_Arr.length] = req.files['accessory'+i];
-      tmp_txtArr[tmp_txtArr.length] = (!!req.body['accessoryditail'+i])? req.body['accessoryditail'+i] : ' ';
-      }
-    }
+   if(!!req.files['accessory'+i]){
+     if(!!(req.files['accessory'+i].size)){
+     tmp_Arr[tmp_Arr.length] = req.files['accessory'+i];
+     tmp_txtArr[tmp_txtArr.length] = (!!req.body['accessoryditail'+i])? req.body['accessoryditail'+i] : ' ';
+
+     tmp_size[tmp_size.length] = req.files['accessory'+i].size;
+     }
+   }
   }
 
   var L = tmp_Arr.length;
-  var tmpObjArr=[];
-
-  //attachment: [{attpath: String, attdetail: String}]
-  //存储多个文件到指定文件夹
+  
+  //attachment: [{attpath: String, attdetail: String, attsize: number}]
+  //存储多个文件到指定文件夹 by v_xhshen
   for(var i=0; i<L; i++){
     var tmp_path = tmp_Arr[i].path;
-    var target_path = './upfiles/' + staffName + '_' + tmp_Arr[i].name;
-    //'attpath'为附件路径； 'attdetail'为附件说明
-    var tmpObj = {attpath: target_path, attdetail: tmp_txtArr[i]};
-    tmpObjArr.push(tmpObj);
+    var target_path = './files/' + staffName + '_' + tmp_Arr[i].name;
+    var nowtime = new Date();
+  
+    var tmpObj = {attfilename: tmp_Arr[i].name, attpath: target_path, attdetail: tmp_txtArr[i], attsize: tmp_size[i], attperson: staffName, attuptime:nowtime};
+    Weekly.findByIdAndUpdate(id, 
+      { 
+        $push:{
+           attachment: tmpObj,
+        }
+      }, 
+      { upsert : true },
+      function (err) {
+        if (err){
+          res.send(404, err.message);
+        }
+      }
+    );
 
     fs.rename(tmp_path, target_path, function(err) {
       if (err) throw err;
@@ -634,11 +673,8 @@ exports.task_update = function(req, res) {
       });
     });
   }
-  
-  //console.log(tmpObjArr);
 
-  // var task = req.body.task;
-  console.log(task);
+
   Weekly.findByIdAndUpdate(id, 
     { 
       $set: { 
@@ -647,7 +683,6 @@ exports.task_update = function(req, res) {
         priority : task.priority,
         focus : task.focus,
         content : task.content,
-        attachment: tmpObjArr,
         pages : task.pages,
         online_date : task.online_date,
         rb_star_date : task.rb_star_date,
@@ -1284,6 +1319,57 @@ exports.comm_ajaxUpdateSet = function(req, res) {
       }
     })
   }
+};
+
+
+/**
+* Add by v_xhshen 
+* 2014-01-14
+* ajax删除附件
+*/
+exports.comm_ajaxUpdateDel = function(req, res) {
+  var data = req.body;  
+  var id = data.id || null;
+  var id2 = data.id2;
+  var filepath = data.filepath;
+  delete data.id;
+
+  var oldArr=[],newArr=[];
+  
+  Weekly.findById(id, function(err, docs){
+    if(err){
+    console.log(err);
+    }else{
+    oldArr = docs.attachment;
+    var L=oldArr.length;
+    for(var i=0;i<L;i++){
+      if(oldArr[i]._id == id2){
+        
+      } else{
+        newArr.push(oldArr[i]);
+      }
+    }
+    //console.log(newArr); 
+    //console.log('ajax saveing');
+    Weekly.findByIdAndUpdate(id, 
+      {$set: {
+         attachment: newArr,
+        }},
+      {upsert : true},
+      function (err) {
+        if (err){
+          res.send(404, "格式错误，修改失败");
+        }else {
+          res.send(200, "修改成功！");
+          fs.unlink(filepath, function() {
+             //if (err) throw err;
+          });
+          //console.log("保存成功");
+        }
+      }
+    );
+    }
+  });
 };
 
 

@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  if docs
-    - var weekly = docs
+  if docs.dobj
+    - var weekly = docs.dobj
     //- task-detail
     .c-box.task-detail
       //- task-detail-title
@@ -21,10 +21,16 @@ block content
           a#taskDoneBtn.m-btn.btn-skin-0(href='javascript:;') 结束需求
           p#taskDoneTips.mtips 注：如果需求已完成，请结束需求
         div#tackReDoneDiv.task-redone-div(class="#{weekly.hidden?'':'hidden'}")
-          a#taskVoteBtn.m-btn.btn-skin-2(href="javascript:") 请为本次需求打分
-          p#taskDoneTips.mtips
-          | 若需求未结束？
-          a#taskReDoneBtn(href='javascript:;') 重启动此需求
+           - if(!!weekly.score)
+               span.scorespan 此需求已完成！评分#{weekly.score}分
+               p#sugcontp #{weekly.suggestion}
+           - else
+               a#taskVoteBtn.m-btn.btn-skin-2(href="javascript:") 请为本次需求打分
+          
+
+            p.taskDoneTips
+            | 若需求未结束？
+            a#taskReDoneBtn(href='javascript:;') 重启动此需求
         
         div.dialog-task-score(style='display:none')
           div.dts-hd
@@ -64,17 +70,46 @@ block content
             //div= weekly.content
             iframe#contentIframe(frameborder='0')
           .task-detail-extra
-            //-.task-detail-attachment
-              h4
-                | 附件（
-                em 1
-                | ）
-              ul.tda-list
-                li
-                  p
-                    a(href='#') proA.rar
-                  cite 2013-08-01
-                      .task-detail-side-hd
+            if weekly.attachment.length
+              .task-detail-attachment
+                h4 附件（#{weekly.attachment.length}）
+                table(cellspacing=0)
+                  thead
+                    tr
+                      th 文件名
+                      th 文件大小
+                      th 上传人
+                      th 上传时间
+                      th(style='text-align:center') 说明
+                      th 文件下载
+
+                  tbody
+                    for num in weekly.attachment
+                      tr
+                        td.attfilename #{num.attfilename}
+                        - var sizenum = num.attsize-0, sizestr='';
+                        - if(sizenum>1024*1024*1024)
+                            sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
+                        - else if(sizenum>1024*1024)
+                            sizestr = (sizenum/(1024*1024)).toFixed(2) + 'M';
+                        - else if(sizenum>1024)
+                            sizestr = (sizenum/1024).toFixed(2) + 'KB';
+                        - else
+                            sizestr = sizenum + 'B';
+
+                        td.attsize #{sizestr}
+                        td.attperson #{num.attperson}
+                        - if(!!num.attuptime)
+                            - var atttime=num.attuptime
+                            - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
+                        - else
+                            - var nowtimestr='';
+                        td.attuptime #{nowtimestr}
+                        td.attdetail #{num.attdetail}
+                        td.attpath
+                          a(href='http://127.0.0.1:7001/'+'#{num.attpath}',target='_blank')下载附件
+
+                          
             .tde-modify
               .tde-modify-hd
                 h3 变更历史(#{taskHistory?taskHistory.modify.length:"0"})
@@ -166,6 +201,50 @@ block content
               li
                 label 页面数：
                 em= weekly.pages
+        
+
+        - if (!!(weekly.comments.length))
+           .tdo-comment-suggestion
+             h4 评论/处理意见（#{weekly.comments.length}）
+             ul
+               - for ct in weekly.comments
+                 li
+                   div
+                     span.idnum #{ct._id}
+                     span.commentname #{ct.commentname}
+                       b （#{ct.commentrole}）
+                     - if(!!ct.commenttime)
+                        - var comttime=ct.commenttime;
+                        - var nowtimestr2 = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds()); 
+                     - else
+                        - var nowtimestr2='';
+                     span.commenttime #{nowtimestr2}
+                     - if(docs.person == ct.commentname)
+                       a.commentedit(href="javascript:") 编辑
+                       a.commentdel(href="javascript:") 删除
+
+                   iframe(id='#{ct._id}',frameborder='0')
+                   script.
+                     var tt = setTimeout(function(){
+                       var commentcontent = ('<div id="bodybox">'+'#{ct.commentcontent}'+'</div>').replace(/&lt;/g,'<');
+                       commentcontent = commentcontent.replace(/&gt;/g,'>');
+                       commentcontent = commentcontent.replace(/&amp;nbsp;/g,' ');
+                       commentcontent = commentcontent.replace(/&quot;/g,'"');
+                       
+                       var ifr = document.getElementById('#{ct._id}');
+                       var ifrbody = ifr.contentWindow.document.getElementsByTagName('body')[0];
+
+                       ifrbody.innerHTML = commentcontent;
+                       ifrbody.style.fontSize='12px';
+                       ifrbody.style.lineHeight='1.5em';
+                       ifrbody.style.height = 'auto';
+                       ifrbody.style.width = ifr.offsetWidth-30;
+                       ifrbody.style.wordBreak = 'break-all';
+                    
+                       ifr.style.height = (ifr.contentDocument.getElementById('bodybox').offsetHeight + 30) + 'px';
+
+                     },100);
+
 
 
         //- task-detail-operate
@@ -260,16 +339,18 @@ block pageScript
           appAjax.updateSet(postData,callBackFunction);
         })
 
-        //- 重启需求事件
+        //- 重启需求事件 edited by v_xhshen 2014-01-14
         $("#taskReDoneBtn").bind("click",function(){
           var postData = {};
               postData.id = $(location).attr("pathname").replace("/task/","");
               postData.dbCollection = "Weekly";
               postData.hidden = false;
+              postData.score = 0;
           console.log(postData);
           var callBackFunction = function(){
-            $("#tackReDoneDiv").addClass("hidden");
-            $("#tackDoneDiv").removeClass("hidden");
+            location.reload(true);
+            //$("#tackReDoneDiv").addClass("hidden");
+            //$("#tackDoneDiv").removeClass("hidden");
           }
           // 数据送ajax保存
           appAjax.updateSet(postData,callBackFunction);
@@ -285,6 +366,9 @@ block pageScript
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-tips.css?v=20131225')
   style(type='text/css').
     .tdo-list .inp-textarea{ height:24px;}
+    #task-score-form #xx{margin-bottom:12px;}
+    .scorespan{ color:#ff6600; display:block; font-weight:bold; font-size:13px; margin-bottom:10px;}
+    #sugcontp{ margin-bottom:12px; text-align:left; text-indent:2em;}
     #task-score-form h4 b{color:red;}
     #task-score-form #resetscore{ padding:0 0.8em; height:1.5em; line-height:1.35em; margin-bottom:14px;}
     #contentIframe{ width:100%;}
@@ -330,6 +414,7 @@ block pageScript
 
     var iframeBody = document.getElementById('contentIframe').contentWindow.document.getElementsByTagName('body')[0];
     iframeBody.innerHTML= iframestr;
+    
 
     $('#task-score-form').submit(function(){
       var $radios = $('#task-score-form :radio:checked');
