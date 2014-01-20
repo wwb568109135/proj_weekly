@@ -688,7 +688,7 @@ body > .contnet{height: auto; min-height: 100%;}
 	.staff-manage-table .launch-project-add,
 	.staff-manage-table .launch-project-del{text-decoration: none;}
 	.staff-manage-table .editable{}
-	.staff-manage-table .tag{display: inline-block;*display: inline;*zoom:1;background-color: #ffe1a1;padding:0 6px;border-radius:3px;margin:0 6px 0 0;}
+	.staff-manage-table .tag{display: inline-block;*display: inline;*zoom:1;background-color: #ffe1a1;padding:0 6px;border-radius:3px;margin:0 6px 6px 0;}
 
 
 /*-- .project-manage-table{} --*/
