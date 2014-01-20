@@ -131,7 +131,7 @@ block content
         .task-create-btn
           input.m-btn.btn-skin-1.btn-submit(type='submit', value='提交') 
           a.m-btn.btn-skin-2#uploadxlsx(href='javascript:') 导入需求
-          a(href='http://127.0.0.1:7001/excelmodel/model-tpl.xlsx') （下载excel模板）
+          a(href='/excelmodel/model-tpl.xlsx') （下载excel模板）
         div
           textarea#outputTemp.m-input(name="outputTemp",rows="4",cols="160")
       form(method="post",name='upxlsxform',id='upxlsxform',enctype="multipart/form-data",action="/task/upexcel")

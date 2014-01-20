@@ -75,25 +75,13 @@ block content
                 //textarea#taskDescription.m-input.inp-textarea(name='task[content]', cols='80', rows='10')= weekly.content
             li
               .task-edit-excerpt
-
                 label.lab(for='taskAttachment') 附件： 
                 div.attachmentbox
-                  if weekly.attachment.length
-                    .attachfiles
-                      h4 已上传附件(#{weekly.attachment.length})
-                      table(cellspacing=0)
-                        tr
-                          th 文件名
-                          th 文件大小
-                          th 上传人
-                          th 上传时间
-                          th(style='text-align:center') 说明
-                          th 文件下载
-                          th 
-
-                        for num in weekly.attachment
-                          tr
-                            td.attfilename #{num.attfilename}
+                  - if(weekly.attachment.length)
+                    ul.task-attachment-files
+                      - for num in weekly.attachment
+                          li.uploaded
+                            a(href='/'+'#{num.attpath}',target="_blank") #{num.attfilename}
                             - var sizenum = num.attsize-0, sizestr='';
                             - if(sizenum>1024*1024*1024)
                                 sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
@@ -103,21 +91,19 @@ block content
                                 sizestr = (sizenum/1024).toFixed(2) + 'KB';
                             - else
                                 sizestr = sizenum + 'B';
-                            td.attsize #{sizestr}
-                            td.attperson #{num.attperson}
+                            span (#{sizestr}) 
+                            cite #{num.attperson}
                             - if(!!num.attuptime)
-                               - var atttime=num.attuptime
-                               - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
+                              - var atttime=num.attuptime
+                              - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
                             - else
-                               - var nowtimestr='';
-                            td.attuptime #{nowtimestr}
-                            td.attdetail #{num.attdetail}
-                            td.attpath
-                              a(href='http://127.0.0.1:7001/'+'#{num.attpath}',target='_blank')下载附件
-                            td
-                              a.attdel(href='javascript:')删除
-                              span.attid #{num._id}
-                              span.attpathhidden #{num.attpath}
+                              - var nowtimestr='';
+                            cite #{nowtimestr}
+                            - if(num.attdetail != ' ')
+                                cite.desc #{num.attdetail}
+                            a.attdel.close(href='javascript:') X
+                            span.attid #{num._id}
+                            span.attpathhidden #{num.attpath}
 
 
                   ul.task-attachment-form

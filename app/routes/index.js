@@ -1327,49 +1327,128 @@ exports.comm_ajaxUpdateSet = function(req, res) {
 * 2014-01-14
 * ajax删除附件
 */
+exports.comm_ajaxcommetUpdate = function(req, res) {
+  var data = req.body;  
+  var id = data.id || null;
+  delete data.id;
+  var id2 = data.id2;
+  var comtcontent = data.comtcontent;
+  var oldArr;
+  
+  if(data.type == "commentsedit"){
+	Weekly.findById(id, function(err, docs){
+	  if(err){
+		console.log(err);
+	  }else{
+		oldArr = docs.comments;
+		var L=oldArr.length;
+		for(var i=0;i<L;i++){
+			if(oldArr[i]._id == id2){
+				oldArr[i].commentcontent = comtcontent;
+			}
+		}
+		//console.log(newArr); 
+		console.log('ajax saveing');
+		console.log(oldArr);
+		Weekly.findByIdAndUpdate(id, 
+			{$set: {
+			   comments: oldArr,
+		    }},
+			{upsert : true},
+			function (err) {
+				if (err){
+				  res.send(404, "格式错误，修改失败");
+				}else {
+				  res.send(200, "修改成功！");
+				}
+			}
+		);
+	  }
+    });
+  } 
+};
+
+/**
+* Add by v_xhshen 
+* 2014-01-14
+* ajax删除附件
+*/
 exports.comm_ajaxUpdateDel = function(req, res) {
   var data = req.body;  
   var id = data.id || null;
-  var id2 = data.id2;
-  var filepath = data.filepath;
   delete data.id;
-
+  var id2 = data.id2;
+  
   var oldArr=[],newArr=[];
   
-  Weekly.findById(id, function(err, docs){
-    if(err){
-    console.log(err);
-    }else{
-    oldArr = docs.attachment;
-    var L=oldArr.length;
-    for(var i=0;i<L;i++){
-      if(oldArr[i]._id == id2){
-        
-      } else{
-        newArr.push(oldArr[i]);
-      }
-    }
-    //console.log(newArr); 
-    //console.log('ajax saveing');
-    Weekly.findByIdAndUpdate(id, 
-      {$set: {
-         attachment: newArr,
-        }},
-      {upsert : true},
-      function (err) {
-        if (err){
-          res.send(404, "格式错误，修改失败");
-        }else {
-          res.send(200, "修改成功！");
-          fs.unlink(filepath, function() {
-             //if (err) throw err;
-          });
-          //console.log("保存成功");
-        }
-      }
-    );
-    }
-  });
+  if(data.type == "attachment"){
+    var filepath = data.filepath;
+	Weekly.findById(id, function(err, docs){
+	  if(err){
+		console.log(err);
+	  }else{
+		oldArr = docs.attachment;
+		var L=oldArr.length;
+		for(var i=0;i<L;i++){
+			if(oldArr[i]._id == id2){
+				
+			} else{
+				newArr.push(oldArr[i]);
+			}
+		}
+		//console.log(newArr); 
+		//console.log('ajax saveing');
+		Weekly.findByIdAndUpdate(id, 
+			{$set: {
+			   attachment: newArr,
+		    }},
+			{upsert : true},
+			function (err) {
+				if (err){
+				  res.send(404, "格式错误，修改失败");
+				}else {
+				  res.send(200, "修改成功！");
+				  fs.unlink(filepath, function() {
+					   //if (err) throw err;
+					});
+				  //console.log("保存成功");
+				}
+			}
+		);
+	  }
+    });
+  } else if(data.type == "comments"){
+	Weekly.findById(id, function(err, docs){
+	  if(err){
+		console.log(err);
+	  }else{
+		oldArr = docs.comments;
+		var L=oldArr.length;
+		for(var i=0;i<L;i++){
+			if(oldArr[i]._id == id2){
+				
+			} else{
+				newArr.push(oldArr[i]);
+			}
+		}
+		//console.log(newArr); 
+		//console.log('ajax saveing');
+		Weekly.findByIdAndUpdate(id, 
+			{$set: {
+			   comments: newArr,
+		    }},
+			{upsert : true},
+			function (err) {
+				if (err){
+				  res.send(404, "格式错误，修改失败");
+				}else {
+				  res.send(200, "修改成功！");
+				}
+			}
+		);
+	  }
+    });
+  }
 };
 
 

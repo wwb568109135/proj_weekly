@@ -86,24 +86,26 @@
 						<li>
 							<div class="task-edit-excerpt">
 								<label for="taskAttachment" class="lab">附件： </label>
-								<ul class="task-attachment-form">
-									<li class="uploaded">
-										<a href="/file/xxx.psd" target="_blank">XXXX.psd</a>
-										<span>(858.84 KB)</span>
-										<cite>sonichuang</cite>
-										<cite>2014-01-11 23:16:55</cite>
-										<!-- 附件描述，没有的话，本行不输出 -->
-										<cite class="desc">附件描述文字显示在这里</cite>
-										<a href="/ajax/del" class="close">X</a>
-									</li>
-									<li>
-										<input type="file" class="inp-file" />
-										<label class="inline">附件说明：</label>
-										<input type="text" class="m-input inp-txt">
-										<a href="#">删除</a>
-									</li>
-									<li class="add"><a href="#">添加</a></li>
-								</ul>
+								<div class="attachmentbox">
+									<ul class="task-attachment-form">
+										<li class="uploaded">
+											<a href="/file/xxx.psd" target="_blank">XXXX.psd</a>
+											<span>(858.84 KB)</span>
+											<cite>sonichuang</cite>
+											<cite>2014-01-11 23:16:55</cite>
+											<!-- 附件描述，没有的话，本行不输出 -->
+											<cite class="desc">附件描述文字显示在这里</cite>
+											<a href="/ajax/del" class="close">X</a>
+										</li>
+										<li>
+											<input type="file" class="inp-file" />
+											<label class="inline">附件说明：</label>
+											<input type="text" class="m-input inp-txt">
+											<a href="#">删除</a>
+										</li>
+										<li class="add"><a href="#">添加</a></li>
+									</ul>
+								</div>
 							</div>
 						</li>
 						<li>

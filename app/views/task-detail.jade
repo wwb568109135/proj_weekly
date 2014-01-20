@@ -67,47 +67,37 @@ block content
         //- task-detail-main
         .task-detail-main
           .task-detail-content
-            //div= weekly.content
-            iframe#contentIframe(frameborder='0')
+            div#weeklycontentdiv
           .task-detail-extra
             if weekly.attachment.length
               .task-detail-attachment
-                h4 附件（#{weekly.attachment.length}）
-                table(cellspacing=0)
-                  thead
-                    tr
-                      th 文件名
-                      th 文件大小
-                      th 上传人
-                      th 上传时间
-                      th(style='text-align:center') 说明
-                      th 文件下载
-
-                  tbody
-                    for num in weekly.attachment
-                      tr
-                        td.attfilename #{num.attfilename}
-                        - var sizenum = num.attsize-0, sizestr='';
-                        - if(sizenum>1024*1024*1024)
-                            sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
-                        - else if(sizenum>1024*1024)
-                            sizestr = (sizenum/(1024*1024)).toFixed(2) + 'M';
-                        - else if(sizenum>1024)
-                            sizestr = (sizenum/1024).toFixed(2) + 'KB';
-                        - else
-                            sizestr = sizenum + 'B';
-
-                        td.attsize #{sizestr}
-                        td.attperson #{num.attperson}
-                        - if(!!num.attuptime)
-                            - var atttime=num.attuptime
-                            - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
-                        - else
-                            - var nowtimestr='';
-                        td.attuptime #{nowtimestr}
-                        td.attdetail #{num.attdetail}
-                        td.attpath
-                          a(href='http://127.0.0.1:7001/'+'#{num.attpath}',target='_blank')下载附件
+                h4
+                  | 附件(
+                  em #{weekly.attachment.length}
+                  | )
+                ul.tda-list
+                  - for num in weekly.attachment
+                     li
+                       a(href='/'+'#{num.attpath}',target="_blank") #{num.attfilename} 
+                       - var sizenum = num.attsize-0, sizestr='';
+                       - if(sizenum>1024*1024*1024)
+                           sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
+                       - else if(sizenum>1024*1024)
+                           sizestr = (sizenum/(1024*1024)).toFixed(2) + 'M';
+                       - else if(sizenum>1024)
+                           sizestr = (sizenum/1024).toFixed(2) + 'KB';
+                       - else
+                           sizestr = sizenum + 'B';
+                       span (#{sizestr})
+                       cite #{num.attperson}
+                       - if(!!num.attuptime)
+                          - var atttime=num.attuptime
+                          - var nowtimestr = atttime.getFullYear() + '-' + ((atttime.getMonth()<9)? '0'+(atttime.getMonth()+1) : atttime.getMonth()+1) + '-' + ((atttime.getDate()<10)? '0'+atttime.getDate() : atttime.getDate()) + ' ' + ((atttime.getHours()<10)? '0'+atttime.getHours() : atttime.getHours()) + ':' + ((atttime.getMinutes()<10)? '0'+atttime.getMinutes() : atttime.getMinutes()) + ':' + ((atttime.getSeconds()<10)? '0'+atttime.getSeconds() : atttime.getSeconds()); 
+                       - else
+                          - var nowtimestr='';
+                       cite #{nowtimestr}
+                       - if(num.attdetail != ' ')
+                          cite.desc #{num.attdetail}
 
                           
             .tde-modify
@@ -204,46 +194,49 @@ block content
         
 
         - if (!!(weekly.comments.length))
-           .tdo-comment-suggestion
-             h4 评论/处理意见（#{weekly.comments.length}）
-             ul
-               - for ct in weekly.comments
-                 li
-                   div
-                     span.idnum #{ct._id}
-                     span.commentname #{ct.commentname}
-                       b （#{ct.commentrole}）
-                     - if(!!ct.commenttime)
+            .tdo-comment
+              .tdo-comment-hd
+                h4 
+                  | 评论/处理意见(
+                  em #{weekly.comments.length}
+                  | )
+              ul.tdo-comment-ul
+                - for ct in weekly.comments
+                  li.tdo-comment-item
+                    .tdo-comment-hd
+                      h5 #{ct.commentname}
+                        span.role （#{ct.commentrole}）
+
+                      - if(!!ct.commenttime)
                         - var comttime=ct.commenttime;
                         - var nowtimestr2 = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds()); 
-                     - else
+                      - else
                         - var nowtimestr2='';
-                     span.commenttime #{nowtimestr2}
-                     - if(docs.person == ct.commentname)
-                       a.commentedit(href="javascript:") 编辑
-                       a.commentdel(href="javascript:") 删除
-
-                   iframe(id='#{ct._id}',frameborder='0')
-                   script.
-                     var tt = setTimeout(function(){
-                       var commentcontent = ('<div id="bodybox">'+'#{ct.commentcontent}'+'</div>').replace(/&lt;/g,'<');
-                       commentcontent = commentcontent.replace(/&gt;/g,'>');
-                       commentcontent = commentcontent.replace(/&amp;nbsp;/g,' ');
-                       commentcontent = commentcontent.replace(/&quot;/g,'"');
-                       
-                       var ifr = document.getElementById('#{ct._id}');
-                       var ifrbody = ifr.contentWindow.document.getElementsByTagName('body')[0];
-
-                       ifrbody.innerHTML = commentcontent;
-                       ifrbody.style.fontSize='12px';
-                       ifrbody.style.lineHeight='1.5em';
-                       ifrbody.style.height = 'auto';
-                       ifrbody.style.width = ifr.offsetWidth-30;
-                       ifrbody.style.wordBreak = 'break-all';
+                      cite #{nowtimestr2}
+                      - if(docs.person == ct.commentname)
+                        span.edit
+                          span.idnum #{ct._id}
+                          a.comtedit(href="javascript:",data-able='1') 编辑
+                          a.comtdel(href="javascript:") 删除
+                    form
+                      textarea.hidetextarea(id='#{ct._id}',name='data[textarea]') #{ct.commentcontent}
+                      input.m-btn.subbtn.btn-skin-1(type='submit', value='确认修改')
+                      a.m-btn.cancelbtn.btn-skin-1 取消
+                    .tdo-comment-bd
                     
-                       ifr.style.height = (ifr.contentDocument.getElementById('bodybox').offsetHeight + 30) + 'px';
 
-                     },100);
+              .m-page.page-skin-0
+                .m-page-total
+                  span.m-page-total-item 共#{weekly.comments.length}条评论
+                  span.m-page-total-page 共9页
+                .m-page-pn
+                  a(href="#",class="/page/1") 首页
+                  a(href="#",class="/page/1") 上一页
+                  span.m-page-pn-current 1
+                  a(href="#",class="/page/2") 2
+                  a(href="#",class="/page/3") 3
+                  span.m-page-pn-ellipsis ...
+                  a(href="/page/2") 下页
 
 
 
@@ -381,6 +374,87 @@ block pageScript
   script(type='text/javascript', src='http://tdl.oa.com/tfl/js/tfl-core.js')
   script(src="http://tdl.oa.com/tfl/js/tfl-editor.js?v=20131225")
   script.
+    //评论/处理意见
+    $.each($('.tdo-comment-ul li.tdo-comment-item'),function(){
+      var commentcont = ($(this).find('textarea').val()+'').replace(/&lt;/g,'<');
+      commentcont = commentcont.replace(/&gt;/g,'>');
+      commentcont = commentcont.replace(/&amp;/g,'&');
+      commentcont = commentcont.replace(/&quot;/g,'"');
+
+      $(this).find('.tdo-comment-bd').html(commentcont);
+    })
+
+    
+    $.each($('.tdo-comment-ul li .comtedit'),function(key){
+      $(this).click(function(){
+        if($(this).attr('data-able') == '1'){
+          $(this).attr('data-able','0');
+          var $this = $(this);
+          var $li = $(this).parent().parent().parent();
+          var $id = $(this).siblings('.idnum').text();
+          var $form = $li.find('form');
+          var oldhtml = $form.html();
+
+          $li.find('.tdo-comment-bd').hide();
+          $li.find('.subbtn').show();
+
+          $li.find('.cancelbtn').show().click(function(){
+             $form.html(oldhtml);
+             $li.find('.tdo-comment-bd').show();
+             $this.attr('data-able','1');
+          });
+        
+
+          $form.submit(function () {
+            var nid = 'editor-'+$id;
+            var viframe = document.getElementById(nid).getElementsByTagName('iframe')[0];
+
+            var iframeBody = viframe.contentWindow.document.getElementsByTagName('body')[0];
+            
+
+            var postData = {};
+            postData.id = $(location).attr("pathname").replace("/task/","");
+            postData.type = "commentsedit";
+            postData.id2 = $id;
+            postData.comtcontent = iframeBody.innerHTML;
+
+            var callBackFunction = function(){
+              location.reload(true);
+            }
+
+
+            // 数据送ajax删除数据库中记录
+            appAjax.commentUpdateEdit(postData,callBackFunction);
+
+            return false;
+          });
+
+          var myeditor3 = TFL.editor({"id":$id,"height":"128px","width":"95%","name":"data[textarea]","showRelativePath":false}); 
+        }
+      });
+    })
+    
+
+    
+    $.each($('.tdo-comment-ul li .comtdel'),function(key){
+      $(this).click(function(){
+        vthis = $(this);
+        var postData = {};
+            postData.id = $(location).attr("pathname").replace("/task/","");
+            postData.type = "comments";
+            postData.id2 = $(this).siblings('.idnum').text();          
+        
+        var callBackFunction = function(){
+            vthis.parent().parent().parent().parent().remove();
+          }
+
+        if(confirm('确认删除？')){
+          // 数据送ajax删除数据库中记录
+          appAjax.updateDel(postData,callBackFunction);
+        }
+      });
+    })
+
     //评分
     $('#taskVoteBtn').click(function(){
       $('.dialog-task-score').show();
@@ -404,17 +478,16 @@ block pageScript
       });
     })
     
-    var iframestr = '#{weekly.content}';
-    iframestr = iframestr.replace(/&lt;/g,'<');
-    iframestr = iframestr.replace(/&gt;/g,'>');
-    iframestr = iframestr.replace(/&amp;nbsp;/g,' ');
-    iframestr = iframestr.replace(/&quot;/g,'"');
 
-    document.getElementById('contentIframe').style.height = $('.task-detail-content').innerHeight()+'px';
+    //需求内容
+    var weeklycontstr = '#{weekly.content}';
+    weeklycontstr = weeklycontstr.replace(/&lt;/g,'<');
+    weeklycontstr = weeklycontstr.replace(/&gt;/g,'>');
+    weeklycontstr = weeklycontstr.replace(/&amp;/g,'&');
+    weeklycontstr = weeklycontstr.replace(/&quot;/g,'"');
+    document.getElementById('weeklycontentdiv').innerHTML = weeklycontstr;
 
-    var iframeBody = document.getElementById('contentIframe').contentWindow.document.getElementsByTagName('body')[0];
-    iframeBody.innerHTML= iframestr;
-    
+
 
     $('#task-score-form').submit(function(){
       var $radios = $('#task-score-form :radio:checked');

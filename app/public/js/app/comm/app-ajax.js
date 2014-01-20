@@ -87,7 +87,7 @@ var appAjax = (function(){
   
 
   /**
-   * AJAX删除附件 
+   * AJAX删除附件/评论 
    * author：v_xhshen
    * time: 2014-01-14
    */
@@ -101,7 +101,28 @@ var appAjax = (function(){
         data : o
       }).done(function( msg ) {
         callbackMsg(msg);
-    if (callback){ (callback)(); }
+		if (callback){ (callback)(); }
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+    }
+  };
+  
+  /**
+   * AJAX编辑评论 
+   * author：v_xhshen
+   * time: 2014-01-14
+   */
+  function commentUpdateEdit(o,callback){
+    if( o ){
+      console.log(o);
+      $.ajax({
+        type: "POST",
+        url: "/comm-ajaxUpdateCommetEdit",
+        data : o
+      }).done(function( msg ) {
+        callbackMsg(msg);
+		if (callback){ (callback)(); }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });

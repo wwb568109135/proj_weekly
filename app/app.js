@@ -23,8 +23,8 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
   app.use(express.static(__dirname,"excelmodel"));
+  app.use(express.static(path.join(__dirname, 'public')));
 
   // 本地测试时数据库连接地址
   app.set('mongourl', 'mongodb://localhost/weekly_dev');
@@ -66,6 +66,7 @@ app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);
 app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
 
 app.post('/comm-ajaxUpdateDel', routes.comm_ajaxUpdateDel);
+app.post('/comm-ajaxUpdateCommetEdit', routes.comm_ajaxcommetUpdate);
 
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);
