@@ -350,7 +350,7 @@ exports.task_upexcel = function(req, res) {
     });
   
   var tmp_path = req.files.fileuplod.path;
-  var target_path = './upfiles/' + staffName + '__' + req.files.fileuplod.name;
+  var target_path =  __dirname + '/../upfiles/' + staffName + '__' + req.files.fileuplod.name;
   fs.rename(tmp_path, target_path, function(err) {
       //if (err) throw err;
       // 删除临时文件夹文件, 
@@ -442,13 +442,26 @@ exports.task_detail = function(req, res) {
                       res.locals.projectName = pj_array;
 
                         // 4.按id取出需求
-                        Weekly.findById(id, function(err, docs){
-                          var newdocs={}
-                          newdocs.dobj = docs;
-                          newdocs.person = staffName;
-                          if(err){console.log(err);}else{
-                            res.render('task-detail', {docs:newdocs});
-                          }
+                        Weekly.findById(id, function(err, docs){						  
+									  function compare(obj1,obj2){
+										return obj2.commenttime - obj1.commenttime;
+									  }
+									  var newdocs={};
+									  docs.comments.sort(compare);
+									  newdocs.commentArr=[];
+									  if(docs.comments.length >5){
+									    for(var i=0; i<5; i++){
+										  newdocs.commentArr[i] = docs.comments[i];
+										}
+									  } else {
+										newdocs.commentArr = docs.comments;
+									  }
+									  
+						              newdocs.dobj = docs;
+						              newdocs.person = staffName;
+									  if(err){console.log(err);}else{
+										res.render('task-detail', {docs:newdocs});
+									  }
                         });
 
                     }
@@ -459,9 +472,6 @@ exports.task_detail = function(req, res) {
         }
       });
     }
-
-
-
   }
 };
 
@@ -536,16 +546,16 @@ exports.task_search = function(req, res) {
   }
 };
 
-//需求打分
+//需求打分 (by v_xhshen)
 exports.task_score = function(req, res) {
-  var id = req.params.id;
-  var task = new Weekly(req.body.task); 
-  
-  Weekly.findByIdAndUpdate(id, 
+	var id = req.params.id;
+	var task = new Weekly(req.body.task);	
+	
+	Weekly.findByIdAndUpdate(id, 
     { 
       $set: { 
         score:req.body.scoreSet,
-    suggestion:req.body.suggestion
+		suggestion:req.body.suggestion
       },
     }, 
     { upsert : true },
@@ -559,7 +569,7 @@ exports.task_score = function(req, res) {
   );
 }
 
-//用户评论
+//用户评论 (by v_xhshen)
 exports.task_comment = function(req, res) {
   // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
@@ -569,15 +579,15 @@ exports.task_comment = function(req, res) {
   var date = new Date();
   
   var newcomment;
-
+  
   Staff.findByName(staffName,function(err,person){
     if(err){
-    throw err;
-  } else{
-    var role = person[0].roles;
-    
-    var rolestr;
-    switch(role){
+	  throw err;
+	} else{
+	  var role = person[0].roles;
+	  
+	  var rolestr;
+	  switch(role){
           case 0:                  //未定义角色
             rolestr='';
             break;
@@ -591,29 +601,28 @@ exports.task_comment = function(req, res) {
             rolestr='重构';
             break;
       }
-    newcomment = {commentname:staffName,commentrole:rolestr, commenttime:date, commentcontent:req.body.commenttext};
-    
-    //console.log(newcomment);
-    
-    Weekly.findByIdAndUpdate(id, 
-    { 
-      $set: { 
-      status:req.body.task.status,
-      },
-      $push:{
-      comments:newcomment,
-      }
-    }, 
-    { upsert : true },
-    function (err) {
-      if (err){
-      res.send(404, err.message);
-      }else {
-      res.redirect('/task/'+id);
-      }
-    }
-    );
-  }
+	  newcomment = {commentname:staffName,commentrole:rolestr, commenttime:date, commentcontent:req.body.commenttext};
+	  
+	  
+	  Weekly.findByIdAndUpdate(id, 
+		{ 
+		  $set: { 
+			status:req.body.task.status,
+		  },
+		  $push:{
+			comments:newcomment,
+		  }
+		}, 
+		{ upsert : true },
+		function (err) {
+		  if (err){
+			res.send(404, err.message);
+		  }else {
+			res.redirect('/task/'+id);
+		  }
+		}
+	  );
+	}
   })
 };
 
@@ -647,7 +656,7 @@ exports.task_update = function(req, res) {
   //存储多个文件到指定文件夹 by v_xhshen
   for(var i=0; i<L; i++){
     var tmp_path = tmp_Arr[i].path;
-    var target_path = './files/' + staffName + '_' + tmp_Arr[i].name;
+    var target_path = '/upfiles/attachment/' + staffName + '_' + tmp_Arr[i].name;
     var nowtime = new Date();
   
     var tmpObj = {attfilename: tmp_Arr[i].name, attpath: target_path, attdetail: tmp_txtArr[i], attsize: tmp_size[i], attperson: staffName, attuptime:nowtime};
@@ -665,7 +674,7 @@ exports.task_update = function(req, res) {
       }
     );
 
-    fs.rename(tmp_path, target_path, function(err) {
+    fs.rename(tmp_path, __dirname + '/..' + target_path, function(err) {
       if (err) throw err;
       // 删除临时文件夹文件, 
       fs.unlink(tmp_path, function() {
@@ -1321,11 +1330,54 @@ exports.comm_ajaxUpdateSet = function(req, res) {
   }
 };
 
+/**
+* Add by v_xhshen 
+* 2014-01-14
+* ajax分页显示
+*/
+exports.comm_ajaxPageShow = function(req, res) {
+  var data = req.body;  
+  var id = data.id || null;
+  delete data.id;
+  var pageCur= data.pagenum*1;
+  
+  // 4.按id取出需求
+  Weekly.findById(id, function(err, docs){
+	  var comtsL=docs.comments.length;
+	  function compare(obj1,obj2){
+		return obj2.commenttime - obj1.commenttime;
+	  }
+	  docs.comments.sort(compare);
+	  
+	  var newcometobj={};
+	  newcometobj.cometarr=[];
+	  newcometobj.comLength = comtsL;
+	  
+	  for(var i=0; i<5; i++){
+		var j = (pageCur-1)*5+i;
+		if(comtsL>j){
+			var comttime=docs.comments[j].commenttime;
+			var comttime = new Date(comttime);
+			var nowtimestr = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds());
+			
+			var newobj={};
+			newobj.commt= docs.comments[j];
+			newobj.timestr = nowtimestr;
+			newcometobj.cometarr[i] = newobj;
+		}
+	  }
+
+	  if(err){console.log(err);}else{
+		res.send(200, newcometobj);
+	  }
+	});
+};
+
 
 /**
 * Add by v_xhshen 
 * 2014-01-14
-* ajax删除附件
+* ajax编辑更新评论
 */
 exports.comm_ajaxcommetUpdate = function(req, res) {
   var data = req.body;  
@@ -1359,7 +1411,38 @@ exports.comm_ajaxcommetUpdate = function(req, res) {
 				if (err){
 				  res.send(404, "格式错误，修改失败");
 				}else {
-				  res.send(200, "修改成功！");
+				   Weekly.findById(id, function(err, docs){
+					  var comtsL=docs.comments.length;
+					  function compare(obj1,obj2){
+						return obj2.commenttime - obj1.commenttime;
+					  }
+                      docs.comments.sort(compare);
+					  
+					  var newcometobj={};
+					  newcometobj.cometarr=[];
+					  newcometobj.comLength = comtsL;
+					  
+                      var pageCur = data.pageCur*1;
+					  
+					  for(var i=0; i<5; i++){
+						var j = (pageCur-1)*5+i;
+						if(comtsL>j){
+							var comttime=docs.comments[j].commenttime;
+							var comttime = new Date(comttime);
+							var nowtimestr = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds());
+							
+							var newobj={};
+							newobj.commt= docs.comments[j];
+							newobj.timestr = nowtimestr;
+							newcometobj.cometarr[i] = newobj;
+						}
+					  }
+                      
+					  newcometobj.pageCurnum = pageCur;
+					  if(err){console.log(err);}else{
+						res.send(200, newcometobj);
+					  }
+				    });
 				}
 			}
 		);
@@ -1371,7 +1454,7 @@ exports.comm_ajaxcommetUpdate = function(req, res) {
 /**
 * Add by v_xhshen 
 * 2014-01-14
-* ajax删除附件
+* ajax删除附件/评论
 */
 exports.comm_ajaxUpdateDel = function(req, res) {
   var data = req.body;  
@@ -1442,7 +1525,42 @@ exports.comm_ajaxUpdateDel = function(req, res) {
 				if (err){
 				  res.send(404, "格式错误，修改失败");
 				}else {
-				  res.send(200, "修改成功！");
+				  
+				  Weekly.findById(id, function(err, docs){
+					  var comtsL=docs.comments.length;
+					  function compare(obj1,obj2){
+						return obj2.commenttime - obj1.commenttime;
+					  }
+                      docs.comments.sort(compare);
+					  
+					  var newcometobj={};
+					  newcometobj.cometarr=[];
+					  newcometobj.comLength = comtsL;
+					  
+                      var pageCur = data.pageCur*1;
+                      if((pageCur-1)*5==comtsL){
+					     pageCur--;
+					  }
+					  
+					  for(var i=0; i<5; i++){
+						var j = (pageCur-1)*5+i;
+						if(comtsL>j){
+							var comttime=docs.comments[j].commenttime;
+							var comttime = new Date(comttime);
+							var nowtimestr = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds());
+							
+							var newobj={};
+							newobj.commt= docs.comments[j];
+							newobj.timestr = nowtimestr;
+							newcometobj.cometarr[i] = newobj;
+						}
+					  }
+                      
+					  newcometobj.pageCurnum = pageCur;
+					  if(err){console.log(err);}else{
+						res.send(200, newcometobj);
+					  }
+				    }); 
 				}
 			}
 		);

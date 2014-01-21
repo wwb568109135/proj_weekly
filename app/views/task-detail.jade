@@ -216,8 +216,8 @@ block content
                       - if(docs.person == ct.commentname)
                         span.edit
                           span.idnum #{ct._id}
-                          a.comtedit(href="javascript:",data-able='1') 编辑
-                          a.comtdel(href="javascript:") 删除
+                          a.comtedit(href="javascript:", onclick='comteditfun(this)', data-able='1') 编辑
+                          a.comtdel(href="javascript:",onclick='comsdelfun(this)') 删除
                     form
                       textarea.hidetextarea(id='#{ct._id}',name='data[textarea]') #{ct.commentcontent}
                       input.m-btn.subbtn.btn-skin-1(type='submit', value='确认修改')
@@ -225,18 +225,44 @@ block content
                     .tdo-comment-bd
                     
 
-              .m-page.page-skin-0
-                .m-page-total
-                  span.m-page-total-item 共#{weekly.comments.length}条评论
-                  span.m-page-total-page 共9页
-                .m-page-pn
-                  a(href="#",class="/page/1") 首页
-                  a(href="#",class="/page/1") 上一页
-                  span.m-page-pn-current 1
-                  a(href="#",class="/page/2") 2
-                  a(href="#",class="/page/3") 3
-                  span.m-page-pn-ellipsis ...
-                  a(href="/page/2") 下页
+              - var comsArr = weekly.comments;
+              - var comsL = comsArr.length;
+              - var pages = Math.ceil(comsL/5);
+              - if(!! docs.pageCur)
+                  pageCur = docs.pageCur;
+              - else
+                  pageCur =1
+
+              if pages >1
+                .m-page.page-skin-0#pagenumbar
+                  .m-page-total
+                    span.m-page-total-page 共#{pages}页
+                  .m-page-pn
+                    a.m-page-pn_disabled(href='javascript:pagenumfun(1);') 首页
+                    if pageCur < 2
+                      span.m-page-pn-current #{pageCur}
+                      if pageCur < pages
+                        a(href='javascript:pagenumfun('+ (pageCur+1) +');') #{pageCur+1}
+                        if (pages - pageCur) > 1
+                          a(href='javascript:pagenumfun('+ (pageCur+2) +');') #{pageCur+2}
+                        if (pages - pageCur) > 2
+                          a(href='javascript:pagenumfun('+ (pageCur+3) +');') #{pageCur+3}
+                        span.m-page-pn-ellipsis ...
+                    else
+                      if pageCur >3
+                        a(href='javascript:pagenumfun('+ (pageCur-3) +');') #{pageCur-3}
+                      if pageCur >2
+                        a(href='javascript:pagenumfun('+ (pageCur-2) +');') #{pageCur-2}
+                      a(href='javascript:pagenumfun('+ (pageCur-1) +');') #{pageCur-1}
+                      span.m-page-pn-current #{pageCur}
+                      if pageCur < pages
+                        a(href='javascript:pagenumfun('+ (pageCur+1) +');') #{pageCur+1}
+                        if (pages - pageCur) > 1
+                          a(href='javascript:pagenumfun('+ (pageCur+2) +');') #{pageCur+2}
+                        if (pages - pageCur) > 2
+                          a(href='javascript:pagenumfun('+ (pageCur+3) +');') #{pageCur+3}
+                        span.m-page-pn-ellipsis ...
+                    a(href='javascript:pagenumfun('+ pages +');') 尾页
 
 
 
@@ -353,7 +379,7 @@ block pageScript
       $(onDomReady);
     })()
 
-  //- Add by v_xhshen 2014-01-10---------------------------------------------------start
+  //- Add by v_xhshen 2014-01-20---------------------------------------------------start
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/base|topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-tips.css?v=20131225')
@@ -374,111 +400,6 @@ block pageScript
   script(type='text/javascript', src='http://tdl.oa.com/tfl/js/tfl-core.js')
   script(src="http://tdl.oa.com/tfl/js/tfl-editor.js?v=20131225")
   script.
-    //评论/处理意见
-    $.each($('.tdo-comment-ul li.tdo-comment-item'),function(){
-      var commentcont = ($(this).find('textarea').val()+'').replace(/&lt;/g,'<');
-      commentcont = commentcont.replace(/&gt;/g,'>');
-      commentcont = commentcont.replace(/&amp;/g,'&');
-      commentcont = commentcont.replace(/&quot;/g,'"');
-
-      $(this).find('.tdo-comment-bd').html(commentcont);
-    })
-
-    
-    $.each($('.tdo-comment-ul li .comtedit'),function(key){
-      $(this).click(function(){
-        if($(this).attr('data-able') == '1'){
-          $(this).attr('data-able','0');
-          var $this = $(this);
-          var $li = $(this).parent().parent().parent();
-          var $id = $(this).siblings('.idnum').text();
-          var $form = $li.find('form');
-          var oldhtml = $form.html();
-
-          $li.find('.tdo-comment-bd').hide();
-          $li.find('.subbtn').show();
-
-          $li.find('.cancelbtn').show().click(function(){
-             $form.html(oldhtml);
-             $li.find('.tdo-comment-bd').show();
-             $this.attr('data-able','1');
-          });
-        
-
-          $form.submit(function () {
-            var nid = 'editor-'+$id;
-            var viframe = document.getElementById(nid).getElementsByTagName('iframe')[0];
-
-            var iframeBody = viframe.contentWindow.document.getElementsByTagName('body')[0];
-            
-
-            var postData = {};
-            postData.id = $(location).attr("pathname").replace("/task/","");
-            postData.type = "commentsedit";
-            postData.id2 = $id;
-            postData.comtcontent = iframeBody.innerHTML;
-
-            var callBackFunction = function(){
-              location.reload(true);
-            }
-
-
-            // 数据送ajax删除数据库中记录
-            appAjax.commentUpdateEdit(postData,callBackFunction);
-
-            return false;
-          });
-
-          var myeditor3 = TFL.editor({"id":$id,"height":"128px","width":"95%","name":"data[textarea]","showRelativePath":false}); 
-        }
-      });
-    })
-    
-
-    
-    $.each($('.tdo-comment-ul li .comtdel'),function(key){
-      $(this).click(function(){
-        vthis = $(this);
-        var postData = {};
-            postData.id = $(location).attr("pathname").replace("/task/","");
-            postData.type = "comments";
-            postData.id2 = $(this).siblings('.idnum').text();          
-        
-        var callBackFunction = function(){
-            vthis.parent().parent().parent().parent().remove();
-          }
-
-        if(confirm('确认删除？')){
-          // 数据送ajax删除数据库中记录
-          appAjax.updateDel(postData,callBackFunction);
-        }
-      });
-    })
-
-    //评分
-    $('#taskVoteBtn').click(function(){
-      $('.dialog-task-score').show();
-    });
-    
-    $.each($('#task-score-form :radio'),function(key){
-      $(this).change(function(){
-        if($(this).attr('checked')){
-          $('#task-score-form h4').eq(0).html('此需求已完,评分：<b>' + $(this).val() + '</b>分')
-           .after($('<a class="m-btn btn-skin-4" id="resetscore" href="javascript:">重新打分</a>'));
-          $('#task-score-form .score-list').hide();
-
-          $('#task-score-form #resetscore').click(function(){
-            $('#task-score-form .score-list').show();
-            $('#task-score-form h4').eq(0).html('请您为本次需求服务评分');
-            $(this).remove();
-          });
-
-          input.m-btn.btn-skin-4(type='reset', value='提交评分')
-        }
-      });
-    })
-    
-
     //需求内容
     var weeklycontstr = '#{weekly.content}';
     weeklycontstr = weeklycontstr.replace(/&lt;/g,'<');
@@ -487,26 +408,5 @@ block pageScript
     weeklycontstr = weeklycontstr.replace(/&quot;/g,'"');
     document.getElementById('weeklycontentdiv').innerHTML = weeklycontstr;
 
-
-
-    $('#task-score-form').submit(function(){
-      var $radios = $('#task-score-form :radio:checked');
-      if(!$radios.length){
-        $('#task-score-form :submit').after($('<h4 id="noticeh4"><b>请您为本次需求服务评分后再提交</b></h4>'));
-        var ttimeout = setTimeout(function(){$('#noticeh4').remove();},1500);
-        return false;
-      } else{
-        $('#task-score-form h4').eq(1).text();
-        return ture;
-      }    
-    });
-
-
-    //评论    
-    $('#commentarea').focus(function(){
-      $(this).val('');
-    });
-
-    var myeditor2 = TFL.editor({"id":"commentarea","width":"65%","height":"128px","name":"task[content]","showRelativePath":false,"mode":1});  
-
-  //- Add by v_xhshen 2014-01-10---------------------------------------------------end
+  script(src="/js/editor/task_detail.js")
+  //- Add by v_xhshen 2014-01-20---------------------------------------------------end

@@ -20,7 +20,7 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.cookieParser());
   app.use(express.cookieSession({key:'sid',secret:'alsdkjfl28DJJAS'}));
-  app.use(express.bodyParser());
+  app.use(express.bodyParser({uploadDir:__dirname + '/tmp'}));
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname,"excelmodel"));
@@ -67,6 +67,7 @@ app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
 
 app.post('/comm-ajaxUpdateDel', routes.comm_ajaxUpdateDel);
 app.post('/comm-ajaxUpdateCommetEdit', routes.comm_ajaxcommetUpdate);
+app.post('/comm-ajaxPageShow', routes.comm_ajaxPageShow);
 
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);

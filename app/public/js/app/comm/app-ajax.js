@@ -85,7 +85,28 @@ var appAjax = (function(){
     return o;
   };
   
-
+  
+  /**
+   * AJAX分页显示
+   * author：v_xhshen
+   * time: 2014-01-14
+   */
+  function ajaxpageShow(o,callback){
+    if( o ){
+      console.log(o);
+      $.ajax({
+        type: "POST",
+        url: "/comm-ajaxPageShow",
+        data : o
+      }).done(function( msg ) {
+		if (callback){ (callback)(msg); }
+      }).fail(function(jqXHR, textStatus) {
+        alert( "Request failed: " + textStatus );
+      });
+    }
+  };
+  
+  
   /**
    * AJAX删除附件/评论 
    * author：v_xhshen
@@ -100,8 +121,7 @@ var appAjax = (function(){
         url: "/comm-ajaxUpdateDel",
         data : o
       }).done(function( msg ) {
-        callbackMsg(msg);
-		if (callback){ (callback)(); }
+		if (callback){ (callback)(msg); }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
@@ -121,8 +141,7 @@ var appAjax = (function(){
         url: "/comm-ajaxUpdateCommetEdit",
         data : o
       }).done(function( msg ) {
-        callbackMsg(msg);
-		if (callback){ (callback)(); }
+		if (callback){ (callback)(msg); }
       }).fail(function(jqXHR, textStatus) {
         alert( "Request failed: " + textStatus );
       });
@@ -275,7 +294,9 @@ var appAjax = (function(){
     getRoles : function(e,staffName){ getRoles(e,staffName) },
     getProjects : function(e,callback){ getProjects(e,callback) },
     getDirections : function(e){ getDirections(e) },
-    updateDel : function(o,callback){ updateDel(o,callback) }
+    updateDel : function(o,callback){ updateDel(o,callback) },
+	commentUpdateEdit : function(o,callback){ commentUpdateEdit(o,callback) },
+	ajaxpageShow : function(o,callback){ ajaxpageShow(o,callback) }
   }
 
 })()
