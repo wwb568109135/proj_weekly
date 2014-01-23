@@ -81,7 +81,9 @@ block content
                     ul.task-attachment-files
                       - for num in weekly.attachment
                           li.uploaded
-                            a(href='/'+'#{num.attpath}',target="_blank") #{num.attfilename}
+                            -var fpnum = (num.attpath).lastIndexOf('/');
+                            -var filename = num.attpath.substring(fpnum);
+                            a(href='/downloadattach'+'#{filename}',target="_blank") #{num.attfilename}
                             - var sizenum = num.attsize-0, sizestr='';
                             - if(sizenum>1024*1024*1024)
                                 sizestr = (sizenum/(1024*1024*1024)).toFixed(2) + 'G';
@@ -215,7 +217,7 @@ block pageScript
     })()
   
   //- Add by v_xhshen 2014-01-14---------------------------------------------------start
-  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/base|topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
+  link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/compress/topnav|header|mainnav|ico|dialog|dropdown|tab|step|tips|cluetip|datepicker|dkselect|filter|skin0.css?v=20131225')
 
   link(type='text/css', rel='stylesheet', href='http://tdl.oa.com/tfl/css/tfl-editor.css?v=20131225')
   style(type='text/css').

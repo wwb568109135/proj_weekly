@@ -350,7 +350,8 @@ exports.task_upexcel = function(req, res) {
     });
   
   var tmp_path = req.files.fileuplod.path;
-  var target_path =  __dirname + '/../upfiles/' + staffName + '__' + req.files.fileuplod.name;
+  var newDateStr = (new Date()).getTime();
+  var target_path =  __dirname + '/../upfiles/' + staffName + newDateStr + '__' + req.files.fileuplod.name;
   fs.rename(tmp_path, target_path, function(err) {
       //if (err) throw err;
       // 删除临时文件夹文件, 
@@ -656,7 +657,8 @@ exports.task_update = function(req, res) {
   //存储多个文件到指定文件夹 by v_xhshen
   for(var i=0; i<L; i++){
     var tmp_path = tmp_Arr[i].path;
-    var target_path = '/upfiles/attachment/' + staffName + '_' + tmp_Arr[i].name;
+	var newDateStr = (new Date()).getTime(); 
+    var target_path = '/upfiles/attachment/' + staffName + newDateStr + '_' + tmp_Arr[i].name;
     var nowtime = new Date();
   
     var tmpObj = {attfilename: tmp_Arr[i].name, attpath: target_path, attdetail: tmp_txtArr[i], attsize: tmp_size[i], attperson: staffName, attuptime:nowtime};

@@ -68,6 +68,12 @@ app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
 app.post('/comm-ajaxUpdateDel', routes.comm_ajaxUpdateDel);
 app.post('/comm-ajaxUpdateCommetEdit', routes.comm_ajaxcommetUpdate);
 app.post('/comm-ajaxPageShow', routes.comm_ajaxPageShow);
+app.get('/downloadattach/:filep', function(req,res,next){
+	var filep = req.params.filep;
+	var filename = filep;
+	filep = __dirname + '/upfiles/attachment/'+filep;
+	res.download(filep,filename);
+});
 
 app.get('/task', routes.task);
 app.get('/task-pd', routes.task_pd);
