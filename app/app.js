@@ -5,6 +5,8 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , taskRoutes = require('./routes/task')
+  , settingRoutes = require('./routes/setting')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
@@ -54,7 +56,7 @@ app.configure('development', function(){
 // }
 Weekly.connect(app.get('mongourl'));
 
-// Routes Rule
+// Index & comm Routes Rule(roules/index.js) -------------------------------
 app.use(app.router);
 app.all('*', user.auth);
 app.get('/', routes.index);
@@ -64,7 +66,6 @@ app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);
 app.post('/comm-ajaxGetDirections', routes.comm_ajaxGetDirections);
-
 app.post('/comm-ajaxUpdateDel', routes.comm_ajaxUpdateDel);
 app.post('/comm-ajaxUpdateCommetEdit', routes.comm_ajaxcommetUpdate);
 app.post('/comm-ajaxPageShow', routes.comm_ajaxPageShow);
@@ -75,45 +76,41 @@ app.get('/downloadattach/:filep', function(req,res,next){
 	res.download(filep,filename);
 });
 
-app.get('/task', routes.task);
-app.get('/task-pd', routes.task_pd);
-app.get('/task-rb', routes.task_rb);
-app.get('/task-ld', routes.task_ld);
-app.get('/task-ld-adv', routes.task_ld_adv);
-app.post('/task-ld-adv', routes.task_ld_adv);
-app.get('/task/create', routes.task_create);
+// Task Routes Rule(roules/task.js) -------------------------------
+app.get('/task', taskRoutes.task);
+app.get('/task-pd', taskRoutes.task_pd);
+app.get('/task-rb', taskRoutes.task_rb);
+app.get('/task-ld', taskRoutes.task_ld);
+app.get('/task-ld-adv', taskRoutes.task_ld_adv);
+app.post('/task-ld-adv', taskRoutes.task_ld_adv);
+app.get('/task/create', taskRoutes.task_create);
+app.post('/task/upexcel', taskRoutes.task_upexcel);
+app.post('/task/created', taskRoutes.task_created);
+app.get('/task/search', taskRoutes.task_search);
+app.get('/task/:id', taskRoutes.task_detail);
+app.get('/task/del/:id', taskRoutes.task_del);
+app.get('/task/edit/:id', taskRoutes.task_edit);
+app.post('/task/update/:id', taskRoutes.task_update);
+app.post('/task/comment/:id', taskRoutes.task_comment);
+app.post('/task/taskscore/:id', taskRoutes.task_score);
+app.post('/task/ajaxUpdateCalendar', taskRoutes.calendar_ajaxUpdate);
+app.post('/task/callJSON', taskRoutes.task_callJSON);
+app.post('/tasksHistoryCreate', taskRoutes.tasksHistory_create);
+app.get('/export', taskRoutes.task_export);
+app.get('/export-debug', taskRoutes.task_export_debug);
+app.post('/excel', taskRoutes.excel);
 
-app.post('/task/upexcel', routes.task_upexcel);
-
-app.post('/task/created', routes.task_created);
-app.get('/task/search', routes.task_search);
-app.get('/task/:id', routes.task_detail);
-app.get('/task/del/:id', routes.task_del);
-app.get('/task/edit/:id', routes.task_edit);
-app.post('/task/update/:id', routes.task_update);
-
-app.post('/task/comment/:id', routes.task_comment);
-app.post('/task/taskscore/:id', routes.task_score);
-
-// app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
-app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
-app.post('/task/callJSON', routes.task_callJSON);
-app.post('/tasksHistoryCreate', routes.tasksHistory_create);
-
-app.get('/export', routes.task_export);
-app.get('/export-debug', routes.task_export_debug);
-app.post('/excel', routes.excel);
-
-app.get('/setting-project', routes.setting_project);
-app.post('/setting-project/created', routes.setting_project_created);
-app.get('/setting-project/del/:id', routes.setting_project_del);
-app.get('/setting-direction', routes.setting_direction);
-app.post('/setting-direction/created', routes.setting_direction_created);
-app.get('/setting-direction/del/:id', routes.setting_direction_del);
-app.get('/setting-staff/create', routes.setting_staff_create);
-app.post('/setting-staff/create', routes.setting_staff_create);
-app.get('/setting-staff', routes.setting_staff);
-app.get('/setting-staff/del/:id', routes.setting_staff_del);
+// Setting Routes Rule(roules/setting.js)  -------------------------------
+app.get('/setting-project', settingRoutes.setting_project);
+app.post('/setting-project/created', settingRoutes.setting_project_created);
+app.get('/setting-project/del/:id', settingRoutes.setting_project_del);
+app.get('/setting-direction', settingRoutes.setting_direction);
+app.post('/setting-direction/created', settingRoutes.setting_direction_created);
+app.get('/setting-direction/del/:id', settingRoutes.setting_direction_del);
+app.get('/setting-staff/create', settingRoutes.setting_staff_create);
+app.post('/setting-staff/create', settingRoutes.setting_staff_create);
+app.get('/setting-staff', settingRoutes.setting_staff);
+app.get('/setting-staff/del/:id', settingRoutes.setting_staff_del);
 
 // app.get('/users', user.auth);
 app.use(function(req, res){
