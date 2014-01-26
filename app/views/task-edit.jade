@@ -232,12 +232,13 @@ block pageScript
       $(this).click(function(){
         vthis = $(this);
         var postData = {};
+            postData.type = "attachment";
             postData.id = $(location).attr("pathname").replace("/task/edit/","");
             postData.id2 = $(this).next().text();
             postData.filepath = $(this).next().next().text();
         
         var callBackFunction = function(){
-            vthis.parent().parent().remove();
+            vthis.parent().remove();
           }
 
         if(confirm('确认删除？')){

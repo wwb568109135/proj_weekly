@@ -33,7 +33,7 @@
           $li.find('.cancelbtn').show().click(function(){
              $form.html(oldhtml);
              $li.find('.tdo-comment-bd').show();
-             $this.attr('data-able','1');
+             vthis.attr('data-able','1');
           });
         
 
@@ -49,7 +49,7 @@
             postData.type = "commentsedit";
             postData.id2 = $id;
             postData.comtcontent = iframeBody.innerHTML;
-            postData.pageCur = ($('.m-page-pn-current')) ? $('.m-page-pn-current').text() : 1;
+            postData.pageCur = (!!$('.m-page-pn-current').text()) ? ($('.m-page-pn-current').text()) : 1;
 
             var callBackFunction = function(datas){
                //location.reload(true);
@@ -241,7 +241,7 @@
             postData.id = $(location).attr("pathname").replace("/task/","");
             postData.type = "comments";
             postData.id2 = vthis.siblings('.idnum').text();          
-            postData.pageCur = ($('.m-page-pn-current')) ? $('.m-page-pn-current').text() : 1;
+            postData.pageCur = ($('.m-page-pn-current').text()) ? $('.m-page-pn-current').text() : 1;
 
 
         var callBackFunction = function(datas){
@@ -281,6 +281,10 @@
               
               var pages = Math.ceil((datas.comLength)/5);
               var pageCur = datas.pageCurnum;
+              if(pages ==1){
+                  pageHtml = '';
+                  $('#pagenumbar').html(pageHtml);
+              }
               if(pages >1){
                       pageHtml += "<div class='m-page-total'><span class='m-page-total-page'>共" + pages + "页</span></div>"+
                                     "<div class='m-page-pn'>"+

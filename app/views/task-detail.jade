@@ -202,13 +202,12 @@ block content
                   | 评论/处理意见(
                   em #{weekly.comments.length}
                   | )
-              ul.tdo-comment-ul
-                - for ct in weekly.comments
+              ul.tdo-comment-ul#commentListUl
+                - for ct in docs.commentArr
                   li.tdo-comment-item
                     .tdo-comment-hd
                       h5 #{ct.commentname}
                         span.role （#{ct.commentrole}）
-
                       - if(!!ct.commenttime)
                         - var comttime=ct.commenttime;
                         - var nowtimestr2 = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds()); 

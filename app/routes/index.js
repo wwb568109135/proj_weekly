@@ -58,9 +58,11 @@ exports.home = function(req, res){
   }
 };
 
+
 /*
  * logout View
  */
+
 exports.logout = function(req, res){
   User.tofLogout(req, res);
 };
@@ -1285,19 +1287,20 @@ exports.tasksHistory_create = function(req, res) {
 exports.comm_ajaxUpdateSet = function(req, res) {
   var data = req.body;  
   var id = data.id || null,
-      dbCollection = data.dbCollection;
+       flag = data.dbCollection;
+  var dbCollection = null;
   delete data.id;
   delete data.dbCollection;
 
   // console.log(id);console.log(dbCollection);console.log(data);
 
-  if(dbCollection == "Project" ){
+  if(flag == "Project" ){
     dbCollection = Project;
-  }else if(dbCollection == "Weekly" ){
+  }else if(flag == "Weekly" ){
     dbCollection = Weekly;
-  }else if(dbCollection == "Staff"){
+  }else if(flag == "Staff"){
     dbCollection = Staff;
-  }else if(dbCollection = "Direction"){
+  }else if(flag = "Direction"){
     dbCollection = Direction;
   }
   
@@ -1306,6 +1309,15 @@ exports.comm_ajaxUpdateSet = function(req, res) {
 
   if( id && data ){  
     console.log('ajax saveing');
+
+    var oldStatus = null;
+    if(flag == "Weekly" )
+    {
+      dbCollection.findById(id, function(err, docs){            
+        oldStatus = docs.status;
+      });
+    }
+
     // console.dir(data);
     dbCollection.findByIdAndUpdate(id, 
       {$set: data},
@@ -1317,6 +1329,102 @@ exports.comm_ajaxUpdateSet = function(req, res) {
           // res.redirect('/task/'+id);
           res.send(200, "修改成功！");
           // console.log("保存成功");
+
+          //需求状态被修改
+          if(flag == "Weekly" && oldStatus && data.status && oldStatus != data.status )
+          {
+            dbCollection.findById(id, function(err, docs){   
+
+              var nameList = new Array();
+
+              //获取需求负责人
+              var str = docs.pp;
+              if ( str.charAt(str.length-1) == ';')
+              {
+                str=str.substring(0,str.length-1);
+              }
+              var nameTmp = str.split(";");
+
+              for(var i=0;i<nameTmp.length;i++){
+                nameList.push(nameTmp[i]);
+              }
+
+              //获取需求接口人
+              nameTmp = [];
+              str = docs.pm;
+              if ( str.charAt(str.length-1) == ';')
+              {
+                str=str.substring(0,str.length-1);
+              }
+              nameTmp = str.split(";");
+
+              for(var i=0;i<nameTmp.length;i++)
+              {
+                var s = true;
+                for(var j=0;j<nameList.length;j++)
+                {
+                  if(nameTmp[i] == nameList[j])
+                  { s = false; break; }
+                }
+                if(s)
+                {
+                  nameList.push(nameTmp[i]);
+                }
+              }
+
+
+              //获取需求创建者
+              nameTmp = [];
+              str = docs.author;
+              if ( str.charAt(str.length-1) == ';')
+              {
+                str=str.substring(0,str.length-1);
+              }
+              nameTmp = str.split(";");
+
+              for(var i=0;i<nameTmp.length;i++)
+              {
+                var s = true;
+                for(var j=0;j<nameList.length;j++)
+                {
+                  if(nameTmp[i] == nameList[j])
+                  { s = false; break; }
+                }
+                if(s)
+                {
+                  nameList.push(nameTmp[i]);
+                }
+              }
+
+              var staffName = User.returnStaffUser(req,res).rtx;
+              var taskName = docs.title;
+              var mailTitle = '状态更新"' + taskName + '"';
+              var sLink = 'http://wr.ied.com/task/' + id;
+              var mailContent = 'Dear All:\n' + staffName + '在周报系统中更新了"' + taskName + '"的任务状态。详情请点击：\n' + sLink;
+
+              var spawn = require('child_process').spawn;
+              for(i=0;i<nameList.length;i++){
+                var python = spawn('python', ['/home/wwwroot/public/weekly/script/send_mail.py',nameList[i],mailTitle,mailContent]);
+
+                python.stdout.on('data', function (data) {
+                    console.log('send email:' + data);
+                });
+
+                // 捕获标准错误输出并将其打印到控制台
+                python.stderr.on('data', function (data) {
+                    console.error('错误输出：\n' + data);
+                });
+
+                /*
+                // 注册子进程关闭事件
+                python.on('exit', function (code, signal) {
+                    console.log('子进程已退出，代码：' + code);
+                });
+                */
+              }
+
+            });
+          }
         }
       }
     );
@@ -1330,6 +1438,7 @@ exports.comm_ajaxUpdateSet = function(req, res) {
       }
     })
   }
+
 };
 
 /**
@@ -1389,66 +1498,88 @@ exports.comm_ajaxcommetUpdate = function(req, res) {
   var comtcontent = data.comtcontent;
   var oldArr;
   
-  if(data.type == "commentsedit"){
-	Weekly.findById(id, function(err, docs){
-	  if(err){
-		console.log(err);
-	  }else{
-		oldArr = docs.comments;
-		var L=oldArr.length;
-		for(var i=0;i<L;i++){
-			if(oldArr[i]._id == id2){
-				oldArr[i].commentcontent = comtcontent;
-			}
-		}
-		//console.log(newArr); 
-		console.log('ajax saveing');
-		console.log(oldArr);
-		Weekly.findByIdAndUpdate(id, 
-			{$set: {
-			   comments: oldArr,
-		    }},
-			{upsert : true},
-			function (err) {
-				if (err){
-				  res.send(404, "格式错误，修改失败");
-				}else {
-				   Weekly.findById(id, function(err, docs){
-					  var comtsL=docs.comments.length;
-					  function compare(obj1,obj2){
-						return obj2.commenttime - obj1.commenttime;
-					  }
-                      docs.comments.sort(compare);
-					  
-					  var newcometobj={};
-					  newcometobj.cometarr=[];
-					  newcometobj.comLength = comtsL;
-					  
-                      var pageCur = data.pageCur*1;
-					  
-					  for(var i=0; i<5; i++){
-						var j = (pageCur-1)*5+i;
-						if(comtsL>j){
-							var comttime=docs.comments[j].commenttime;
-							var comttime = new Date(comttime);
-							var nowtimestr = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds());
-							
-							var newobj={};
-							newobj.commt= docs.comments[j];
-							newobj.timestr = nowtimestr;
-							newcometobj.cometarr[i] = newobj;
-						}
-					  }
-                      
-					  newcometobj.pageCurnum = pageCur;
-					  if(err){console.log(err);}else{
-						res.send(200, newcometobj);
-					  }
-				    });
-				}
-			}
-		);
-	  }
+  if(data.type == "commentsedit")
+  {
+
+  	Weekly.findById(id, function(err, docs)
+    {
+  	  if(err)
+      {
+  		  console.log(err);
+  	  }
+      else
+      {
+    		oldArr = docs.comments;
+    		var L=oldArr.length;
+    		for(var i=0;i<L;i++)
+        {
+    			if(oldArr[i]._id == id2)
+          {
+    				oldArr[i].commentcontent = comtcontent;
+    			}
+    		}
+    		//console.log(newArr); 
+    		//console.log('ajax saveing');
+    		//console.log(oldArr);
+    		Weekly.findByIdAndUpdate(id, 
+    			{$set: {
+    			   comments: oldArr,
+    		  }},
+    			{upsert : true},
+    			function (err)
+          {
+    				if (err)
+            {
+    				  res.send(404, "格式错误，修改失败");
+    				}
+            else 
+            {
+    				  Weekly.findById(id, function(err, docs)
+              {
+    					  var comtsL=docs.comments.length;
+    					  function compare(obj1,obj2)
+                {
+    						  return obj2.commenttime - obj1.commenttime;
+    					  }
+                docs.comments.sort(compare);
+
+    					  var newcometobj={};
+    					  newcometobj.cometarr=[];
+    					  newcometobj.comLength = comtsL;
+    					  
+                var pageCur = data.pageCur*1;
+                if(pageCur <= 0)
+                {
+                  pageCur = 1;
+                }
+
+    					  for(var i=0; i<5; i++)
+                {
+      						var j = (pageCur-1)*5+i;
+      						if(comtsL>j)
+                  {
+      							var comttime=docs.comments[j].commenttime;
+      							var comttime = new Date(comttime);
+      							var nowtimestr = comttime.getFullYear() + '-' + ((comttime.getMonth()<9)? '0'+(comttime.getMonth()+1) : comttime.getMonth()+1) + '-' + ((comttime.getDate()<10)? '0'+comttime.getDate() : comttime.getDate()) + ' ' + ((comttime.getHours()<10)? '0'+comttime.getHours() : comttime.getHours()) + ':' + ((comttime.getMinutes()<10)? '0'+comttime.getMinutes() : comttime.getMinutes()) + ':' + ((comttime.getSeconds()<10)? '0'+comttime.getSeconds() : comttime.getSeconds());
+
+      							var newobj={};
+      							newobj.commt= docs.comments[j];
+      							newobj.timestr = nowtimestr;
+      							newcometobj.cometarr[i] = newobj;
+      						}
+    					  }
+                console.error("ccc");   
+    					  newcometobj.pageCurnum = pageCur;
+    					  if(err){console.log(err);}
+                else
+                {
+    						  res.send(200, newcometobj);
+    					  }
+    				  });
+    				}
+    			}
+  		  );
+      }
     });
   } 
 };
@@ -1467,7 +1598,7 @@ exports.comm_ajaxUpdateDel = function(req, res) {
   var oldArr=[],newArr=[];
   
   if(data.type == "attachment"){
-    var filepath = data.filepath;
+    var filepath = __dirname + '/..' + data.filepath;
 	Weekly.findById(id, function(err, docs){
 	  if(err){
 		console.log(err);
