@@ -503,15 +503,16 @@ exports.task_search = function(req, res) {
 
 //需求打分 (by v_xhshen)
 exports.task_score = function(req, res) {
-  var id = req.params.id;
-  var task = new Weekly(req.body.task); 
-  
-  Weekly.findByIdAndUpdate(id, 
+    var id = req.params.id;
+	var task = new Weekly(req.body.task);	
+	
+	
+	Weekly.findByIdAndUpdate(id, 
     { 
       $set: { 
-        score:req.body.scoreSet,
-    suggestion:req.body.suggestion
-      },
+        suggestion:req.body.suggestion,
+		score:req.body.scoreSet
+      }
     }, 
     { upsert : true },
     function (err) {

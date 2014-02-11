@@ -22,7 +22,7 @@ var WeeklySchema = new Schema({
 	progress: {type: String, requierd: false},		//需求总进度
 	hidden: {type:Boolean, defaults: false},			//结束的需求
 	comments:[{commentname:String, commentrole:String, commenttime: Date, commentcontent: String}], //评论
-	score: {type:Number, defaults: 0}, //需求评分
+	score: {type: Number, defaults: 0}, //需求评分
 	suggestion: {type: String, requierd: false} //改进建议
 });
 

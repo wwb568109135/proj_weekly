@@ -24,6 +24,7 @@ block content
            - if(!!weekly.score)
                span.scorespan 此需求已完成！评分#{weekly.score}分
                p#sugcontp #{weekly.suggestion}
+               
            - else
                a#taskVoteBtn.m-btn.btn-skin-2(href="javascript:") 请为本次需求打分
           
@@ -376,8 +377,6 @@ block pageScript
               postData.id = $(location).attr("pathname").replace("/task/","");
               postData.dbCollection = "Weekly";
               postData.hidden = false;
-              postData.score = 0;
-          console.log(postData);
           var callBackFunction = function(){
             location.reload(true);
             //$("#tackReDoneDiv").addClass("hidden");
