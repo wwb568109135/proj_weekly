@@ -155,16 +155,19 @@ block content
               .task-edit-excerpt
                 label.lab(for='rbStarDate') 当前状态：
                 label.inline(for='taskStatus-0')
-                  input#taskStatus-0(name='taskStatus', type='radio', checked='checked')
+                  input#taskStatus-0(name='taskStatus', type='radio', data-value='0', checked='checked')
                   | 排期中
+                label.inline(for='taskStatus-4')
+                  input#taskStatus-4(name='taskStatus', type='radio', data-value='4')
+                  | 设计中
                 label.inline(for='taskStatus-1')
-                  input#taskStatus-1(name='taskStatus', type='radio')
+                  input#taskStatus-1(name='taskStatus', type='radio', data-value='1')
                   | 重构中
                 label.inline(for='taskStatus-2')
-                  input#taskStatus-2(name='taskStatus', type='radio')
+                  input#taskStatus-2(name='taskStatus', type='radio', data-value='2')
                   | 联调中
                 label.inline(for='taskStatus-3')
-                  input#taskStatus-3(name='taskStatus', type='radio')
+                  input#taskStatus-3(name='taskStatus', type='radio', data-value='3')
                   | 已上线
                 input(id='taskStatus', type='hidden', name='task[status]', value='#{weekly.status}')
             li.updatebtn
@@ -192,24 +195,30 @@ block pageScript
         $(statusRadioID).attr("checked","checked");
 
         $inputStatus.click(function(){
-            var index = $inputStatus.index($(this))
+            //- var index = $inputStatus.index($(this))
+            var index = $(this).attr("data-value");
+            console.log(index);
             $taskStatus.val(index);
-            // 状态修改同步到进度百分比
+            //- 状态修改同步到进度百分比
             var progressSync = "";
-            switch (index){
+            switch (parseInt(index)){
               case 0:
-                var progressSync = 0;
+                progressSync = 0;
                 break;
               case 1:
-                var progressSync = 40;
+                progressSync = 60;
                 break;
               case 2:
-                var progressSync = 90;
+                progressSync = 90;
                 break;
               case 3:
-                var progressSync = 100;
+                progressSync = 100;
+                break;
+              case 4:
+                progressSync = 30;
                 break;
             }
+            console.log("progressSync:" + progressSync)
             $taskProgress.val(progressSync);
         })
       }

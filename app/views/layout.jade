@@ -57,12 +57,12 @@ html(lang="zh-CN")
               li
                 label(for='userRolesPD')
                   img(src='../img/role-pm.png', alt='我是产品经理', width='142', height='170')
-                h4 产品经理
+                h4 产品/品牌经理
                 p.tcenter
                   input#userRolesPD(type='radio', value='1', name='userRolesSelect')
                 p.tcenter
                   select#userProject(name='project')
-                    option(value='0', selected='selected') 请选项您负责的项目
+                    option(value='0', selected='selected') 请选择您负责的项目
               li
                 label(for='userRolesRB')
                   img(src='../img/role-web.png', alt='我是网页重构', width='142', height='170')
@@ -71,15 +71,23 @@ html(lang="zh-CN")
                   input#userRolesRB(type='radio', value='3', name='userRolesSelect')
                 p.tcenter
                   select#userGroup(name='group')
-                    option(value='0', selected='selected') 请选项组别
+                    option(value='0', selected='selected') 请选择组别
                     option(value='1') 重构一组
                     option(value='2') 重构二组
                     option(value='3') 重构三组
-              li(style='opacity:0.4')
-                label(for='userRolesDN')
+              //- li(style='opacity:0.4')
+              li
+                label(for='userRolesVD')
                   img(src='../img/role-ps.png', alt='我是网页重构', width='142', height='170')
-                h4 网页设计师
-                p.tcenter 角色功能开发中
+                h4 视觉设计师
+                p.tcenter
+                  input#userRolesVD(type='radio', value='4', name='userRolesSelect')
+                p.tcenter
+                  select#userGroupVD(name='group')
+                    option(value='0', selected='selected') 请选择组别
+                    option(value='4') 设计一组
+                    option(value='5') 设计二组
+                    option(value='6') 设计三组
           .m-dialog-ft
             p.user-select-roles-btn
               input.m-btn.btn-skin-1(type='submit', value='确认确色')

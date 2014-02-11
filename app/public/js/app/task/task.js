@@ -13,6 +13,7 @@
       var cbHtml = '';
           cbHtml += '<select class="editinput" name="editStatus">';
           cbHtml += '<option value="0" '+((hb==0)?selectHtml:"")+'>排期中</option>';
+          cbHtml += '<option value="4" '+((hb==4)?selectHtml:"")+'>设计中</option>';
           cbHtml += '<option value="1" '+((hb==1)?selectHtml:"")+'>重构中</option>';
           cbHtml += '<option value="2" '+((hb==2)?selectHtml:"")+'>联调中</option>';
           cbHtml += '<option value="3" '+((hb==3)?selectHtml:"")+'>已上线</option>';
@@ -57,7 +58,7 @@
   function callEditInputVal(o){
     if (!o) { return false }
     if(o.attr("name") == "editStatus"){ //- 需求状态的Select框时，设定数组，取回相对应的值；
-      var statusText = ["排期中", "重构中", "联调中", "已上线"],
+      var statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"],
           returnVal = statusText[o.val()];
     }else if(o.attr("name") == "editDirection"){ //- 备注说明Select框时的处理；如果是Select值是其它，取input里的值，否值取Select的值;
       if(o.val() == "其它"){

@@ -29,6 +29,7 @@ block content
               option(value='0', selected='selected') 请选择角色
               option(value='1') 产品角色
               option(value='2') 管理角色
+              option(value='4') 设计角色
               option(value='3') 重构角色
             select.sub-select.sub-select-project(class='hidden',name='project')
               option(value='0') 请选择负责的产品
@@ -40,6 +41,9 @@ block content
               option(value='1') 重构1组
               option(value='2') 重构2组
               option(value='3') 重构3组
+              option(value='4') 设计1组
+              option(value='5') 设计2组
+              option(value='6') 设计3组
             button.staff-role-change-button 确认修改
 
           if docs.length
@@ -65,8 +69,8 @@ block content
                     td.readonly
                       span(class="hidden",data-name="_id")= staff._id
                       span= staff.name
-                    - var rolesText = ["未定义","产品", "管理", "重构"];
-                    - var groupText = ["未定义","重构1组", "重构2组", "重构3组"];
+                    - var rolesText = ["未定义","产品", "管理", "重构", "设计"];
+                    - var groupText = ["未定义","重构1组", "重构2组", "重构3组", "设计1组", "设计2组", "设计3组"];
                     td.staffRoles
                       span.editable(data-name="roles")= rolesText[staff.roles]
                       span.editable(data-name="line") -

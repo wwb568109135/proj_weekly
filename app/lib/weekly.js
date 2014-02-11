@@ -35,9 +35,9 @@ var ProjectSchema = new Schema({
 // 人员表集合
 var StaffSchema = new Schema({
 	name: {type: String, requierd: true},			//英文名
-	roles: {type:Number, defaults: 0},				//角色
+	roles: {type:Number, defaults: 0},				//角色 0:角色未定义  1:产品/品牌经理角色  2:管理角色  3:重构角色  4:设计角色
 	project: {type:String},							//项目id
-	group: {type:Number, defaults: 0},				//组别
+	group: {type:Number, defaults: 0},				//组别 1:重构1组  2:重构2组  3:重构3组  4:设计1组  5:设计2组  6:设计3组
 	launch: [{pj:String}],							//开通的项目
 	remark: {type: String, requierd: false},		//备注信息
 	create_date: {type:Date, requierd: true},		//创建时间

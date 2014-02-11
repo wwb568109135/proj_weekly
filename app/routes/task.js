@@ -42,6 +42,9 @@ exports.task = function(req, res){
           case 3:                  //重构角色，转到重构视图
             goView = exports.task_rb(req, res);
             break;
+          case 4:                  //设计角色，转到设计视图
+            goView = exports.task_rb(req, res);
+            break;
         }
         goView;
       }

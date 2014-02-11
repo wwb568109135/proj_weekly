@@ -26,9 +26,11 @@ var appUser = (function(){
   function bindUserRolesSelectEvent(){
     var $userRolesPD = $("#userRolesPD"),
         $userRolesRB = $("#userRolesRB"),
+        $userRolesVD = $("#userRolesVD"),
         $userRolesSet = $("#userRolesSet"),
         $userProject = $("#userProject"),
         $userGroup = $("#userGroup"),
+        $userGroupVD = $("#userGroupVD"),
         $selectRolesForm = $("#selectRolesForm"),
         $userRtxName = $("#userRtxName"),
         $userCreateDate = $("#userCreateDate");
@@ -37,6 +39,7 @@ var appUser = (function(){
       // console.log("userRolesPD selected");
       $userRolesSet.val(1);
       $userGroup.val(0);
+      $userGroupVD.val(0);
       appAjax.getProjects($userProject);    //取project集合内容填入Select框
     })
 
@@ -44,6 +47,13 @@ var appUser = (function(){
       // console.log("userRolesRB selected");
       $userRolesSet.val(3);
       $userProject.val(0);
+      $userGroupVD.val(0);
+    })
+
+    $userRolesVD.on("change",function(){
+      $userRolesSet.val(4);
+      $userProject.val(0);
+      $userGroup.val(0);
     })
 
     $selectRolesForm.on("submit",function(){
@@ -52,13 +62,16 @@ var appUser = (function(){
           d = $userCreateDate.val(),
           r = $userRolesSet.val(),
           p = $userProject.val(),
-          g = $userGroup.val();
+          g = $userGroup.val(),
+          v = $userGroupVD.val();
       // 非空检测
       if( r == 0 ){
         alert("请选择角色");
       }else if(r == 1 && p==0){
         alert("请选择您所负责的产品");
       }else if(r == 3 && g==0){
+        alert("请选择组别");
+      }else if(r == 4 && v==0){
         alert("请选择组别");
       }else{
         console.log("选择正确！")
@@ -68,14 +81,20 @@ var appUser = (function(){
             postData.name = n,
             postData.roles = r,
             postData.project = p,
-            postData.group = g,
-            postData.create_date = d,
-            postData.launch = [{"pj":p}];
-        console.dir(postData);
+            // postData.group = g,
+            postData.group = (g!=0)?g:v,
+            postData.create_date = d;
+        if(p!=0){
+          postData.launch = [{"pj":p}];
+        }   
+            // g!=0 ? postData.group = g : postData.group = v;
+
+        // console.dir(postData);
         var callbackFunc = function(){
           $(".user-select-roles-btn").html("<span class='red'>保存中...</span>");
           setTimeout(function(){location.reload()},2500)
         }
+        // console.log(postData)
         appAjax.updateSet(postData,callbackFunc);
       }
 

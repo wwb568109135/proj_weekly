@@ -25,6 +25,7 @@ block content
             option(value='', selected='selected') 当前状态筛选
             option(value='') 全部状态
             option(value='status=0') 排期中
+            option(value='status=4') 设计中
             option(value='status=1') 重构中
             option(value='status=2') 联调中
             option(value='status=3') 已上线
@@ -70,7 +71,7 @@ block content
                   】
                   a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
                 td.tcenter
-                  - var statusText = ["排期中", "重构中", "联调中", "已上线"];
+                  - var statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"];
                   span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
                   input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
                 td.tcenter

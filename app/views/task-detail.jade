@@ -137,7 +137,12 @@ block content
                 li.current 排期中
               - else
                 li 排期中
-              
+
+              - if (weekly.status =="4")
+                li.current 设计中
+              - else
+                li 设计中              
+
               - if (weekly.status =="1")
                 li.current 重构中
               - else
@@ -180,7 +185,7 @@ block content
                 em= weekly.pm
               li
                 label 是否重点：
-                em= weekly.focus
+                em= weekly.focus ? "是" : "否"
               li
                 label 期望上线时间：
                 cite= weekly.online_date ? weekly.online_date.toISOString().replace(/T/, ' ').replace(/\..+/, '').substr(0,11) : 'N/A'
@@ -193,7 +198,9 @@ block content
               li
                 label 页面数：
                 em= weekly.pages
-        
+              //- li
+                label 其它说明：
+                em= weekly.direction             
 
         - if (!!(weekly.comments.length))
             .tdo-comment
@@ -276,16 +283,19 @@ block content
                   span.tdo-static-title 当前状态：
                   .tdo-static-group
                     label(for='taskStatus-0')
-                      input#taskStatus-0(type='radio', name='taskStatus')
+                      input#taskStatus-0(type='radio', name='taskStatus', data-value='0')
                       | 排期中
+                    label(for='taskStatus-4')
+                      input#taskStatus-4(type='radio', name='taskStatus', data-value='4')
+                      | 设计中
                     label(for='taskStatus-1')
-                      input#taskStatus-1(type='radio', name='taskStatus')
+                      input#taskStatus-1(type='radio', name='taskStatus', data-value='1')
                       | 重构中
                     label(for='taskStatus-2')
-                      input#taskStatus-2(type='radio', name='taskStatus')
+                      input#taskStatus-2(type='radio', name='taskStatus', data-value='2')
                       | 联调中
                     label(for='taskStatus-3')
-                      input#taskStatus-3(type='radio', name='taskStatus')
+                      input#taskStatus-3(type='radio', name='taskStatus', data-value='3')
                       | 已上线
                     input(id='taskStatus', name='task[status]', type='hidden', data-name='status', value='#{weekly.status}', data-id='#{weekly.id}')
                 li
@@ -319,7 +329,8 @@ block pageScript
 
         //- 修改需求状态事件 ------------------------
         $inputStatus.click(function(){
-            var index = $inputStatus.index($(this));
+            //- var index = $inputStatus.index($(this));
+            var index = $(this).attr("data-value");
             $taskStatus.val(index);
 
             var postData = {};
@@ -327,7 +338,7 @@ block pageScript
                 postData.dbCollection = dbCollection,
                 postData[fieldName] = $taskStatus.val();
             // 数据送ajax保存
-            //- console.log(postData);
+            console.log(postData);
             appAjax.updateSet(postData);
 
         })

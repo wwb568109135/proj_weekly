@@ -5,7 +5,7 @@
   function tdRolesShow(obj){
     var o = obj;
     var rolesText = ["未定义","产品", "管理", "重构"],
-        groupText = ["未定义","重构1组", "重构2组", "重构3组"],
+        groupText = ["未定义","重构1组", "重构2组", "重构3组","设计1组", "设计2组", "设计3组"],
         rolesVal = o.find('input[data-name="roles"]').val(),
         ProjectVal = o.find('input[data-name="project"]').val(),
         groupVal = o.find('input[data-name="group"]').val();
@@ -171,10 +171,10 @@
       var n = parseInt($(this).val()),
           $selectDiv = $(this).parents(".select-div");
       $("select.sub-select").hide();
-      if ( n==1 ){
+      if ( n==1 ){        // 产品
         $selectDiv.find('select.sub-select-project').show();
         $selectDiv.find('select.sub-select-group').val(0);
-      }else{
+      }else{              // 管理/设计/重构
         $selectDiv.find('select.sub-select-group').show();
         $selectDiv.find('select.sub-select-project').val(0);
       }
@@ -202,6 +202,8 @@
       } else if( postData.roles == 2 & postData.group == 0 ){
         alert("请选择组别")
       } else if( postData.roles == 3 & postData.group == 0 ){
+        alert("请选择组别")
+      } else if( postData.roles == 4 & postData.group == 0 ){
         alert("请选择组别")
       }else{
         appAjax.updateSet(postData);

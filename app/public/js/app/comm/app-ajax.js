@@ -67,17 +67,20 @@ var appAjax = (function(){
     if( o && o.status ){
       var pp = "";
       switch(parseInt(o.status)){
-        case 0:
+        case 0:        //排期中
           pp = "0";
           break;
-        case 1:
-          pp = "40";
+        case 1:        //重构中
+          pp = "60";
           break;
-        case 2:
+        case 2:        //联调中
           pp = "90";
           break;
-        case 3:
+        case 3:        //已上线
           pp = "100";
+          break;
+        case 4:        //设计中
+          pp = "30";
           break;
       }
       o.progress = pp;
@@ -204,7 +207,7 @@ var appAjax = (function(){
         url: postAjaxUrl
       }).done(function( roles ) {
         // console.log(roles);
-        rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色"];
+        rolesText = ["未定义角色", "产品角色", "管理角色", "重构角色", "设计角色"];
         roleName = rolesText[parseInt(roles)];
         e.html(roleName);
         e.attr("data-roles",roles);
