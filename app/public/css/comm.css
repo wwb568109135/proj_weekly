@@ -176,7 +176,8 @@ body > .contnet{height: auto; min-height: 100%;}
 	.table-modify td{background-color: #ffffcc;}
 	.m-table-data .hide td{background-color: #fafafa;color: #999;}
 	.m-table-data .error{background-color: #ffcc66;}
-	
+	.m-table-data .select-wrap{display: block;}
+
 /*-- m-tabs --*/
 .m-tabs{}
 	.m-tabs-nav{*zoom:1;border-bottom: 1px solid #ddd;margin:0 0 2em;}
@@ -683,19 +684,28 @@ body > .contnet{height: auto; min-height: 100%;}
 	.staff-manage-table .c5{width: 10%;}
 	.staff-manage-table .c6{width: 10%;}
 	.staff-manage-table td a{padding:0 4px;}
-	.staff-manage-table .launch-form{overflow: hidden;*zoom:1;margin:4px 0;padding:8px;border: 1px solid #ccc;background-color: #f1f1f1;border-radius:4px;}
-	.staff-manage-table .launch-form-btn{border-top: 1px solid #ccc;margin-top:6px;padding-top:6px;}
+	.staff-manage-table .launch-form,
+	.project-manage-table .launch-form
+	{overflow: hidden;*zoom:1;margin:4px 0;padding:8px;border: 1px solid #ccc;background-color: #f1f1f1;border-radius:4px;}
+	.staff-manage-table .launch-form-btn,
+	.project-manage-table .launch-form-btn
+	{border-top: 1px solid #ccc;margin-top:6px;padding-top:6px;}
 	.staff-manage-table .launch-project-add,
-	.staff-manage-table .launch-project-del{text-decoration: none;}
+	.staff-manage-table .launch-project-del,
+	.project-manage-table .launch-group-add,
+	.project-manage-table .launch-group-del
+	{text-decoration: none;}
 	.staff-manage-table .editable{}
-	.staff-manage-table .tag{display: inline-block;*display: inline;*zoom:1;background-color: #ffe1a1;padding:0 6px;border-radius:3px;margin:0 6px 6px 0;}
+	.staff-manage-table .tag,.project-manage-table .tag{display: inline-block;*display: inline;*zoom:1;background-color: #ffe1a1;padding:0 6px;border-radius:3px;margin:0 6px 6px 0;}
 
 
 /*-- .project-manage-table{} --*/
 .project-manage-table{width: 560px;}
 	.project-manage-table th{text-align: center;}
-	.project-manage-table .c1{width:70%;}
-	.project-manage-table .c2{width:30%;}
+	.project-manage-table .c1{width:40%;}
+	.project-manage-table .c2{width:40%;}
+	.project-manage-table .c3{width:20%;}
+
 .add-project-form{overflow: hidden;*zoom:1;margin:0 0 1em;}
 	.add-project-form .inp-txt{width: 300px;}
 

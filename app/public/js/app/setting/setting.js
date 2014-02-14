@@ -82,7 +82,7 @@
       }
     })
   
-    //- launch project button Func @todo ------------------------
+    //- 人员绑定项目按钮 Func @todo ------------------------
     $("button.launch-project").bind("click",function(){
       // console.log("button launch");
       var _self = $(this),
@@ -114,11 +114,9 @@
           })
         }
       })
-
-
     })
 
-    //- launch form button Func @todo ------------------------
+    //- 人员绑定项目表单 Func @todo ------------------------
     $("table.staff-manage-table").delegate("button.launch-form-comfirm","click",function(){
       var $launchProjectSelect = $(this).parents(".launch-form").find("select"),
           vv = [];
@@ -130,7 +128,6 @@
         }
       });
       // console.log(vv);
-
       // 拼装准备ajax发送的数据
       var _self = $(this),
           dbCollection = _self.parents("table").attr("data-collection"),
@@ -148,7 +145,6 @@
         var fb = function(){setTimeout(function() { window.location.reload() }, 800)};
         appAjax.updateSet(postData,fb);
       }
-
     //- a.launch-project-del Func  --
     }).delegate("a.launch-project-del","click",function(){
       if($(this).parent().siblings(".select-wrap").length > 0){
@@ -162,6 +158,86 @@
             $lastSelect =  $lauchForm.find('.select-wrap').last();
         $lastSelect.after($lastSelect.clone());
     })
+
+    //- 项目绑定所属组别按钮 Func 2014-02-13 ------------------------
+    $("button.launch-group").bind("click",function(){
+      // console.log("button launch");
+      var _self = $(this),
+          $lauchForm = _self.parents("td").find(".launch-form");
+      _self.hide();
+
+      if( $lauchForm.find('.select-wrap').html()){
+        var $lastSelect =  $lauchForm.find('.select-wrap').last();
+        $lastSelect.after($lastSelect.clone());
+      }else{
+        var projectSelectHtml = $("#projectGroupSelectBox .sub-select-group").clone();
+        $lauchForm.prepend(projectSelectHtml);
+        $lauchForm.removeClass("hidden");
+        $lauchForm.find(".sub-select-group").removeClass("hidden").wrap('<span class="select-wrap" />').after('<a href="javascript:;" class="launch-group-del">X</a>')
+      }
+
+      var $editable = _self.parents("td").find(".editable");
+      $editable.each(function(){
+        var p = $(this).html();
+        if(p){
+          var $lastSelect =  $lauchForm.find('.select-wrap').last();
+          $lastSelect.after($lastSelect.clone());
+          $lastSelect.find("select option").each(function(){
+            // console.log($(this).html())
+            if($(this).html() == p ){
+              $(this).attr("selected","selected");
+            }
+          })
+        }
+      })
+    })
+
+    //- 项目绑定所属组别表单 Func 2014-02-13 ------------------------
+    $("table.project-manage-table").delegate("button.launch-form-comfirm","click",function(){
+      var $launchGroupSelect = $(this).parents(".launch-form").find("select"),
+          vv = [];
+      $launchGroupSelect.each(function(){
+        var __self = $(this);
+        if(__self.val() != 0){
+          var a = {group:__self.val()}
+          vv.push(a);
+        }
+      });
+      // console.log(vv);
+      // 拼装准备ajax发送的数据
+      var _self = $(this),
+          dbCollection = _self.parents("table").attr("data-collection"),
+          recordId = _self.parents("tr").find("span[data-name='_id']").html(),
+          fieldName = _self.parents("td").find(".editable").attr("data-name"),
+          fieldValue = vv;
+      var postData = {};
+          postData.id = recordId,
+          postData.dbCollection = dbCollection,
+          postData[fieldName] = fieldValue;
+      // 数据送ajax保存
+      if(fieldName && fieldValue != ""){
+        var fb = function(){setTimeout(function() { window.location.reload() }, 800)};
+        // console.log(postData);
+        appAjax.updateSet(postData,fb);
+      }
+    //- a.launch-project-del Func  --
+    }).delegate("a.launch-group-del","click",function(){
+      if($(this).parent().siblings(".select-wrap").length > 0){
+        $(this).parent().remove()
+      }else{
+        alert("至少要选择1个组！")
+      }
+    }).delegate("a.launch-group-add","click",function(){
+        console.log("launch-group-add")
+        var _self = $(this),
+            $lauchForm = _self.parents("td").find(".launch-form"),
+            $lastSelect =  $lauchForm.find('.select-wrap').last();
+        $lastSelect.after($lastSelect.clone());
+    })
+
+
+
+    
 
 
 

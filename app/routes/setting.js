@@ -32,7 +32,7 @@ exports.setting_project = function(req, res){
      
   Project.paginate(
     {"name" : query },
-    {}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+    {name : 1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
     if (error) {
       console.error(error);
     } else {

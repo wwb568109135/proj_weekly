@@ -25,6 +25,15 @@ block content
         .m-tabs-content
           //- .system-settings-box
           .system-settings-box
+            div#projectGroupSelectBox.select-div.hidden
+              select.sub-select.sub-select-group(class='hidden',name='group')
+                option(value='0', selected='selected') 请选择组别
+                option(value='4') 设计1组
+                option(value='5') 设计2组
+                option(value='6') 设计3组
+                option(value='1') 重构1组
+                option(value='2') 重构2组
+                option(value='3') 重构3组
             form#addProjectForm.add-project-form(method="post", action='/setting-project/created')
               input.m-input.inp-txt(id="addProjectName", name="project[name]", type='text', placeholder='输入新增的项目名')
               input.m-btn.btn-skin-1(type='submit', value='+新增项目')
@@ -33,8 +42,10 @@ block content
                 colgroup
                   col.c1
                   col.c2
+                  col.c3
                 thead
                   th 项目名称
+                  th 项目规属团队
                   th 操作
                 tbody
                   for project in docs
@@ -46,6 +57,19 @@ block content
                           [ 
                           #{project.star}
                           ]
+                      td
+                        span.editable(data-name="vesting")
+                        if project.vesting
+                          - var groupText = ["未定义","重构1组", "重构2组", "重构3组", "设计1组", "设计2组", "设计3组"];
+                          for vesting in project.vesting
+                            span.editable.tag(data-name="vesting")= groupText[vesting.group]
+                        p
+                          button.launch-group 编辑
+                        div.launch-form.hidden
+                          p.launch-form-opt
+                            a(href="javascript:;", class="launch-group-add") +绑定团队
+                          p.launch-form-btn
+                            button.launch-form-comfirm 确认修改
                       td.tcenter
                         a(href='/setting-project/del/#{project.id}') 删除
             else

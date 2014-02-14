@@ -29,7 +29,8 @@ var WeeklySchema = new Schema({
 // 项目表集合
 var ProjectSchema = new Schema({
 	name: {type: String, requierd: true},			//所属项目名
-	star: {type: Number, defaults: 1}				//项目星级
+	star: {type: Number, defaults: 1},				//项目星级
+	vesting: [{group: Number}]						//项目规属团队
 });
 
 // 人员表集合

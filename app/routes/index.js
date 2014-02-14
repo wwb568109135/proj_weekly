@@ -174,6 +174,7 @@ exports.comm_ajaxUpdateSet = function(req, res) {
 
               var spawn = require('child_process').spawn;
               for(i=0;i<nameList.length;i++){
+                //var python = spawn('python', ['/home/wwwroot/public/weekly/script/send_mail.py',nameList[i],mailTitle,mailContent]);
                 var python = spawn('python', ['/home/wwwroot/public/weekly/script/send_mail.py',nameList[i],mailTitle,mailContent]);
 
                 python.stdout.on('data', function (data) {
