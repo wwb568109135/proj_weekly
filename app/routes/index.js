@@ -17,7 +17,29 @@ var User = require('../routes/user');
  * index View (login success redirect to /home)
  */
 exports.index = function(req, res){
-  res.redirect('/home');
+  // res.redirect('/home');
+
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
+
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+      if(err){
+        res.send(404, "参数错误");
+      }else{
+        var goView = "",
+            roles = docs[0] ? docs[0].roles : 0,
+            group = docs[0] ? docs[0].group : 0;
+
+        if(roles == 2){
+          res.redirect('/home-leader');
+        }else{
+          res.redirect('/home');
+        }
+
+      }
+    });
+  }
 }
 
 
@@ -25,7 +47,6 @@ exports.index = function(req, res){
  * home View
  */
 exports.home = function(req, res){
-  // res.render('index', { title: '系统首页' });
   // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
   if(staffName){
@@ -37,6 +58,27 @@ exports.home = function(req, res){
 
          res.locals.roles = roles;
          res.render('index', { title: '系统首页' });
+      }
+    });
+  }
+};
+
+
+/*
+ * home Leader View
+ */
+exports.home_leader = function(req, res){
+  // 取登录用户名
+  var staffName = User.returnStaffUser(req,res).rtx;
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+      if(err){
+        res.send(404, "参数错误");
+      }else{
+        var roles = docs[0] ? docs[0].roles : 0;
+
+         res.locals.roles = roles;
+         res.render('index-leader', { title: '系统首页' });
       }
     });
   }

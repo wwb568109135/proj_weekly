@@ -62,6 +62,7 @@ app.all('*', user.auth);
 app.get('/', routes.index);
 app.get('/logout', routes.logout);
 app.get('/home', routes.home);
+app.get('/home-leader', routes.home_leader);
 app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
 app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
 app.post('/comm-ajaxGetProjects', routes.comm_ajaxGetProjects);

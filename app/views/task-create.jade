@@ -39,6 +39,9 @@ block content
                       for project in pj
                         for launchPJ in staff.launch
                           if launchPJ.pj == project.id
+                            //- - var vv = [];
+                            //- each item in project.vesting
+                              //- vv.push(item.group);
                             option(value='#{project.id}')= project.name
                     else
                       for project in pj
