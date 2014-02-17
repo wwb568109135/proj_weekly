@@ -83,6 +83,7 @@ app.get('/task-rb', taskRoutes.task_rb);
 app.get('/task-ld', taskRoutes.task_ld);
 app.get('/task-ld-adv', taskRoutes.task_ld_adv);
 app.post('/task-ld-adv', taskRoutes.task_ld_adv);
+app.get('/task-closed', taskRoutes.task_closed);
 app.get('/task/create', taskRoutes.task_create);
 app.post('/task/upexcel', taskRoutes.task_upexcel);
 app.post('/task/created', taskRoutes.task_created);

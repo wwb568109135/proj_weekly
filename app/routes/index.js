@@ -173,27 +173,30 @@ exports.comm_ajaxUpdateSet = function(req, res) {
               var mailContent = 'Dear All:\n' + staffName + '在周报系统中更新了"' + taskName + '"的任务状态。详情请点击：\n' + sLink;
 
               var spawn = require('child_process').spawn;
-              for(i=0;i<nameList.length;i++){
-                //var python = spawn('python', ['/home/wwwroot/public/weekly/script/send_mail.py',nameList[i],mailTitle,mailContent]);
-                var python = spawn('python', ['/home/wwwroot/public/weekly/script/send_mail.py',nameList[i],mailTitle,mailContent]);
+              var nameListStr = "";
+              for(i=0;i<nameList.length;i++)
+              {
+                nameListStr += nameList[i] + "@tencent.com;";
 
-                python.stdout.on('data', function (data) {
-                    console.log('send email:' + data);
-                });
-
-                // 捕获标准错误输出并将其打印到控制台
-                python.stderr.on('data', function (data) {
-                    console.error('错误输出：\n' + data);
-                });
-
-                /*
-                // 注册子进程关闭事件
-                python.on('exit', function (code, signal) {
-                    console.log('子进程已退出，代码：' + code);
-                });
-                */
               }
 
+              var python = spawn('python', [__dirname + '/../script/send_mail.py',nameListStr,mailTitle,mailContent]);
+
+              python.stdout.on('data', function (data) {
+                  console.log('send email:' + data);
+              });
+
+              // 捕获标准错误输出并将其打印到控制台
+              python.stderr.on('data', function (data) {
+                  console.error('错误输出：\n' + data);
+              });
+
+              /*
+              // 注册子进程关闭事件
+              python.on('exit', function (code, signal) {
+                  console.log('子进程已退出，代码：' + code);
+              });
+              */
             });
           }
         }

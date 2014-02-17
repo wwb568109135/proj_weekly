@@ -1,0 +1,156 @@
+extends layout
+
+block content
+  //- [m-remind-box:管理角色，高级筛选]
+  if roles == 2
+    .m-remind-box.advanced-filter
+        .m-remind-box-hd
+          h3 筛选功能：仅管理角色可见
+        .m-remind-box-bd
+          form(action='/task-ld-adv',method='post')
+            ul.advance-filter-list
+              li
+                label(for='advFilterStaff') 人员筛选：
+                select#advFilterStaff(name='advFilterStaff')
+                  option(value='', selected='selected') 请选项人员（本组内）
+                  if staffName
+                    for nn in staffName
+                        if formData && nn == formData.advFilterStaff
+                          option(value='#{nn}',selected="selected")= nn
+                        else
+                          option(value='#{nn}')= nn
+                    option(value="CP") CP
+              li
+                label(for='advFilterProject') 项目筛选：
+                  select#advFilterProject(data-o="#{formData?formData.advFilterProject:''}",name='advFilterProject')
+                    option(value='', selected='selected') 请选择项目
+              li
+                label(for='advFilterStatus') 当前状态：
+                select#advFilterStatus(data-o="#{formData?formData.advFilterStatus:''}",data-name='status',name='advFilterStatus')
+                  option(value='') 请选择项目状态
+                  option(value='') 所有状态
+                  option(value='0') 排期中
+                  option(value='4') 设计中
+                  option(value='1') 重构中
+                  option(value='2') 调联中
+                  option(value='3') 已上线
+              li
+                label(for='advFilterPriority') 优先级别：
+                select#advFilterPriority(data-o="#{formData?formData.advFilterPriority:''}",data-name='priority',name='advFilterPriority')
+                  option(value='', selected='selected') 请选择优先级别
+                  option(value='') 全部级别
+                  option(value='0') P0
+                  option(value='1') P1
+                  option(value='2') P2
+                  option(value='3') P3
+              li.hidden
+                if formData
+                  p= formData.advFilterStaff
+                  p= formData.advFilterProject
+                  p= formData.advFilterStatus
+                  p= formData.advFilterPriority
+                  p= formData.advGroup
+              li
+                input#advGroup(type="hidden",value="#{group}",name='advGroup')
+            p.advance-filter-btn
+              input.m-btn.btn-skin-2(type='submit',value='查询')
+
+  //-[c-box:重构需求列表]
+  .c-box
+    .c-box-hd.task-list
+      .c-box-hd-title
+        if formData && formData.advFilterStaff
+          h3
+            span.orange=formData.advFilterStaff
+            | 全部需求（已关闭）
+        else
+          h3 全部需求（已关闭）
+        form.search-form(action='/task/search')
+          input.inp-txt(type='text',name="q", placeholder='需求ID/名称')
+          input.btn-search(type='submit', value='搜索')
+      .c-box-hd-extra
+        a(href="/task") 【返回需求列表】
+    .c-box-bd
+      if docs.length
+        - var i = 1
+        table#taskListTable.m-table-data.rb-task-table(data-collection="Weekly")
+          colgroup
+            col.c1
+            col.c2
+            col.c3
+            col.c4
+            col.c5
+            col.c6
+            col.c7
+            col.c8
+            col.c9
+            col.c10
+          thead
+            tr
+              th 需求ID
+              th 需求名称
+              th.tcenter 当前状态
+              th.tcenter 页面数
+              th.tcenter 开始时间
+              th.tcenter 完成时间
+              th.tcenter 进度
+              th.tcenter 网站人员
+              th.tcenter 接口人
+              th 其它说明
+          tbody
+            for weekly in docs
+              tr
+                td.readonly
+                  span(data-name="_id")= weekly._id
+                  if roles == 2
+                    [
+                    //- a(href='/task/del/#{weekly.id}') 删
+                    a(href='/task/del/#{weekly.id}',onclick="var url='/task/del/#{weekly.id}';if(confirm('确认删除？')){$(location).attr('href',url)}else{return false}") 删
+                    ]
+                td
+                  【
+                  if projectName
+                    = projectName[weekly.type]
+                  else
+                    | none
+                  】
+                  a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                td.tcenter
+                  - var statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"];
+                  span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                  input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
+                td.tcenter
+                  span.editable(data-name="pages")= weekly.pages
+                td.tcenter
+                  span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
+                  span %
+                //- td.tcenter= weekly.online_date.toISOString()
+                td
+                  span.editable(data-name="pp")= weekly.pp
+                td
+                  span.editable(data-name="pm")= weekly.pm
+                td
+                  span.editable(data-name="direction")= weekly.direction
+      else
+        //- .empty-data -->
+        .empty-data
+          p 抱歉，暂时没有查询到相关需求。
+      include include/paginate
+  div.callback-msg#ajaxCallbackMsg hello      
+
+block pageScript
+  //- script(src="/js/jquery/jquery.json-2.4.js")
+  
+  //- fullcalendar
+  //- link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.css')
+  //- link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.print.css')
+  script(src="/js/fullcalendar/fullcalendar.js")
+  //- page javascript
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/task/task.js")
+  //- 人员英文名自动完成js
+  script(src="/js/app/oa-user/tcc.js")

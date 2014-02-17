@@ -38,7 +38,7 @@ def main():
         mail = TencentMail()
         mail.From = 'WEEKLY'
         msghelper = MessageHelper("d5bbf8c146b944d49452b1003776b2e4")    
-        mail.To = to + "@tencent.com"
+        mail.To = to
         #mail.CC = "nelsonli" + "@tencent.com"
         mail.Title = title.decode('utf-8')
         mail.Content = content.decode('utf-8')

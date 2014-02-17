@@ -253,6 +253,59 @@ exports.task_ld_adv = function(req, res){
 
 
 /*
+ * closed task View 
+ */
+exports.task_closed = function(req, res){
+  var pageShowNum = 20,  //当前一页显示多少个
+      pageCur = parseInt(req.query.page) || 1,
+      status = (req.query.status) ? parseInt(req.query.status) : {'$exists': true},
+      priority = (req.query.priority) ? parseInt(req.query.priority) : {'$exists': true},
+      // 取登录用户名
+      staffName = User.returnStaffUser(req,res).rtx,
+      roles = "";
+
+  if(staffName){
+    Staff.find({name:staffName}).limit(1).exec(function(err,docs){
+        if(err){ 
+          res.send(404, "参数错误");
+        }else{ 
+          roles = docs[0] ? docs[0].roles : 0 ;
+
+            var ppQuery = ( roles ==2 ) ? {'$exists': true} : {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+              // 1.把ProjectName全部取出来
+              Project.find().sort({name: 1}).exec(function(err,docs){
+                if(err){console.error(err);
+                }else{
+                  var pj_array = new Array();
+                  for(var i=0; i <docs.length;i++){
+                    pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+                    pj_array[docs[i]._id] = docs[i].name
+                  }
+                  res.locals.projectName = pj_array;
+                    
+                    // 2.把符合筛选的需求取出来
+                    Weekly.paginate({ hidden: true, 'status':status, 'priority':priority, $or:[{'author':ppQuery},{'pp':ppQuery}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+                      if (error) {
+                        console.error(error);
+                      } else {
+                        // res.locals.roles = 3;
+                        res.locals.path = req.path;
+                        res.locals.originalUrl = req.originalUrl;
+                        res.render('task-closed', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+                        res.locals.ttdd = paginatedResults;
+                      }
+                    });
+                }
+              });
+
+        }
+    })
+  }
+  
+};
+
+
+/*
  * task create 
  */
 exports.task_create = function(req, res) {
