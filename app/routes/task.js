@@ -882,7 +882,8 @@ exports.task_export = function(req, res){
                 // 3.需求筛选
                 Weekly.find({
                   //$nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate} ,$or:[{ "rb_end_date": { $gt: taskStarDate, $lt: taskEndDate } }] 
-                  $nor:[{hidden: true}], "pp":ppQuery ,$or:[{ "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate, "$lte": taskEndDate } }] 
+                  // $nor:[{hidden: true}], "pp":ppQuery ,$or:[{ "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate, "$lte": taskEndDate } }] 
+                  $nor:[{hidden: true}], "pp":ppQuery ,$and:[{ "rb_star_date": {"$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate} }] 
                 }).sort({status: -1}).exec(function(err,docs){  //结果倒叙排列
                   res.render('export', {docs:docs})
                 })
