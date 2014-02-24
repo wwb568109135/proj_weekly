@@ -823,7 +823,7 @@ exports.task_callJSON = function(req, res){
     console.log("重构日历视图")
     //重构角色 日历表返回 重构开始时间为上月1号 - 下月30号
     Weekly.find({
-      $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
+      $nor:[{hidden: true}], $or:[{'author':ppQuery},{'pp':ppQuery}], "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
     }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
       res.json(docs)
     });
