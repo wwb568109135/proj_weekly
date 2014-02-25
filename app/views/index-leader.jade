@@ -4,13 +4,69 @@ block content
   //- h1= title
   //- p Welcome to #{title}
 
-  //- [c-box:系统介绍]
-  div.c-box.system-intro
+  //- [c-box:需求情况]
+  div.c-box.task-status
     .c-box-hd
       .c-box-hd-title
         h3 本周需求情况(管理者视图)
-    .c-box-bd
-      
+    if taskDocs.length
+      .c-box-bd
+        - var groupText = ['未知组','重构1组','重构2组','重构3组','设计1组','设计2组','设计3组']
+        p.tips
+          | 您所在团队
+          span.blue
+            em= groupText[group]
+          | 本月需求总数
+          strong.orange= taskStatus.len
+          | 个（
+          | 完成:
+          strong.orange= taskStatus.finish
+          | ,CP:
+          strong.orange= taskStatus.CP
+          | ，重点:
+          strong.orange= taskStatus.focus
+          | ）
+          span.gray --截止到#{dateNow()}
+        - var d1 = taskStatus.finish / taskStatus.len;
+        - var deg1 = 360 * (taskStatus.finish / taskStatus.len);
+        - var int2 = 100 * (taskStatus.CP / taskStatus.len);
+        - var deg2 = 360 * (taskStatus.CP / taskStatus.len);
+
+        //- p= deg1
+        ul.tasks-stat-charts
+          li.tsc-item.tsc-skin-1
+            .tsc-round(data-note='')
+              .tsc-round-percent
+                span.int #{taskStatus.finish}
+                span.dec &sol;#{taskStatus.len}
+              .tsc-round-rate(class="#{d1 >= 0.5 ? 'gt50':''}")
+                .pie(style='-webkit-transform: rotate('+ deg1 +'deg);')
+                .pie.fill(style='-webkit-transform: rotate('+ deg1 +'deg);')
+            .tsc-txt 本月需求完成情况
+          li.tsc-item.tsc-skin-2
+            .tsc-round(data-note='')
+              .tsc-round-percent
+                span.int #{int2+'%'}
+              .tsc-round-rate(class="#{int2 >= 50 ? 'gt50':''}")
+                .pie(style='-webkit-transform: rotate('+ deg2 +'deg);')
+                .pie.fill(style='-webkit-transform: rotate('+ deg2 +'deg);')
+            .tsc-txt 本月CP需求占比
+          li.tsc-item.tsc-skin-3
+            .tsc-round(data-note='')
+              .tsc-round-percent
+                span.int #{taskStatus.focus}
+              .tsc-round-rate.gt50
+                .pie(style='-webkit-transform: rotate(360deg);')
+                .pie.fill(style='-webkit-transform: rotate(360deg);')
+            .tsc-txt 本月重点需求数
+          li.tsc-item.tsc-skin-4.unavailable
+            .tsc-round(data-note='')
+              .tsc-round-percent
+                span.int ?
+              .tsc-round-rate.gt50
+                .pie(style='-webkit-transform: rotate(360deg);')
+                .pie.fill(style='-webkit-transform: rotate(360deg);')
+            .tsc-txt 本月服务满意度（敬请期待）
 
 
   //- [c-box:快速导航]

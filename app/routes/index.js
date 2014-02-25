@@ -71,14 +71,67 @@ exports.home_leader = function(req, res){
   // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
   if(staffName){
+    // 1.从用户表取出此leader对应的组别
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){
         res.send(404, "参数错误");
       }else{
-        var roles = docs[0] ? docs[0].roles : 0;
+        var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
+        var roles = docs[0] ? docs[0].roles : 0,
+            group = docs[0] ? docs[0].group : 0;
 
-         res.locals.roles = roles;
-         res.render('index-leader', { title: '系统首页' });
+            // 2.通过所在的组，从项目表里把该组的所有项目取出来，数组形式
+            Project.find({ vesting:{$all:[{"$elemMatch":{"group":group}}]} },function(err,docs){
+              if(err){
+                res.send(404, "项目集合查询错误");
+              }else{
+                  var projectIdArray = [];
+                  for (var i=0; i<docs.length; i++){ projectIdArray.push(docs[i]._id); }
+                  console.log(projectIdArray);
+                  if (projectIdArray.length > 0){
+                     
+                      // 3.把符合项目的需求全部取出来
+                      Weekly.find({
+                          type:{$in: projectIdArray},     // 符合本组负责项目的需求
+                          "rb_star_date": {"$gte": new Date(y, m, 1), "$lte": new Date(y, m, 30)}  //重构开始时间在这个月以内的需求
+                      },function(err,taskDocs){
+                        if(err){
+                          res.send(404, "需求集合错误");
+                        }else{
+                          // 计算已完成需求的数量,CP需求的数量;
+                          var taskStatus = {};
+                              taskStatus.finish = 0,taskStatus.CP = 0,taskStatus.focus = 0;
+                          var patt1 = new RegExp(/CP;?/);
+                          for(var i=0; i<taskDocs.length; i++){
+                            if(taskDocs[i].progress == 100){ taskStatus.finish += 1 }
+                            if(patt1.test(taskDocs[i].pp)){ taskStatus.CP += 1 }
+                            if(taskDocs[i].focus){ taskStatus.focus += 1 }
+                          }
+                          taskStatus.len = taskDocs.length;
+
+                          // console.log(taskDocs);
+                          res.locals.roles = roles;
+                          res.locals.group = group;
+                          res.locals.taskStatus = taskStatus;
+                          res.render('index-leader', {
+                            taskDocs:taskDocs,
+                            // 获取当前的日期 yyyy-mm-dd
+                            dateNow: function() {
+                              var dateNow = new Date();
+                              var dd = dateNow.getDate();
+                              var monthSingleDigit = dateNow.getMonth() + 1,
+                                  mm = monthSingleDigit < 10 ? '0' + monthSingleDigit : monthSingleDigit;
+                              var yy = dateNow.getFullYear();
+                              return (yy + '-' + mm + '-' + dd);
+                            }
+                          })
+                        }
+                      })
+                  }
+              }
+            })
+
+         
       }
     });
   }

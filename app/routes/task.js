@@ -806,18 +806,11 @@ exports.task_callJSON = function(req, res){
       filterStaff = req.query.filterStaff || "";
   // console.log("filterStaff: "+filterStaff)
 
-  // var role = "rb";
-  var date = new Date(),
-      d = date.getDate(),
-      m = date.getMonth(),
-      y = date.getFullYear();
-
   // console.log(role);
   var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear(),
       // 取登录用户名
       staffName = User.returnStaffUser(req,res).rtx,
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
-
 
   if (roles == "3"){
     console.log("重构日历视图")

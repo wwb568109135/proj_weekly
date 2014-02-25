@@ -33,7 +33,7 @@
 	</div>
 	<div class="content">
 		<!-- [c-box:系统介绍] -->
-		<div class="c-box system-intro">
+		<div class="c-box system-intro" style="display:none">
 			<div class="c-box-hd">
 				<div class="c-box-hd-title"><h3>系统介绍</h3></div>
 			</div>
@@ -48,9 +48,10 @@
 				<div class="c-box-hd-title"><h3>本月需求情况（管理者视图）</h3></div>
 			</div>
 			<div class="c-box-bd">
-				<p>您所在团队：<span>重构<span><em>2</em>组，本月需求总数<strong>123</strong>个（截止到2014-02-14）</p>
+				<p class="tips">您所在团队：<span class="blue">重构<em>2</em>组</span>，本月需求总数<strong class="orange">123</strong>个（CP需求<strong class="orange">36</strong>，重点<strong class="orange">12</strong>）<span class="gray">--截止到2014-02-14</span></p>
 				
 				<ul class="tasks-stat-charts">
+					<!-- 本月需求数与完成需求数 -->
 					<li class="tsc-item tsc-skin-1">
 						<!-- [tsc-round] -->
 						<div class="tsc-round" data-note="7.57">
@@ -58,26 +59,57 @@
 								<span class="int">80</span>
 								<span class="dec">/112</span>
 							</div>
-							<div class="tsc-round-rate">
-								<div class="pie" style="-webkit-transform: rotate(271.8deg);"></div>
-								<div class="pie fill" style="-webkit-transform: rotate(271.8deg);"></div>
+							<div class="tsc-round-rate gt50">
+								<div class="pie" style="-webkit-transform: rotate(290.52deg);"></div>
+								<div class="pie fill" style="-webkit-transform: rotate(290.52deg);"></div>
 							</div>
 						</div><!--/ [tsc-round] -->
+						<div class="tsc-txt">本月需求完成情况</div>
 					</li>
-					<li></li>
-					<li></li>
+					<!-- CP需求占比 -->
+					<li class="tsc-item tsc-skin-2">
+						<!-- [tsc-round] -->
+						<div class="tsc-round" data-note="7.57">
+							<div class="tsc-round-percent">
+								<span class="int">60.5%</span>
+							</div>
+							<div class="tsc-round-rate">
+								<div class="pie" style="-webkit-transform: rotate(45deg);"></div>
+								<div class="pie fill" style="-webkit-transform: rotate(45deg);"></div>
+							</div>
+						</div><!--/ [tsc-round] -->
+						<div class="tsc-txt">本月CP需求占比</div>
+					</li>
+					<!-- 重点需求数 -->
+					<li class="tsc-item tsc-skin-3">
+						<!-- [tsc-round] -->
+						<div class="tsc-round" data-note="7.57">
+							<div class="tsc-round-percent">
+								<span class="int">24</span>
+							</div>
+							<div class="tsc-round-rate gt50">
+								<div class="pie" style="-webkit-transform: rotate(360deg);"></div>
+								<div class="pie fill" style="-webkit-transform: rotate(360deg);"></div>
+							</div>
+						</div><!--/ [tsc-round] -->
+						<div class="tsc-txt">本月重点需求数</div>						
+					</li>
+					<!-- 需求服务满意度 -->
+					<li class="tsc-item tsc-skin-4">
+						<!-- [tsc-round] -->
+						<div class="tsc-round" data-note="4.8">
+							<div class="tsc-round-percent">
+								<span class="int">4.72</span>
+							</div>
+							<div class="tsc-round-rate gt50">
+								<div class="pie" style="-webkit-transform: rotate(340deg);"></div>
+								<div class="pie fill" style="-webkit-transform: rotate(340deg);"></div>
+							</div>
+						</div><!--/ [tsc-round] -->
+						<div class="tsc-txt">本月服务满意度</div>	
+					</li>
 				</ul>
 
-				<div class="notesite" data-note="7.57">
-					<div class="percent">
-						<span class="int">80</span>
-						<span class="dec">/112</span>
-					</div>
-					<div class="gt50">
-						<div class="pie" style="-webkit-transform: rotate(271.8deg);"></div>
-						<div class="pie fill" style="-webkit-transform: rotate(271.8deg);"></div>
-					</div>
-				</div>
 
 			</div>
 		</div><!--/ [c-box] -->
