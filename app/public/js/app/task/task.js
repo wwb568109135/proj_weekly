@@ -7,7 +7,7 @@
     if(o.attr("data-name") == "status" ){
       var hb = o.siblings(".editableval").val(),
           selectHtml = "selected='selected'";
-          console.log(hb);
+          // console.log(hb);
 
       //- 设置需求状态时反馈回的HTML
       var cbHtml = '';

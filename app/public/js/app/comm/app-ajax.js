@@ -42,7 +42,7 @@ var appAjax = (function(){
         editObj.modify.push(mm);
       }
 
-      console.dir(editObj);
+      // console.dir(editObj);
 
       $.ajax({
         type: "POST",
@@ -87,6 +87,26 @@ var appAjax = (function(){
     }
     return o;
   };
+
+
+  /**
+   * Ajax修改当前进度,联动修改当前状态 2014-02-26
+   * @param  {object} o ajaxupdata object
+   * @param  {function} Callback Function
+   * @return {funcion}
+   */
+  function syncStatus(o){
+    if( o && o.progress ){
+      var ss = "";
+      switch(parseInt(o.progress)){
+        case 100:       //已上线
+          ss = 3;
+          break;
+      }
+      o.status = ss;
+    }
+    return o;
+  }
   
   
   /**
@@ -161,16 +181,28 @@ var appAjax = (function(){
   function updateSet(o,callback){
     if( o && o.dbCollection ){
       
+      // 如果修改进度为100%，要同步更新状态
+      if(o.progress){
+        o = syncStatus(o);
+        if(o.wrap){
+          var objWrap = o.wrap,
+              statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"],
+              getStatus = statusText[o.status],
+              callback3 = function(){objWrap.parent("tr").find("span[data-name='status']").html(getStatus);}
+          // console.log(getStatus);
+        }
+      } 
+
       // 如果是修改状态的，要同步更新进度
       if(o.status){  
         o = syncProgress(o);
         if(o.wrap){
           var objWrap = o.wrap,
               callback2 = function(){objWrap.parent("tr").find("span[data-name='progress']").html(o.progress);}
-          delete o.wrap;
+          // delete o.wrap;
         }
       }
-      
+
       if(o.wrap){delete o.wrap;}
       // console.log(o);
       $.ajax({
@@ -181,8 +213,8 @@ var appAjax = (function(){
         callbackMsg(msg);
         if (callback){ (callback)(); }
         if (callback2){ (callback2)(); }
+        if (callback3){ (callback3)(); }
       }).fail(function(jqXHR, textStatus) {
-        // alert( "Request failed: " + textStatus );
         console.log( "Request failed: " + textStatus );
       });
 

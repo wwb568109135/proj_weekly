@@ -28,9 +28,9 @@ block content
           | ）
           span.gray --截止到#{dateNow()}
         - var d1 = taskStatus.finish / taskStatus.len;
-        - var deg1 = 360 * (taskStatus.finish / taskStatus.len);
-        - var int2 = 100 * (taskStatus.CP / taskStatus.len);
-        - var deg2 = 360 * (taskStatus.CP / taskStatus.len);
+        - var deg1 = 360 * d1;
+        - var int2 = Math.round(100 * (taskStatus.CP / taskStatus.len));
+        - var deg2 = Math.round(360 * (taskStatus.CP / taskStatus.len));
 
         //- p= deg1
         ul.tasks-stat-charts
