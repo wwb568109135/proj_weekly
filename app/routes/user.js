@@ -35,7 +35,7 @@ exports.isWhiteListUser = function(req, res){
   var isLogin = exports.isLogin(req, res);
   if(isLogin){
     // 设置可通行白名单列表
-    var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo"],
+    var userWhiteList = ["sonichuang", "kaireewu", "karinfeng", "panther", "arvintian", "xylonhuang", "dgguo", "vivianxia"],
         // 取登录用户名
         user = exports.returnStaffUser(req,res);
 
