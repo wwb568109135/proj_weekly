@@ -13,15 +13,18 @@ var xlsx = require('node-xlsx');
 var fs = require('fs');
 var User = require('../routes/user');
 
+
+exports.index_pre = function(req, res){
+  res.redirect('/index');
+}
+
 /*
  * index View (login success redirect to /home)
  */
 exports.index = function(req, res){
   // res.redirect('/home');
-
   // 取登录用户名
   var staffName = User.returnStaffUser(req,res).rtx;
-
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){
@@ -30,7 +33,6 @@ exports.index = function(req, res){
         var goView = "",
             roles = docs[0] ? docs[0].roles : 0,
             group = docs[0] ? docs[0].group : 0;
-
         if(roles == 2){
           res.redirect('/home-leader');
         }else{

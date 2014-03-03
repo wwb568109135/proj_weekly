@@ -59,7 +59,8 @@ Weekly.connect(app.get('mongourl'));
 // Index & comm Routes Rule(roules/index.js) -------------------------------
 app.use(app.router);
 app.all('*', user.auth);
-app.get('/', routes.index);
+app.get('/', routes.index_pre);
+app.get('/index', routes.index);
 app.get('/logout', routes.logout);
 app.get('/home', routes.home);
 app.get('/home-leader', routes.home_leader);
