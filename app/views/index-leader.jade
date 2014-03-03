@@ -9,9 +9,9 @@ block content
     .c-box-hd
       .c-box-hd-title
         h3 本周需求情况(管理者视图)
+        - var groupText = ['未知组','重构1组','重构2组','重构3组','设计1组','设计2组','设计3组']
     if taskDocs.length
       .c-box-bd
-        - var groupText = ['未知组','重构1组','重构2组','重构3组','设计1组','设计2组','设计3组']
         p.tips
           | 您所在团队
           span.blue
@@ -68,6 +68,15 @@ block content
                 .pie.fill(style='-webkit-transform: rotate(360deg);')
             .tsc-txt 本月服务满意度（敬请期待）
 
+    else
+      .c-box-bd
+        p.tips
+          | 您所在团队
+          span.blue
+            em= groupText[group]
+            | ，
+          strong.orange 本月暂无排期需求。
+
 
   //- [c-box:快速导航]
   div.c-box
@@ -91,7 +100,32 @@ block content
             i.icon.icon-eye
             | 查看需求列表
           i.heightlight
-
+  
+  //- [c-box:使用入门]
+  div.c-box
+    .c-box-hd.quick-nav-home
+      .c-box-hd-title
+        h3 使用入门
+    .c-box-bd            
+      div.get-started
+        fieldset.get-started-box
+          legend 产品/品牌经理 入门
+          dl
+            dt Q：如何录入需求？
+            dd
+              | A：视频录入方法，请 
+              a(href="http://v.qq.com/boke/page/g/7/d/g0126rhbl7d.html",target="blank") 观看视频
+            dt.gray Q：如何查看及更新需求？（敬请期待）
+            dt.gray ...
+        fieldset.get-started-box
+          legend 设计/重构/动画师 入门
+          dl
+            dt Q：如何录入需求？
+            dd
+              | A：视频录入方法，请 
+              a(href="http://v.qq.com/boke/page/g/7/d/g0126rhbl7d.html",target="blank") 观看视频
+            dt.gray Q：如何查看及更新需求？（敬请期待）
+            dt.gray ...
 
 block pageScript
   link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.css')

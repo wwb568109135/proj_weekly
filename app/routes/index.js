@@ -127,6 +127,10 @@ exports.home_leader = function(req, res){
                           })
                         }
                       })
+                  }else{
+                    res.locals.roles = roles;
+                    res.locals.group = group;
+                    res.render('index-leader', { taskDocs: '' });
                   }
               }
             })

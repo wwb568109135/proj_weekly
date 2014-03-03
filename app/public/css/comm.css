@@ -428,7 +428,7 @@ body > .contnet{height: auto; min-height: 100%;}
 .system-intro{}
 	.system-intro .c-box-bd p{font-size: 1.2em;line-height: 1.8em;}
 
-.quick-nav-home-ul{overflow: hidden;*zoom:1;}
+.quick-nav-home-ul{overflow: hidden;*zoom:1;margin:0 0 2em;}
 	.quick-nav-home-ul li{position: relative;overflow: hidden;float: left;width:14em;height:5em;margin:0 2em 0 0;}
 	.quick-nav-home-ul a{display: block;height:100%;text-align: center;font-size: 1.3em;line-height:3.5em;background-color: #559ee3;border-radius:0.2em;
 				
@@ -457,6 +457,14 @@ body > .contnet{height: auto; min-height: 100%;}
 		  -webkit-animation-duration:2s;
 		  -webkit-animation-iteration-count:infinite;
 	}
+	.get-started{overflow: hidden;*zoom:1;}
+	.get-started h4{font-size:1.6em;margin:0 0 0.5em;}
+	.get-started-box{float:left;width:37%;margin-right:2%;border:1px solid #ccc;border-radius:1em;}
+	.get-started-box legend{font-size:14px;margin:0.5em;background-color: #eee;padding:0.5em;border-radius:1em;}
+	.get-started-box dl{padding:0.5em 1em;line-height: 1.8em;}
+	.get-started-box dt{font-weight:bold;}
+	.get-started-box dd{margin:0 0 1em;}
+
 .task-status{}
 .task-status .c-box-bd{padding:2em;}
 .task-status .tips{color: #333;font-size:1.2em;line-height:2em;margin:0 0 1.5em 0;}
