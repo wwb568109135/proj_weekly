@@ -4,26 +4,6 @@ block content
   //- h1= title
   //- p Welcome to #{title}
 
-  //- [c-box:系统介绍]
-  div.c-box.system-intro
-    .c-box-hd
-      .c-box-hd-title
-        h3 本周需求情况
-    .c-box-bd
-      //- p
-        | 互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍。
-      fieldset.calendar-task-hint
-        legend.cth-title 需求示例
-        ul.cth-list
-          li
-            span.cth-task 内部需求
-          li
-            span.cth-cp CP需求
-          li
-            span.cth-finish 已上线需求（内部、CP）
-      #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
-
-
   //- [c-box:快速导航]
   div.c-box
     .c-box-hd.quick-nav-home
@@ -46,6 +26,28 @@ block content
             i.icon.icon-eye
             | 查看需求列表
           i.heightlight
+
+  //- [c-box:系统介绍]
+  div.c-box.system-intro
+    .c-box-hd
+      .c-box-hd-title
+        h3 本周需求情况
+    .c-box-bd
+      //- p
+        | 互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍，互娱市场部网站设计中心需求发布管理系统介绍。
+      fieldset.calendar-task-hint
+        legend.cth-title 需求示例
+        ul.cth-list
+          li
+            span.cth-task 内部需求
+          li
+            span.cth-cp CP需求
+          li
+            span.cth-finish 已上线需求（内部、CP）
+      #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
+
+
+
 
   //- [c-box:使用入门]
   div.c-box

@@ -66,6 +66,7 @@ block content
         else
           h3 本月全部需求
       .c-box-hd-extra
+        a.m-btn.btn-skin-1.btn-new-task(href='/task/create') 新建需求
         a.m-btn.btn-skin-1.btn-new-task(href='/export') 导出本周周报
     .c-box-bd
       fieldset.calendar-task-hint
@@ -93,8 +94,8 @@ block content
         form.search-form(action='/task/search')
           input.inp-txt(type='text',name="q", placeholder='需求ID/名称')
           input.btn-search(type='submit', value='搜索')
+          a(href="/task-closed") 【查看已关闭需求】
       .c-box-hd-extra
-        a(href="/task-closed") 【查看已关闭需求】
         div#directionSelectDiv.hidden
           select#directionSelect.editinput(name='editDirection')
             option(value='0') 选择当前说明

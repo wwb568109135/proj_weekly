@@ -5,29 +5,34 @@
       //- 表单非空检测
       function checkCreateForm(){
         var errorInput = 0;
-        var dataTD = $("#taskCreateForm .data-line input:enabled, #taskCreateForm .data-line select:enabled");
+        var dataTD = $("#taskCreateForm .data-line input:enabled, #taskCreateForm .data-line select:enabled").not(".notrequired");
+        // var dataTD = dataTD:not(".noneed");
         dataTD.each(function(index, el){
-          if(el.value == ""){
-            // console.log(el);
-            $(this).parent("td").addClass("error");
-            errorInput += 1;
-          }else{
-            // $(this).parent("td").removeClass("error");
-            var sb = $(this).siblings("input:enabled, select:enabled");
-            if(sb.length > 0){
-              console.log(sb.length);
-              sb.each(function(){
-                $(this).parent("td").addClass("error");
-                if($(this).val() == ""){return false}
-                $(this).parent("td").removeClass("error");
-              })
+
+            if(el.value == ""){
+              // console.log(el.value);
+              $(this).parent("td").addClass("error");
+              errorInput += 1;
             }else{
-              $(this).parent("td").removeClass("error");
+              // $(this).parent("td").removeClass("error");
+              var sb = $(this).siblings("input:enabled, select:enabled");
+              if(sb.length > 0){
+                // console.log(sb.length);
+                sb.each(function(){
+                  if($(this).hasClass("notrequired")){ console.log($(this)) }
+                  $(this).parent("td").addClass("error");
+                  if($(this).val() == ""){return false}
+                  $(this).parent("td").removeClass("error");
+                })
+              }else{
+                $(this).parent("td").removeClass("error");
+              }
             }
-          }
+          
         })
         console.log("errorInput:"+ errorInput);
         if(errorInput == 0 ){  isReturn = true }
+        // isReturn = false;
       }
 
       function onDomReady(){
@@ -80,11 +85,33 @@
               _selfTr.find("input[name='progress']").val(100);
             }
           }
-          
-
-
         });
-
+        
+        // 需求当前状态选择时，需求进度联动修改 
+        $("#taskCreateForm" ).delegate("select[name='status']", "change", function() {
+            console.log("status change");
+            var _self = $(this),
+                _selfTr = $(this).parents("tr.data-line");
+            var statusVal = parseInt(_self.val()),
+                progress = _selfTr.find("input[name='progress']");
+            switch(statusVal){
+              case 0:             //排期中
+                progress.val(0);
+                break;
+              case 1:             //重构中
+                progress.val(60);
+                break;
+              case 2:             //联调中
+                progress.val(90);
+                break;
+              case 3:             //已上线
+                progress.val(100);
+                break;
+              case 4:             //设计中
+                progress.val(30);
+                break;
+            }
+        });
 
         //- select[name="type"] select func 2013-12-02
         $("select[name='type']").bind("change",function(){

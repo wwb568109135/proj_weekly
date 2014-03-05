@@ -48,17 +48,23 @@ block content
                         option(value='#{project.id}')= project.name
                 select#priorityLv-2(name='priority')
                   option(value='0') 优先级
-                  option(value='0') P0
-                  option(value='1') P1
-                  option(value='2') P2
-                  option(value='3') P3
+                  option(value='0') P0（最高）
+                  option(value='1') P1（高）
+                  option(value='2') P2（一般）
+                  option(value='3') P3（低）
+                select#taskStatus(name="status")
+                  option(value='0',selected='selected') 排期中
+                  option(value='4') 设计中
+                  option(value='1') 重构中
+                  option(value='2') 联调中
+                  option(value='3') 已上线
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
                 input.m-input.inp-txt(type='number',name='pages', value='1')
                 input(type='hidden', name="author", value='#{user.rtx}')
                 input(type='hidden', name="create_date", value='#{Date()}')
-                input(type='hidden', name="status", value='0')
+                //- input(type='hidden', name="status", value='0')
                 input(type='hidden', name="progress", value='0')
               td
                 input#SiteStaff0(type='hidden', name='pp-tmp', disabled="disabled", userchooser='true', value="")
@@ -73,9 +79,9 @@ block content
                 input.m-input.inp-txt.date-picker(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
                 input.m-input.inp-txt.date-picker(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
               td
-                select#directionSelect.select-direction.editinput(data-name='direction')
-                  option(value='',selected='selected') 选择备注说明
-                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
+                select#directionSelect.select-direction.editinput.notrequired(data-name='direction')
+                  option(selected='selected') 选择备注说明
+                input.m-input.inp-txt.input-direction.notrequired.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
               td
             //- 插入多一行数据的tr模板
             tr#insertTr.hidden
@@ -94,10 +100,16 @@ block content
                         option(value='#{project.id}')= project.name
                 select(name='priority')
                   option(value='0') 优先级
-                  option(value='0') P0
-                  option(value='1') P1
-                  option(value='2') P2
-                  option(value='3') P3
+                  option(value='0') P0（最高）
+                  option(value='1') P1（高）
+                  option(value='2') P2（一般）
+                  option(value='3') P3（低）
+                select#taskStatus(name="status")
+                  option(value='0',selected='selected') 排期中
+                  option(value='4') 设计中
+                  option(value='1') 重构中
+                  option(value='2') 联调中
+                  option(value='3') 已上线
                 input(type='hidden', name="author", value='#{user.rtx}')
                 input(type='hidden', name="create_date", value='#{Date()}')
                 input(type='hidden', name="status", value='0')
@@ -119,9 +131,9 @@ block content
                   input.m-input.inp-txt.date-picker-insert(type='text', name='rb_end_date', autocomplete="off", placeholder='期望重构结束时间') 
                   input.m-input.inp-txt.date-picker-insert(type='text', name='online_date', autocomplete="off", placeholder='期望上线时间')
               td
-                select.select-direction.editinput(name='direction',data-name='direction')
+                select.select-direction.editinput.notrequired(name='direction',data-name='direction')
                   option(value='',selected='selected') 选择备注说明
-                input.m-input.inp-txt.input-direction.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
+                input.m-input.inp-txt.input-direction.notrequired.hidden(type='text',name='direction',placeholder='其它备注说明',value='')
               td
                 a.link-delete-task(href="javascript:;") 删除
        
