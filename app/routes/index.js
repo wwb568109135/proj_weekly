@@ -67,8 +67,6 @@ exports.home = function(req, res){
         console.log('本周一的日期为:\t' + date.getDate());
         var wf = date.getDate();
 
-
-
           // 1.把ProjectName全部取出来
           Project.find().sort({name: 1}).exec(function(err,docs){
             if(err){console.error(err);

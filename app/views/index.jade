@@ -44,7 +44,7 @@ block content
             span.cth-cp CP需求
           li
             span.cth-finish 已上线需求（内部、CP）
-      #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
+      #calendar0(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
 
       if docs.length
         h4 最近两周的需求
@@ -141,8 +141,11 @@ block content
               a(href="http://v.qq.com/boke/page/g/7/d/g0126rhbl7d.html",target="blank") 观看视频
             dt.gray 3分钟教你查看及更新需求？（敬请期待）
             dt.gray ...
-
+  div.callback-msg#ajaxCallbackMsg hello 
+  
 block pageScript
   link(rel='stylesheet', href='/js/fullcalendar/fullcalendar.css')
   script(src="/js/fullcalendar/fullcalendar.js")
   script(src="/js/app/index/index.js")
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/task/task.js")

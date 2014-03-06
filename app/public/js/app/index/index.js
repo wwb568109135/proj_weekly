@@ -27,8 +27,8 @@
 
   function calendarInitFunc(pj){
     // 通过#calendar上的记录，组合不同的 calendar请求地址
-    var roles = $("#calendar").attr("data-roles"),
-        filterStaff = $("#calendar").attr("data-staff"),
+    var roles = $("#calendar0").attr("data-roles"),
+        filterStaff = $("#calendar0").attr("data-staff"),
         ajaxUrl = "/task/callJSON?roles="+roles+'&filterStaff='+filterStaff;
         projectName = pj || "";
 
@@ -66,7 +66,7 @@
       // console.log(roles);
       if(roles == 1 || roles == 2){
         // 【产品角色日历】日历读取日期插件本身的加载配置代码 ----------------
-        $('#calendar').fullCalendar({
+        $('#calendar0').fullCalendar({
           header: {
             left: 'today',
             center: 'title',
@@ -79,7 +79,7 @@
         })
       }else if (roles == 3){
         // 【重构角色日历】日历读取日期插件本身的加载配置代码 ----------------
-        $('#calendar').fullCalendar({
+        $('#calendar0').fullCalendar({
           header: {
             left: 'today',
             center: 'title',

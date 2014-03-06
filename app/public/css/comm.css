@@ -123,7 +123,7 @@ body > .contnet{height: auto; min-height: 100%;}
 
 /* Module
 ---------------------------------------------------------------------------------------*/
-#calendar {width: 940px;margin:0 0 1em; /*width:90%;*/}
+#calendar,#calendar0 {width: 940px;margin:0 0 1em; /*width:90%;*/}
 .fc-event:link,.fc-event:visited,.fc-event:hover{color: #fff;}
 /* task finish bgcolor */
 .cth-task{background-color: #3d8ed5;border-color:#3d8ed5;}
