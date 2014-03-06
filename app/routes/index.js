@@ -50,16 +50,60 @@ exports.index = function(req, res){
  */
 exports.home = function(req, res){
   // 取登录用户名
-  var staffName = User.returnStaffUser(req,res).rtx;
+  var staffName = User.returnStaffUser(req,res).rtx,
+      ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
+
   if(staffName){
     Staff.find({name:staffName}).limit(1).exec(function(err,docs){
       if(err){
         res.send(404, "参数错误");
       }else{
         var roles = docs[0] ? docs[0].roles : 0;
+        var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
+        // 获取本周第1天的日期
+        // msg.push('今天是:\t' + date.toLocaleDateString() + '\t' + DAY[date.getDay()]);
+        date.setDate(d - date.getDay() + 1);
+        console.log('本周一的日期为:\t' + date.toLocaleDateString());
+        console.log('本周一的日期为:\t' + date.getDate());
+        var wf = date.getDate();
 
-         res.locals.roles = roles;
-         res.render('index', { title: '系统首页' });
+
+
+          // 1.把ProjectName全部取出来
+          Project.find().sort({name: 1}).exec(function(err,docs){
+            if(err){console.error(err);
+            }else{
+              var pj_array = new Array();
+              for(var i=0; i <docs.length;i++){
+                pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+                pj_array[docs[i]._id] = docs[i].name
+              }
+              res.locals.projectName = pj_array;
+                
+                // 2.把符合筛选的需求取出来
+                Weekly.find(
+                  {  // 筛选条件如下 
+                    $nor:[{hidden: true}], 
+                    $or:[
+                      {'author':ppQuery},
+                      {'pp':ppQuery}
+                    ],
+                    "rb_star_date": {"$gte": new Date(y, m, wf-7), "$lte": new Date(y, m, wf+11)}
+                  }
+                ).sort({create_date:-1}).exec(function(err,docs){ 
+
+                    if (err) {
+                      console.error(err);
+                    } else {
+                      res.locals.roles = 3;
+                      res.render('index', {docs:docs});
+                    }
+                });
+            }
+          });
+
+         // res.locals.roles = roles;
+         // res.render('index', { title: '系统首页' });
       }
     });
   }

@@ -46,6 +46,75 @@ block content
             span.cth-finish 已上线需求（内部、CP）
       #calendar(data-roles="#{roles}",data-staff="#{formData?formData.advFilterStaff:''}")
 
+      if docs.length
+        h4 最近两周的需求
+        - var i = 1
+        table#taskListTable.m-table-data.rb-task-table(data-collection="Weekly")
+          colgroup
+            col.c1
+            col.c2
+            col.c3
+            col.c4
+            col.c5
+            col.c6
+            col.c7
+            col.c8
+            col.c9
+            col.c10
+          thead
+            tr
+              th 需求ID
+              th 需求名称
+              th.tcenter 当前状态
+              th.tcenter 页面数
+              th.tcenter 开始时间
+              th.tcenter 完成时间
+              th.tcenter 进度
+              th.tcenter 网站人员
+              th.tcenter 接口人
+              th 其它说明
+          tbody
+            for weekly in docs
+              tr
+                td.readonly
+                  span(data-name="_id")= weekly._id
+                  if roles == 2
+                    [
+                    //- a(href='/task/del/#{weekly.id}') 删
+                    a(href='/task/del/#{weekly.id}',onclick="var url='/task/del/#{weekly.id}';if(confirm('确认删除？')){$(location).attr('href',url)}else{return false}") 删
+                    ]
+                td
+                  【
+                  if projectName
+                    = projectName[weekly.type]
+                  else
+                    | none
+                  】
+                  a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                td.tcenter
+                  - var statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"];
+                  span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                  input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
+                td.tcenter
+                  span.editable(data-name="pages")= weekly.pages
+                td.tcenter
+                  span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
+                  span %
+                //- td.tcenter= weekly.online_date.toISOString()
+                td
+                  span.editable(data-name="pp")= weekly.pp
+                td
+                  span.editable(data-name="pm")= weekly.pm
+                td
+                  span.editable(data-name="direction")= weekly.direction
+      else
+        //- .empty-data -->
+        .empty-data
+          p 大腿 #{user.rtx}（#{user.nick}），最近2周需求都被你消灭了，1个都不剩。
 
 
 

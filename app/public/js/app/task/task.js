@@ -361,9 +361,15 @@
         })
         
       })
-
-      
     }
+
+    //- 日历视图的展开收起 2014-03-06
+    $(".c-box-bd-toggle").on("click",function(){
+      var _self = $(this),
+          cbox = _self.parents(".c-box");
+      cbox.toggleClass("c-box-hidden");
+    })
+
 
     // 日历插件启动
     calendarInit();

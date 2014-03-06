@@ -64,7 +64,11 @@ block content
             span#filterStaff.orange=formData.advFilterStaff
             | 本月需求
         else
-          h3 本月全部需求
+          a.c-box-bd-toggle(href="javascript:;")
+            em.c-box-arrow
+            h3 本月全部需求(
+              em.tips 点击收起
+              )
       .c-box-hd-extra
         a.m-btn.btn-skin-1.btn-new-task(href='/task/create') 新建需求
         a.m-btn.btn-skin-1.btn-new-task(href='/export') 导出本周周报
