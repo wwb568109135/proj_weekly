@@ -124,7 +124,8 @@
   //- 初始化
   function initDomReady(){
     // current nav
-    $(".nav-ul li").eq(0).addClass("current");
+
+    $(".nav-ul li").removeClass("current").eq(0).addClass("current");
 
     // 日历插件启动
     calendarInit();
