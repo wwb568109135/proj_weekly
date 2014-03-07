@@ -9,22 +9,23 @@ block content
           input.inp-txt(type='text', name="q", placeholder='需求ID/名称')
           input.btn-search(type='submit', value='搜索')
       .c-box-hd-extra
-        form.search-form(action='')
-          label(for='currentStatus') 筛选
-          select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
-            option(value='status=', selected='selected') 当前状态筛选
-            option(value='status=0') 全部状态
-            option(value='status=0') 排期中
-            option(value='status=1') 重构中
-            option(value='status=2') 联调中
-            option(value='status=3') 已上线
-          select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
-            option(value='', selected='selected') 优先级别筛选
-            option(value='priority=') 全部级别
-            option(value='priority=0') P0
-            option(value='priority=1') P1
-            option(value='priority=2') P2
-            option(value='priority=3') P3
+        //- form.search-form(action='')
+        //-   label(for='currentStatus') 筛选
+        //-   select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
+        //-     option(value='status=', selected='selected') 当前状态筛选
+        //-     option(value='status=0') 全部状态
+        //-     option(value='status=0') 排期中
+        //-     option(value='status=4') 设计中
+        //-     option(value='status=1') 重构中
+        //-     option(value='status=2') 联调中
+        //-     option(value='status=3') 已上线
+        //-   select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
+        //-     option(value='', selected='selected') 优先级别筛选
+        //-     option(value='priority=') 全部级别
+        //-     option(value='priority=0') P0
+        //-     option(value='priority=1') P1
+        //-     option(value='priority=2') P2
+        //-     option(value='priority=3') P3
     .c-box-bd
       if docs.length
         - var i = 1
@@ -71,7 +72,7 @@ block content
                   】
                   a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
                 td.tcenter
-                  - var statusText = ["排期中", "重构中", "联调中", "已上线"];
+                  - var statusText = ["排期中", "重构中", "联调中", "已上线", "设计中"];
                   span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
                   input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
                 td.tcenter
