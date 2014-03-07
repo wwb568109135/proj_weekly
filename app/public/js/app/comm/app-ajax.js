@@ -101,9 +101,9 @@ var appAjax = (function(){
       switch(parseInt(o.progress)){
         case 100:       //已上线
           ss = 3;
+          o.status = ss;
           break;
       }
-      o.status = ss;
     }
     return o;
   }

@@ -138,7 +138,7 @@ exports.task_rb = function(req, res){
  */
 exports.task_ld = function(req, res, group){
   if(group){
-    console.log("group: "+ group);
+    // console.log("group: "+ group);
   }
 
   var pageShowNum = 20,  //当前一页显示多少个
@@ -160,31 +160,78 @@ exports.task_ld = function(req, res, group){
       res.locals.staffName = staff_array;
 
       // 2.把ProjectName全部取出来
-      Project.find().sort({name: 1}).exec(function(err,docs){
-        if(err){console.error(err);
-        }else{
-          var pj_array = new Array();
-          for(var i=0; i <docs.length;i++){
-            pj_array[i] = {id:docs[i]._id, name:docs[i].name}
-            pj_array[docs[i]._id] = docs[i].name
-          }
-          res.locals.projectName = pj_array;
+      // Project.find().sort({name: 1}).exec(function(err,docs){
+      //   if(err){console.error(err);
+      //   }else{
+      //     var pj_array = new Array();
+      //     for(var i=0; i <docs.length;i++){
+      //       pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+      //       pj_array[docs[i]._id] = docs[i].name
+      //     }
+      //     res.locals.projectName = pj_array;
 
-            // 3.把符合筛选的需求取出来
-            Weekly.paginate({ $nor:[{hidden: true}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-            // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-              if (error) {
-                console.error(error);
-              } else {
-                res.locals.roles = 2;
-                res.locals.path = req.path;
-                res.locals.originalUrl = req.originalUrl;
-                res.locals.group = group;
-                res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-              }
-            });
+      //       // 3.把符合筛选的需求取出来
+      //       Weekly.paginate({ $nor:[{hidden: true}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+      //       // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+      //         if (error) {
+      //           console.error(error);
+      //         } else {
+      //           res.locals.roles = 2;
+      //           res.locals.path = req.path;
+      //           res.locals.originalUrl = req.originalUrl;
+      //           res.locals.group = group;
+      //           res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+      //         }
+      //       });
+      //   }
+      // });
+      // 
+      
+       
+      // 2.通过所在的组，从项目表里把该组的所有项目取出来，数组形式
+      Project.find({ vesting:{$all:[{"$elemMatch":{"group":group}}]} },function(err,docs){
+        if(err){
+          res.send(404, "项目集合查询错误");
+        }else{
+            var pj_array = new Array();
+            for(var i=0; i <docs.length;i++){
+              pj_array[i] = {id:docs[i]._id, name:docs[i].name}
+              pj_array[docs[i]._id] = docs[i].name
+            }
+            res.locals.projectName = pj_array;
+
+            var projectIdArray = [];
+            for (var i=0; i<docs.length; i++){ projectIdArray.push(docs[i]._id); }
+            // console.log(projectIdArray);
+            if (projectIdArray.length > 0){
+               
+                // 3.把符合项目的需求全部取出来
+                Weekly.paginate({
+                    type:{$in: projectIdArray}     // 符合本组负责项目的需求
+                  }, 
+                  {create_date:-1}, 
+                  pageCur, pageShowNum, 
+                  function(err, pageCount, paginatedResults) {
+                    if(err){
+                      res.send(404, "需求集合错误");
+                    }else{
+                      res.locals.roles = 2;
+                      res.locals.path = req.path;
+                      res.locals.originalUrl = req.originalUrl;
+                      res.locals.group = group;
+                      res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+                    }
+                })
+
+            }else{
+              res.locals.roles = 2;
+              res.locals.group = group;
+              res.render('task-rb', { taskDocs: taskDocs });
+            }
         }
-      });
+      })
+
+
 
     }
   });
