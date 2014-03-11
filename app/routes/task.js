@@ -497,26 +497,34 @@ exports.task_detail = function(req, res) {
                       res.locals.projectName = pj_array;
 
                         // 4.按id取出需求
-                        Weekly.findById(id, function(err, docs){              
-                    function compare(obj1,obj2){
-                    return obj2.commenttime - obj1.commenttime;
-                    }
-                    var newdocs={};
-                    docs.comments.sort(compare);
-                    newdocs.commentArr=[];
-                    if(docs.comments.length >5){
-                      for(var i=0; i<5; i++){
-                      newdocs.commentArr[i] = docs.comments[i];
-                    }
-                    } else {
-                    newdocs.commentArr = docs.comments;
-                    }
-                    
-                          newdocs.dobj = docs;
-                          newdocs.person = staffName;
-                    if(err){console.log(err);}else{
-                    res.render('task-detail', {docs:newdocs});
-                    }
+                        Weekly.findById(id, function(err, docs) {
+                          function compare(obj1, obj2) {
+                              return obj2.commenttime - obj1.commenttime;
+                          }
+                          if (err) {
+                            res.send(404, "查无此需求");
+                            console.log(err);
+                          } else {
+                            if (docs){
+                                var newdocs = {};
+                                docs.comments.sort(compare);
+                                newdocs.commentArr = [];
+                                if (docs.comments.length > 5) {
+                                  for (var i = 0; i < 5; i++) {
+                                    newdocs.commentArr[i] = docs.comments[i];
+                                  }
+                                } else {
+                                  newdocs.commentArr = docs.comments;
+                                }
+                                newdocs.dobj = docs;
+                                newdocs.person = staffName;
+
+                                res.render('task-detail', {
+                                  docs: newdocs
+                                });
+                            }
+                            res.send(404, "查无此需求");
+                          }
                         });
 
                     }
