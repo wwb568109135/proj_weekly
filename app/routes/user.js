@@ -108,5 +108,22 @@ exports.auth = function(req, res, next) {
   }
 };
 
+exports.dateNow = function(req,res) {
+  var dateNow = new Date();
+  var dd = dateNow.getDate();
+  var monthSingleDigit = dateNow.getMonth() + 1,
+      mm = monthSingleDigit < 10 ? '0' + monthSingleDigit : monthSingleDigit;
+  var yy = dateNow.getFullYear();
+  
+  dateNow.setDate(dd - dateNow.getDay() + 1)
+  var monday = dateNow.getDate();
+
+  var formatDay = {};
+      formatDay.now = (yy + '-' + mm + '-' + dd),
+      formatDay.monday = (yy + '-' + mm + '-' + monday),
+      formatDay.friday = (yy + '-' + mm + '-' + (monday+4));
+  return formatDay;
+};
+
 module.exports = exports;
 

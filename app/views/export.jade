@@ -16,9 +16,9 @@ block content
           form#exportDataFormGroup.export-data-form(method='get',action='/export')
             p
               label(for='weeklyStarDate') 请选择时间段：
-              input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='重构开始时间')
+              input#taskStarDate.m-input.inp-txt.date-picker(name='taskStarDate', type='text', placeholder='重构开始时间', value='#{wfMonday}')
               span 至
-              input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='重构结束时间')
+              input#taskEndDate.m-input.inp-txt.date-picker(name='taskEndDate', type='text', placeholder='重构结束时间', value='#{wfFriday}')
             p
               if roles == 2
                 input.m-btn.btn-skin-2(type='submit', value='查询大组周报')

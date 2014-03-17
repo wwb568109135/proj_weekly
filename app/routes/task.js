@@ -905,6 +905,12 @@ exports.task_export = function(req, res){
       staffName = User.returnStaffUser(req,res).rtx,
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
+  // 获取本周的周1和周5
+  var wfMonday = User.dateNow(req,res).monday;
+  var wfFriday = User.dateNow(req,res).friday;
+  console.log(wfMonday);
+  console.log(wfFriday);
+
   if(staffName){
     // 1.把用户角色取出
     Staff.find({name:staffName}).limit(1).exec(function(err,uu){
@@ -926,6 +932,8 @@ exports.task_export = function(req, res){
                 pj_array[docs[i]._id] = docs[i].name
               }
               res.locals.projectName = pj_array;
+              res.locals.wfMonday = wfMonday;
+              res.locals.wfFriday = wfFriday;
 
                 // 3.需求筛选
                 Weekly.find({
