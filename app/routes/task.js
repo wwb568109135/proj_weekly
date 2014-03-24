@@ -114,10 +114,52 @@ exports.task_rb = function(req, res){
       }
       res.locals.projectName = pj_array;
         
-        // 2.把符合筛选的需求取出来
+        // 2.把用户集合表里用户所负责的项目id取出来
+        Staff.find({name:staffName}).exec(function(err,docs){
+          if(err){
+            res.send(404, "用户表查询错误！");
+            var typeSet = {'$exists': true};
+          }else{
+            var user_pj_array = new Array(),
+                launch = docs[0].launch;
+            for(var i=0; i <launch.length;i++){
+              user_pj_array[i] = launch[i].pj;
+            }
+            var typeSet = {$in: user_pj_array}
+            // console.log(user_pj_array);
+          }
+
+          // 3. 把用户所负责的项目需求及被点名的需求全部取出
+          Weekly.paginate({ 
+              $or:[
+                {'author':ppQuery}, 
+                {'pp':ppQuery}, 
+                {type:{$in: user_pj_array}}
+              ],
+              'status':status, 
+              'priority':priority, 
+              $nor:[{hidden: true}]
+            }, 
+            {create_date:-1}, 
+            pageCur, 
+            pageShowNum, 
+            function(error, pageCount, paginatedResults) {
+              if (error) {
+                console.error(error);
+              } else {
+                res.locals.roles = 3;
+                res.locals.path = req.path;
+                res.locals.originalUrl = req.originalUrl;
+                res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
+                res.locals.ttdd = paginatedResults;
+              }
+          });
+
+        });
+        
+
+        /*
         Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, $or:[{'author':ppQuery},{'pp':ppQuery}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-        // Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
-        // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
           if (error) {
             console.error(error);
           } else {
@@ -127,7 +169,8 @@ exports.task_rb = function(req, res){
             res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
             res.locals.ttdd = paginatedResults;
           }
-        });
+        }); */
+
     }
   });
 
