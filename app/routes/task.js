@@ -943,11 +943,11 @@ exports.task_callJSON = function(req, res){
             });
           } else if(roles == "2" && filterStaff) {
               var ppQuery = {$regex: new RegExp(filterStaff.toLowerCase() + "\\b", "i") };
-              var typeSet = {'$exists': true};
+              // var typeSet = {'$exists': true};
               console.log( "管理角色，筛选了: "+ filterStaff );
               //管理者筛选某个角色的日历视图，重构开始时间为上月1号 - 下月30号
               Weekly.find({
-                $or:[{'pp':ppQuery},{type:typeSet}], 
+                $or:[{'pp':ppQuery}], 
                 "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)},
                 $nor:[{hidden: true}]
               }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
