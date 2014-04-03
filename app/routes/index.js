@@ -59,13 +59,22 @@ exports.home = function(req, res){
         res.send(404, "参数错误");
       }else{
         var roles = docs[0] ? docs[0].roles : 0;
+        /*
         var date = new Date(), d = date.getDate(),m = date.getMonth(),y = date.getFullYear();
-        // 获取本周第1天的日期
-        // msg.push('今天是:\t' + date.toLocaleDateString() + '\t' + DAY[date.getDay()]);
         date.setDate(d - date.getDay() + 1);
         console.log('本周一的日期为:\t' + date.toLocaleDateString());
         console.log('本周一的日期为:\t' + date.getDate());
-        var wf = date.getDate();
+        var wf = date.getDate();*/
+
+        var tDate = new Date();
+        var tDate1 = new Date(tDate.getFullYear(),
+                     tDate.getMonth(),
+                     tDate.getDate() - tDate.getDay() + 1 -7),  //上周1
+            tDate2 = new Date(tDate.getFullYear(),
+                     tDate.getMonth(),
+                     tDate.getDate() - tDate.getDay() + 1 +11); //下周5
+        console.log(tDate1);
+        console.log(tDate2);
 
           // 1.把ProjectName全部取出来
           Project.find().sort({name: 1}).exec(function(err,docs){
@@ -86,7 +95,8 @@ exports.home = function(req, res){
                       {'author':ppQuery},
                       {'pp':ppQuery}
                     ],
-                    "rb_star_date": {"$gte": new Date(y, m, wf-7), "$lte": new Date(y, m, wf+11)}
+                    // "rb_star_date": {"$gte": tDate1, "$lte": tDate2}
+                    $and:[{ "rb_star_date": {"$lte": tDate2 }},{"rb_end_date": { "$gte": tDate1} }] 
                   }
                 ).sort({create_date:-1}).exec(function(err,docs){ 
 
