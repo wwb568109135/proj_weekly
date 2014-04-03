@@ -114,52 +114,10 @@ exports.task_rb = function(req, res){
       }
       res.locals.projectName = pj_array;
         
-        // 2.把用户集合表里用户所负责的项目id取出来
-        Staff.find({name:staffName}).exec(function(err,docs){
-          if(err){
-            res.send(404, "用户表查询错误！");
-            var typeSet = {'$exists': true};
-          }else{
-            var user_pj_array = new Array(),
-                launch = docs[0].launch;
-            for(var i=0; i <launch.length;i++){
-              user_pj_array[i] = launch[i].pj;
-            }
-            var typeSet = {$in: user_pj_array}
-            // console.log(user_pj_array);
-          }
-
-          // 3. 把用户所负责的项目需求及被点名的需求全部取出
-          Weekly.paginate({ 
-              $or:[
-                {'author':ppQuery}, 
-                {'pp':ppQuery}, 
-                {type:typeSet}
-              ],
-              'status':status, 
-              'priority':priority, 
-              $nor:[{hidden: true}]
-            }, 
-            {create_date:-1}, 
-            pageCur, 
-            pageShowNum, 
-            function(error, pageCount, paginatedResults) {
-              if (error) {
-                console.error(error);
-              } else {
-                res.locals.roles = 3;
-                res.locals.path = req.path;
-                res.locals.originalUrl = req.originalUrl;
-                res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
-                res.locals.ttdd = paginatedResults;
-              }
-          });
-
-        });
-        
-
-        /*
+        // 2.把符合筛选的需求取出来
         Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, $or:[{'author':ppQuery},{'pp':ppQuery}]}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        // Weekly.paginate({ $nor:[{hidden: true}], 'status':status, 'priority':priority, 'pp':ppQuery}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
+        // Weekly.paginate({'status':status, 'priority':priority}, {create_date:-1}, pageCur, pageShowNum, function(error, pageCount, paginatedResults) {
           if (error) {
             console.error(error);
           } else {
@@ -169,8 +127,7 @@ exports.task_rb = function(req, res){
             res.render('task-rb', {docs:paginatedResults, pages:pageCount, pageCur:pageCur});
             res.locals.ttdd = paginatedResults;
           }
-        }); */
-
+        });
     }
   });
 
@@ -910,57 +867,31 @@ exports.task_callJSON = function(req, res){
       staffName = User.returnStaffUser(req,res).rtx,
       ppQuery = {$regex: new RegExp(staffName.toLowerCase() + "\\b", "i") };
 
-      // 把用户集合表里用户所负责的项目id取出来
-      Staff.find({name:staffName}).exec(function(err,docs){
-        if(err){
-          res.send(404, "用户表查询错误！");
-          var typeSet = {'$exists': true};
-        }else{
-          var user_pj_array = new Array(),
-              launch = docs[0].launch;
-          for(var i=0; i <launch.length;i++){
-            user_pj_array[i] = launch[i].pj;
-          }
-          var typeSet = {$in: user_pj_array}
-        }
-
-          if (roles == "3"){
-            console.log("重构日历视图")
-            //重构角色 日历表返回 重构开始时间为上月1号 - 下月30号
-            Weekly.find({
-              $or:[{'author':ppQuery},{'pp':ppQuery},{type:typeSet}], 
-              "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)},
-              $nor:[{hidden: true}]
-            }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-              res.json(docs)
-            });
-          } else if (roles == "1"){
-            //产品角色 日历表返回 上线时间为上月1号 - 下月30号
-            Weekly.find({
-              $nor:[{hidden: true}], "author":staffName, "online_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
-            }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-              res.json(docs)
-            });
-          } else if(roles == "2" && filterStaff) {
-              var ppQuery = {$regex: new RegExp(filterStaff.toLowerCase() + "\\b", "i") };
-              // var typeSet = {'$exists': true};
-              console.log( "管理角色，筛选了: "+ filterStaff );
-              //管理者筛选某个角色的日历视图，重构开始时间为上月1号 - 下月30号
-              Weekly.find({
-                $or:[{'pp':ppQuery}], 
-                "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)},
-                $nor:[{hidden: true}]
-              }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
-                res.json(docs)
-              });
-          }
-
-
-       });// End Staff.find
-
-    
-
-
+  if (roles == "3"){
+    console.log("重构日历视图")
+    //重构角色 日历表返回 重构开始时间为上月1号 - 下月30号
+    Weekly.find({
+      $nor:[{hidden: true}], $or:[{'author':ppQuery},{'pp':ppQuery}], "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
+    }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+      res.json(docs)
+    });
+  } else if (roles == "1"){
+    //产品角色 日历表返回 上线时间为上月1号 - 下月30号
+    Weekly.find({
+      $nor:[{hidden: true}], "author":staffName, "online_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
+    }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+      res.json(docs)
+    });
+  } else if(roles == "2" && filterStaff) {
+      var ppQuery = {$regex: new RegExp(filterStaff.toLowerCase() + "\\b", "i") };
+      console.log( "管理角色，筛选了: "+ filterStaff );
+      //管理者筛选某个角色的日历视图，重构开始时间为上月1号 - 下月30号
+      Weekly.find({
+        $nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": new Date(y, m-1, 1), "$lte": new Date(y, m+1, 30)}
+      }).sort({create_date: -1}).exec(function(err,docs){  //结果倒叙排列
+        res.json(docs)
+      });
+  }
 };
 
 
@@ -987,15 +918,7 @@ exports.task_export = function(req, res){
         res.send(404, "查询异常");
       }else{
         if(uu[0] && uu[0].roles == 2){
-          ppQuery = {'$exists': true};
-          var typeSet = {'$exists': true};
-        }else{
-          var user_pj_array = new Array(),
-              launch = uu[0].launch;
-          for(var i=0; i <launch.length;i++){
-            user_pj_array[i] = launch[i].pj;
-          }
-          var typeSet = {$in: user_pj_array}
+          ppQuery = {'$exists': true}
         }
         res.locals.roles = uu[0].roles;
 
@@ -1012,30 +935,14 @@ exports.task_export = function(req, res){
               res.locals.wfMonday = wfMonday;
               res.locals.wfFriday = wfFriday;
 
-                  // 3. 把用户所负责的项目需求及被点名的需求全部取出
-                  
-                  Weekly.find({ 
-                      $or:[
-                        {'author':ppQuery}, 
-                        {'pp':ppQuery}, 
-                        {type:typeSet}
-                      ],
-                      $and:[{ "rb_star_date": {"$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate} }],
-                      $nor:[{hidden: true}]
-                    }
-                  ).sort({status:-1}).exec(function(err,docs){
-                      res.render('export', {docs:docs})
-                  });// end 3.
-                  
-
                 // 3.需求筛选
-                /*
                 Weekly.find({
+                  //$nor:[{hidden: true}], "pp":ppQuery, "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate} ,$or:[{ "rb_end_date": { $gt: taskStarDate, $lt: taskEndDate } }] 
+                  // $nor:[{hidden: true}], "pp":ppQuery ,$or:[{ "rb_star_date": {"$gte": taskStarDate, "$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate, "$lte": taskEndDate } }] 
                   $nor:[{hidden: true}], "pp":ppQuery ,$and:[{ "rb_star_date": {"$lte": taskEndDate }},{"rb_end_date": { "$gte": taskStarDate} }] 
                 }).sort({status: -1}).exec(function(err,docs){  //结果倒叙排列
                   res.render('export', {docs:docs})
-                })*/
-                
+                })
 
             }
           })

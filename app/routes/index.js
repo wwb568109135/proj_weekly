@@ -78,46 +78,7 @@ exports.home = function(req, res){
               }
               res.locals.projectName = pj_array;
                 
-                // 2.把用户集合表里用户所负责的项目id取出来
-                Staff.find({name:staffName}).exec(function(err,docs){
-                  if(err){
-                    res.send(404, "用户表查询错误！");
-                    var typeSet = {'$exists': true};
-                  }else{
-                    var user_pj_array = new Array(),
-                        launch = docs[0].launch;
-                    for(var i=0; i <launch.length;i++){
-                      user_pj_array[i] = launch[i].pj;
-                    }
-                    var typeSet = {$in: user_pj_array}
-                    // console.log(user_pj_array);
-                  }
-
-                  // 3. 把用户所负责的项目需求及被点名的需求全部取出
-                  Weekly.find({ 
-                      $or:[
-                        {'author':ppQuery}, 
-                        {'pp':ppQuery}, 
-                        {type:typeSet}
-                      ],
-                      $nor:[{hidden: true}],
-                      "rb_star_date": {"$gte": new Date(y, m, wf-7), "$lte": new Date(y, m, wf+11)}
-                    }
-                  ).sort({create_date:-1}).exec(function(err,docs){
-                      if (err) {
-                        console.error(err);
-                      } else {
-                        res.locals.roles = 3;
-                        res.render('index', {docs:docs});
-                      }
-                  });// end 3.
-
-                });// end 2.
-
-
-
                 // 2.把符合筛选的需求取出来
-                /*
                 Weekly.find(
                   {  // 筛选条件如下 
                     $nor:[{hidden: true}], 
@@ -136,11 +97,8 @@ exports.home = function(req, res){
                       res.render('index', {docs:docs});
                     }
                 });
-                */
-
-
             }
-          });// end 1.
+          });
 
          // res.locals.roles = roles;
          // res.render('index', { title: '系统首页' });
