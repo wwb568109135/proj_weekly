@@ -109,19 +109,26 @@ exports.auth = function(req, res, next) {
 };
 
 exports.dateNow = function(req,res) {
-  var dateNow = new Date();
-  var dd = dateNow.getDate();
-  var monthSingleDigit = dateNow.getMonth() + 1,
-      mm = monthSingleDigit < 10 ? '0' + monthSingleDigit : monthSingleDigit;
-  var yy = dateNow.getFullYear();
-  
-  dateNow.setDate(dd - dateNow.getDay() + 1)
-  var monday = dateNow.getDate();
+  var date = new Date();
+  var days = {},days2 = {};
+  for (var i = 0; i < 6; i++)
+  {
+      days[i] = new Date(date.getYear(),
+                         date.getMonth(),
+                         date.getDate() - date.getDay() + 1 + i);
+
+      var yy = date.getFullYear();
+      var monthSingleDigit = days[i].getMonth() + 1,
+          mm = monthSingleDigit < 10 ? '0' + monthSingleDigit : monthSingleDigit;
+      var dd = days[i].getDate();
+
+      days2[i] = (yy + '-' + mm + '-' + dd);
+  }
 
   var formatDay = {};
-      formatDay.now = (yy + '-' + mm + '-' + dd),
-      formatDay.monday = (yy + '-' + mm + '-' + monday),
-      formatDay.friday = (yy + '-' + mm + '-' + (monday+4));
+      formatDay.now = days2[date.getDay()-1],
+      formatDay.monday = days2[0],
+      formatDay.friday = days2[4];
   return formatDay;
 };
 
